@@ -2,6 +2,7 @@
   "name": "first-case-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://igortyugaev.github.io/first-case-app",
   "dependencies": {
     "@material-ui/codemod": "^4.5.0",
     "@material-ui/core": "^4.11.4",
@@ -33,7 +34,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "analyze": "source-map-explorer 'build/static/js/*.js'"
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
