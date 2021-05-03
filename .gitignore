@@ -9,9 +9,6 @@
 !.vscode/launch.json
 !.vscode/extensions.json
 
-### dotenv ###
-.env
-
 ### Firebase ###
 .idea
 **/node_modules/*
