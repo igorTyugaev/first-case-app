@@ -277,6 +277,8 @@ class App extends Component {
                                 user={user}
                                 userData={userData}
                                 roles={roles}
+                                openSnackbar={this.openSnackbar}
+                                onDeleteAccountClick={() => this.openDialog("deleteAccountDialog")}
                                 bar={
                                     <Bar
                                         performingAction={performingAction}

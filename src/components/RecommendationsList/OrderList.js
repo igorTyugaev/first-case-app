@@ -3,22 +3,17 @@ import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import styles from "assets/jss/material-kit-react/views/executors.js";
 // core components
-import GridItem from "components/Grid/GridItem.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
-import classNames from "classnames";
 import List from "@material-ui/core/List";
 
 import {v4 as uuid} from 'uuid';
-import moment from 'moment';
 import {
-    IconButton,
     ListItem,
-    ListItemAvatar,
-    ListItemText
 } from '@material-ui/core';
 import profile from "../../assets/img/faces/christian.jpg";
 import OrderItem from "../RecommendationsItem/OrderItem";
+import Grid from "@material-ui/core/Grid";
 
 const products = [
     {
@@ -56,9 +51,13 @@ const products = [
     }
 ];
 
-
-const dashboardRoutes = [];
-const useStyles = makeStyles(styles);
+const useStyles = makeStyles((theme) => ({
+    styles,
+    root: {
+        margin: "0 auto",
+        marginTop: theme.spacing(12),
+    },
+}));
 
 
 export default function OrderList(props) {
@@ -66,7 +65,7 @@ export default function OrderList(props) {
     const {...rest} = props;
 
     return (
-        <GridItem xs={12} sm={12} md={10} lg={8} className={classNames(classes.inner)}>
+        <Grid item container xs={12} sm={12} md={10} lg={8} className={classes.root}>
             <Card>
                 <CardHeader color="success">
                     <h4 className={classes.cardTitleWhite}>Выбор заказа</h4>
@@ -84,6 +83,6 @@ export default function OrderList(props) {
                     ))}
                 </List>
             </Card>
-        </GridItem>
+        </Grid>
     );
 }

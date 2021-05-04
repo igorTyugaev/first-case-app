@@ -24,7 +24,7 @@ import {
 
 import SwipeableViews from "react-swipeable-views";
 
-import AccountTab from "../AccountTab";
+import AccountTab from "../AccountEdit";
 import AppearanceTab from "../AppearanceTab";
 import LinksTab from "../LinksTab";
 import SecurityTab from "../SecurityTab";

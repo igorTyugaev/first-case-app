@@ -6,11 +6,10 @@ import {makeStyles} from "@material-ui/core/styles";
 
 import styles from "assets/jss/material-kit-react/components/userCard.js";
 import classNames from "classnames";
-import Button from "../CustomButtons/Button";
 
 import profile from "../../assets/img/faces/christian.jpg";
 import Badge from "../Badge/Badge";
-import Rating from "@material-ui/lab/Rating";
+// import Rating from "@material-ui/lab/Rating";
 import GridItem from "../Grid/GridItem";
 import Typography from "@material-ui/core/Typography";
 
@@ -40,7 +39,7 @@ export default function CardProfileOrder(props) {
                     Выполненых работ: 200
                 </Typography>
 
-                <Rating name="read-only" value={value} readOnly style={{padding: "5px"}}/>
+                {/*<Rating name="read-only" value={value} readOnly style={{padding: "5px"}}/>*/}
 
             </div>
         </div>

@@ -13,21 +13,19 @@ import {
     AccountCircle as AccountCircleIcon,
     Palette as PaletteIcon,
     Link as LinkIcon,
-    Security as SecurityIcon,
+    Security as SecurityIcon, SvgIconComponent,
 } from "@material-ui/icons";
 
 import SwipeableViews from "react-swipeable-views";
-
-import AccountTab from "../AccountTab";
+import AccountEdit from "../AccountEdit";
 import AppearanceTab from "../AppearanceTab";
 import LinksTab from "../LinksTab";
 import SecurityTab from "../SecurityTab";
-import GridItem from "../../components/Grid/GridItem";
-import classNames from "classnames";
 import Card from "../../components/Card/Card";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
 import CardHeader from "../../components/Card/CardHeader";
-import List from "@material-ui/core/List";
-import OrderItem from "../../components/RecommendationsItem/OrderItem";
+
 
 const styles = (theme) => ({
     tabs: {
@@ -36,6 +34,11 @@ const styles = (theme) => ({
     inner: {
         margin: "0 auto",
         padding: "6vh 0",
+    },
+
+    root: {
+        margin: "0 auto",
+        marginTop: theme.spacing(12),
     },
 });
 
@@ -108,45 +111,25 @@ class SettingsPage extends Component {
         const {selectedTab} = this.state;
 
         return (
-            <GridItem xs={12} sm={12} md={10} lg={8} className={classNames(classes.inner)}>
+            <Grid item container xs={12} sm={12} md={10} lg={8} className={classes.root}>
+
                 <Card>
-                    <Tabs
-                        classes={{root: classes.tabs}}
-                        style={{overflow: "initial", minHeight: "initial"}}
-                        indicatorColor="primary"
-                        textColor="primary"
-                        value={selectedTab}
-                        variant="fullWidth"
-                        onChange={this.handleTabChange}
-                    >
-                        {tabs.map((tab) => {
-                            return <Tab key={tab.key} icon={tab.icon} label={tab.label}/>;
-                        })}
-                    </Tabs>
+                    <CardHeader color="success">
+                        <Typography color="initial" variant="h4" component="h4" align="left" gutterBottom>
+                            Редактировать профиль
+                        </Typography>
+                    </CardHeader>
 
-                    <SwipeableViews
-                        index={selectedTab}
-                        onChangeIndex={this.handleIndexChange}
-                    >
-                        <AccountTab
-                            user={user}
-                            userData={userData}
-                            openSnackbar={openSnackbar}
-                            onDeleteAccountClick={onDeleteAccountClick}
-                        />
-
-                        <AppearanceTab theme={theme} openSnackbar={openSnackbar}/>
-
-                        <LinksTab theme={theme} openSnackbar={openSnackbar}/>
-
-                        <SecurityTab
-                            user={user}
-                            userData={userData}
-                            openSnackbar={openSnackbar}
-                        />
-                    </SwipeableViews>
+                    <AccountEdit
+                        theme={theme}
+                        user={user}
+                        userData={userData}
+                        openSnackbar={openSnackbar}
+                        onDeleteAccountClick={onDeleteAccountClick}
+                    />
                 </Card>
-            </GridItem>
+
+            </Grid>
         );
     }
 }

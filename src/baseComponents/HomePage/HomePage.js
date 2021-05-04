@@ -14,6 +14,7 @@ import {ReactComponent as CabinIllustration} from "../../illustrations/cabin.svg
 import {ReactComponent as InsertBlockIllustration} from "../../illustrations/insert-block.svg";
 import LandingPage from "../../views/LandingPage/LandingPage";
 import Orders from "../../views/Orders/Orders";
+import MainPage from "../../components/MainPage/MainPage";
 
 
 class HomePage extends Component {
@@ -82,7 +83,8 @@ class HomePage extends Component {
                 //     title="Home"
                 //     description="This is the home page. You can edit it from HomePage.js."
                 // />
-                <Orders/>
+                // <Orders/>
+                <MainPage/>
             );
         }
 

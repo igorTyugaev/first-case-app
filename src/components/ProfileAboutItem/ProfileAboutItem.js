@@ -12,8 +12,8 @@ const useStyles = makeStyles(styles);
 
 export default function ProfileAboutItem(props) {
     const classes = useStyles();
-    const {name} = props.product;
-    const {desc} = props.product;
+    const {name} = props.profile;
+    const {desc} = props.profile;
 
     return (
         <div className={classNames(classes.main)}>

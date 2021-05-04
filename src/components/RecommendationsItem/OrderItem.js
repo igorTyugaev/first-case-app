@@ -20,7 +20,7 @@ export default function OrderItem(props) {
         <div className={classNames(classes.main)}>
 
             <div className={classNames(classes.col_1)}>
-                <ProfileAboutItem product={product}/>
+                <ProfileAboutItem profile={product}/>
             </div>
 
             <div className={classNames(classes.col_2)}>

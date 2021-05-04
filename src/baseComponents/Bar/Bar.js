@@ -79,11 +79,16 @@ class Bar extends Component {
             },
             {
                 name: "SettingsPage",
-                theme: theme,
-                user: user,
-                userData: userData,
-                roles: roles,
                 to: user ? `/settings/${user.uid}` : null,
+            },
+            {
+                name: "Orders",
+                to: user ? `/orders/${user.uid}` : null,
+            },
+
+            {
+                name: "People",
+                to: user ? `/people/${user.uid}` : null,
             },
             {
                 name: "Sign out",
