@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 // @material-ui/core components
 import {makeStyles} from "@material-ui/core/styles";
 import styles from "assets/jss/material-kit-react/views/executors.js";
@@ -9,11 +9,20 @@ import List from "@material-ui/core/List";
 
 import {v4 as uuid} from 'uuid';
 import {
+    Box,
+    Fab,
     ListItem,
 } from '@material-ui/core';
 import profile from "../../assets/img/faces/christian.jpg";
 import OrderItem from "../RecommendationsItem/OrderItem";
 import Grid from "@material-ui/core/Grid";
+import {firestore} from "../../firebase";
+import EmptyState from "../../baseComponents/EmptyState";
+import {ReactComponent as ErrorIllustration} from "../../illustrations/error.svg";
+import {Home as HomeIcon, Refresh as RefreshIcon} from "@material-ui/icons";
+import {ReactComponent as NoDataIllustration} from "../../illustrations/no-data.svg";
+import {Link} from "react-router-dom";
+import Loader from "../../baseComponents/Loader";
 
 const products = [
     {
@@ -60,29 +69,102 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function OrderList(props) {
+function OrderList(props) {
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const classes = useStyles();
+
     const {...rest} = props;
 
+
+    const useItems = () => {
+        const [items, setItems] = useState([])
+        useEffect(() => {
+            const unsubscribe = firestore
+                .collection("orders")
+                // .where("status", "==", true)
+                // .orderBy("createdAt");
+                .onSnapshot(snapshot => {
+                    const listItems = snapshot.docs
+                        // TODO: Сделать фильтрацию: убирать пустые order-ы
+                        // TODO: Считывать только необходимые для item-ов поля
+                        // .filter((doc) => doc.data())
+                        .map(doc => ({
+                            id: doc.id,
+                            ...doc.data(),
+                        }))
+                    setLoading(false);
+                    setItems(listItems)
+                }, (error) => {
+                    setLoading(false);
+                    setError(error);
+                })
+            return () => unsubscribe()
+        }, [])
+        return items
+    }
+
+    const products = useItems();
+
+    console.log(products[0]);
+
+    if (error) {
+        return (
+            <EmptyState
+                image={<ErrorIllustration/>}
+                title="Couldn’t retrieve user."
+                description="Something went wrong when trying to retrieve the requested user."
+                button={
+                    <Fab
+                        variant="extended"
+                        color="primary"
+                        onClick={() => window.location.reload()}
+                    >
+                        <Box clone mr={1}>
+                            <RefreshIcon/>
+                        </Box>
+                        Retry
+                    </Fab>
+                }
+            />
+        );
+    }
+
+    if (loading) {
+        return <Loader/>;
+    }
+
+    if (products.length >= 1) {
+        return (
+            <Grid item container xs={12} sm={12} md={10} lg={8} className={classes.root}>
+                <Card>
+                    <CardHeader color="success">
+                        <h4 className={classes.cardTitleWhite}>Выбор заказа</h4>
+                        <p className={classes.cardCategoryWhite}>
+                            Выберите подходящий для вас заказ и нажмите "ПРИНЯТЬ"
+                        </p>
+                    </CardHeader>
+                    <List>
+                        {products.map((product, i) => (
+                            <ListItem
+                                divider={i < products.length - 1}
+                                key={product.id}>
+                                <OrderItem product={product}/>
+                            </ListItem>
+                        ))}
+                    </List>
+                </Card>
+            </Grid>
+        );
+    }
+
     return (
-        <Grid item container xs={12} sm={12} md={10} lg={8} className={classes.root}>
-            <Card>
-                <CardHeader color="success">
-                    <h4 className={classes.cardTitleWhite}>Выбор заказа</h4>
-                    <p className={classes.cardCategoryWhite}>
-                        Выберите подходящий для вас заказ и нажмите "ПРИНЯТЬ"
-                    </p>
-                </CardHeader>
-                <List>
-                    {products.map((product, i) => (
-                        <ListItem
-                            divider={i < products.length - 1}
-                            key={product.id}>
-                            <OrderItem product={product}/>
-                        </ListItem>
-                    ))}
-                </List>
-            </Card>
-        </Grid>
+        <EmptyState
+            image={<NoDataIllustration/>}
+            title="No orders"
+            description="Сорян, братан, но заказов пока нет("
+        />
     );
 }
+
+export default OrderList;

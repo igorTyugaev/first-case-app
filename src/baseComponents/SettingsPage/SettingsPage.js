@@ -4,23 +4,13 @@ import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core/styles";
 
 import {
-    Tabs,
-    Tab, ListItem,
-} from "@material-ui/core";
-
-import {
-    Close as CloseIcon,
     AccountCircle as AccountCircleIcon,
     Palette as PaletteIcon,
     Link as LinkIcon,
-    Security as SecurityIcon, SvgIconComponent,
+    Security as SecurityIcon,
 } from "@material-ui/icons";
 
-import SwipeableViews from "react-swipeable-views";
 import AccountEdit from "../AccountEdit";
-import AppearanceTab from "../AppearanceTab";
-import LinksTab from "../LinksTab";
-import SecurityTab from "../SecurityTab";
 import Card from "../../components/Card/Card";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
@@ -41,32 +31,6 @@ const styles = (theme) => ({
         marginTop: theme.spacing(12),
     },
 });
-
-const tabs = [
-    {
-        key: "account",
-        icon: <AccountCircleIcon/>,
-        label: "Account",
-    },
-
-    {
-        key: "appearance",
-        icon: <PaletteIcon/>,
-        label: "Appearance",
-    },
-
-    {
-        key: "links",
-        icon: <LinkIcon/>,
-        label: "Links",
-    },
-
-    {
-        key: "security",
-        icon: <SecurityIcon/>,
-        label: "Security",
-    },
-];
 
 const initialState = {
     selectedTab: 0,

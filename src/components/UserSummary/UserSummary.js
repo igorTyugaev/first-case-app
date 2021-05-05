@@ -1,12 +1,10 @@
 import React from "react";
 // nodejs library to set properties for components
-import PropTypes from "prop-types";
 // @material-ui/core components
 import {makeStyles} from "@material-ui/core/styles";
 import styles from "assets/jss/material-kit-react/components/userSummary.js";
 import classNames from "classnames";
 import Button from "../CustomButtons/Button";
-import ProfileRating from "../ProfileRating/ProfileRating";
 import Badge from "../Badge/Badge";
 import {Message} from "@material-ui/icons";
 
@@ -21,7 +19,7 @@ export default function UserSummary(props) {
         <div className={classNames(classes.body)}>
             <h3 className={classes.title}>Пупкин Иван</h3>
 
-            <ProfileRating/>
+            {/*<ProfileRating/>*/}
 
             <div>
                 <Badge color="warning">Python</Badge>

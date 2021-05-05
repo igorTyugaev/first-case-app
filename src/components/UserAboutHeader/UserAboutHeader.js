@@ -19,13 +19,16 @@ const useStyles = makeStyles(styles);
 
 export default function UserAboutHeader(props) {
     const classes = useStyles();
-    const {...rest} = props;
+
+    const {user, userData} = props;
 
     return (
         <div className={classes.body}>
+
             <div className={classNames(classes.card)}>
-                <UserCard/>
+                <UserCard user={user} userData={userData}/>
             </div>
+
             <div className={classNames(classes.summary)}>
                 <UserSummary/>
             </div>

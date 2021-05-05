@@ -630,6 +630,154 @@ class AccountEdit extends Component {
         );
     };
 
+    changeAbout = () => {
+        const {about} = this.state;
+
+        const errors = validate(
+            {
+                about: about,
+            },
+            {
+                about: constraints.about,
+            }
+        );
+
+        if (errors) {
+            this.setState({
+                errors: errors,
+            });
+
+            return;
+        }
+
+        this.setState(
+            {
+                errors: null,
+            },
+            () => {
+                const {user} = this.props;
+
+                if (about === user.about) {
+                    return;
+                }
+
+                this.setState(
+                    {
+                        performingAction: true,
+                    },
+                    () => {
+                        authentication
+                            .changeAbout(about)
+                            .then(() => {
+                                const {user, userData} = this.props;
+
+                                this.setState(
+                                    {
+                                        profileCompletion: authentication.getProfileCompletion({
+                                            ...user,
+                                            ...userData,
+                                        }),
+                                    },
+                                    () => {
+                                        this.hideFields();
+                                    }
+                                );
+                            })
+                            .catch((reason) => {
+                                const code = reason.code;
+                                const message = reason.message;
+
+                                switch (code) {
+                                    default:
+                                        this.props.openSnackbar(message);
+                                        return;
+                                }
+                            })
+                            .finally(() => {
+                                this.setState({
+                                    performingAction: false,
+                                });
+                            });
+                    }
+                );
+            }
+        );
+    };
+
+    changeEducation = () => {
+        const {education} = this.state;
+
+        const errors = validate(
+            {
+                education: education,
+            },
+            {
+                education: constraints.education,
+            }
+        );
+
+        if (errors) {
+            this.setState({
+                errors: errors,
+            });
+
+            return;
+        }
+
+        this.setState(
+            {
+                errors: null,
+            },
+            () => {
+                const {user} = this.props;
+
+                if (education === user.education) {
+                    return;
+                }
+
+                this.setState(
+                    {
+                        performingAction: true,
+                    },
+                    () => {
+                        authentication
+                            .changeEducation(education)
+                            .then(() => {
+                                const {user, userData} = this.props;
+
+                                this.setState(
+                                    {
+                                        profileCompletion: authentication.getProfileCompletion({
+                                            ...user,
+                                            ...userData,
+                                        }),
+                                    },
+                                    () => {
+                                        this.hideFields();
+                                    }
+                                );
+                            })
+                            .catch((reason) => {
+                                const code = reason.code;
+                                const message = reason.message;
+
+                                switch (code) {
+                                    default:
+                                        this.props.openSnackbar(message);
+                                        return;
+                                }
+                            })
+                            .finally(() => {
+                                this.setState({
+                                    performingAction: false,
+                                });
+                            });
+                    }
+                );
+            }
+        );
+    };
+
     verifyEmailAddress = () => {
         this.setState(
             {
@@ -683,6 +831,14 @@ class AccountEdit extends Component {
 
             case "email-address":
                 this.changeEmailAddress();
+                return;
+
+            case "about":
+                this.changeAbout();
+                return;
+
+            case "education":
+                this.changeEducation();
                 return;
 
             default:
@@ -787,6 +943,30 @@ class AccountEdit extends Component {
         });
     };
 
+    handleAboutChange = (event) => {
+        if (!event) {
+            return;
+        }
+
+        const about = event.target.value;
+
+        this.setState({
+            about: about,
+        });
+    };
+
+    handleEducationChange = (event) => {
+        if (!event) {
+            return;
+        }
+
+        const education = event.target.value;
+
+        this.setState({
+            education: education,
+        });
+    };
+
     handleLastNameChange = (event) => {
         if (!event) {
             return;
@@ -849,11 +1029,15 @@ class AccountEdit extends Component {
             errors,
             password,
             passwordConfirmation,
+            about,
+            education,
         } = this.state;
 
         const hasFirstName = userData && userData.firstName;
         const hasLastName = userData && userData.lastName;
         const hasUsername = userData && userData.username;
+        const hasAbout = userData && userData.about;
+        const hasEducation = userData && userData.education;
         const hasChangedPassword = userData && userData.lastPasswordChange;
 
         return (
@@ -1305,6 +1489,176 @@ class AccountEdit extends Component {
                 </Box>
 
                 <List disablePadding>
+
+                    <ListItem>
+                        <Hidden xsDown>
+                            <ListItemIcon>
+                                <PersonIcon/>
+                            </ListItemIcon>
+                        </Hidden>
+
+                        {!hasAbout && (
+                            <ListItemIcon>
+                                <Tooltip title="Нет информации об образовании">
+                                    <WarningIcon color="error"/>
+                                </Tooltip>
+                            </ListItemIcon>
+                        )}
+
+                        {showingField === "education" && (
+                            <Grid item xs={10} sm={10} md={10} lg={10}>
+                                <TextField
+                                    autoComplete="education"
+                                    autoFocus
+                                    disabled={performingAction}
+                                    error={!!(errors && errors.education)}
+                                    fullWidth
+                                    helperText={
+                                        errors && errors.education
+                                            ? errors.education[0]
+                                            : "Нажмите Enter, чтобы ифнормацию об образовании"
+                                    }
+                                    label="Об образовании"
+                                    multiline
+                                    placeholder={hasAbout && userData.education}
+                                    required
+                                    type="text"
+                                    value={education}
+                                    variant="filled"
+                                    InputLabelProps={{required: false}}
+                                    onBlur={this.hideFields}
+                                    onKeyDown={(event) => this.handleKeyDown(event, "education")}
+                                    onChange={this.handleEducationChange}
+                                />
+                            </Grid>
+                        )}
+
+                        {showingField !== "education" && (
+                            <>
+                                <Grid item xs={10} sm={10} md={10} lg={10}>
+                                    <ListItemText
+                                        primary="Об образовании"
+                                        secondary={
+                                            hasEducation
+                                                ? userData.education
+                                                : "Вы не указали информацию об образовании"
+                                        }
+                                    />
+                                </Grid>
+
+                                <ListItemSecondaryAction>
+                                    {hasEducation && (
+                                        <Tooltip title="Редактировать">
+                                            <div>
+                                                <IconButton
+                                                    disabled={performingAction}
+                                                    onClick={() => this.showField("education")}>
+                                                    <EditIcon/>
+                                                </IconButton>
+                                            </div>
+                                        </Tooltip>
+                                    )}
+
+                                    {!hasEducation && (
+                                        <Button
+                                            color="primary"
+                                            disabled={performingAction}
+                                            variant="contained"
+                                            onClick={() => this.showField("education")}
+                                        >
+                                            Добавить
+                                        </Button>
+                                    )}
+                                </ListItemSecondaryAction>
+                            </>
+                        )}
+                    </ListItem>
+
+                    <ListItem>
+                        <Hidden xsDown>
+                            <ListItemIcon>
+                                <PersonIcon/>
+                            </ListItemIcon>
+                        </Hidden>
+
+                        {!hasAbout && (
+                            <ListItemIcon>
+                                <Tooltip title="Нет информации о себе">
+                                    <WarningIcon color="error"/>
+                                </Tooltip>
+                            </ListItemIcon>
+                        )}
+
+                        {showingField === "about" && (
+                            <Grid item xs={10} sm={10} md={10} lg={10}>
+                                <TextField
+                                    autoComplete="about"
+                                    autoFocus
+                                    disabled={performingAction}
+                                    error={!!(errors && errors.about)}
+                                    fullWidth
+                                    helperText={
+                                        errors && errors.about
+                                            ? errors.about[0]
+                                            : "Нажмите Enter, чтобы рассказать о себе"
+                                    }
+                                    label="О себе"
+                                    multiline
+                                    placeholder={hasAbout && userData.about}
+                                    required
+                                    type="text"
+                                    value={about}
+                                    variant="filled"
+                                    InputLabelProps={{required: false}}
+                                    onBlur={this.hideFields}
+                                    onKeyDown={(event) => this.handleKeyDown(event, "about")}
+                                    onChange={this.handleAboutChange}
+                                />
+                            </Grid>
+                        )}
+
+                        {showingField !== "about" && (
+                            <>
+                                <Grid item xs={10} sm={10} md={10} lg={10}>
+                                    <ListItemText
+                                        primary="О себе"
+                                        secondary={
+                                            hasAbout
+                                                ? userData.about
+                                                : "Вы не указали информацию о себе"
+                                        }
+                                    />
+                                </Grid>
+
+                                <ListItemSecondaryAction>
+                                    {hasAbout && (
+                                        <Tooltip title="Редактировать">
+                                            <div>
+                                                <IconButton
+                                                    disabled={performingAction}
+                                                    onClick={() => this.showField("about")}
+                                                >
+                                                    <EditIcon/>
+                                                </IconButton>
+                                            </div>
+                                        </Tooltip>
+                                    )}
+
+                                    {!hasAbout && (
+                                        <Button
+                                            color="primary"
+                                            disabled={performingAction}
+                                            variant="contained"
+                                            onClick={() => this.showField("about")}
+                                        >
+                                            Добавить
+                                        </Button>
+                                    )}
+                                </ListItemSecondaryAction>
+                            </>
+                        )}
+                    </ListItem>
+
                     <ListItem>
                         <Hidden xsDown>
                             <ListItemIcon>

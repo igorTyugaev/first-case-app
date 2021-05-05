@@ -6,12 +6,12 @@ import {BrowserRouter, Switch, Redirect, Route} from "react-router-dom";
 
 import HomePage from "../HomePage";
 import AdminPage from "../AdminPage";
-import UserPage from "../UserPage";
 import NotFoundPage from "../NotFoundPage";
 import SettingsPage from "../SettingsPage";
 import Components from "../../views/Components/Components";
 import OrderList from "../../components/RecommendationsList/OrderList";
 import MentorForCustomerList from "../../components/RecommendationsList/MentorForCustomerList";
+import ProfilePage from "../ProfilePage";
 
 class Router extends Component {
     render() {
@@ -40,7 +40,8 @@ class Router extends Component {
                     </Route>
 
                     <Route path="/user/:userId">
-                        {user ? <UserPage/> : <Redirect to="/"/>}
+                        {user ? <ProfilePage theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}
+                                             onDeleteAccountClick={onDeleteAccountClick}/> : <Redirect to="/"/>}
                     </Route>
 
                     <Route path="/settings/:userId">
