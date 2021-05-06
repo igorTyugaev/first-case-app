@@ -90,6 +90,12 @@ class Bar extends Component {
                 name: "People",
                 to: user ? `/people/${user.uid}` : null,
             },
+
+            {
+                name: "New order",
+                to: user ? `/new_order/` : null,
+            },
+
             {
                 name: "Sign out",
                 divide: true,

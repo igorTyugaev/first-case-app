@@ -20,22 +20,13 @@ import Typography from "@material-ui/core/Typography";
 import FormControl from "@material-ui/core/FormControl";
 import Datetime from "react-datetime";
 
-const dashboardRoutes = [];
 const useStyles = makeStyles(styles);
 
 export default function AddOrder(props) {
     const classes = useStyles();
-    const {...rest} = props;
 
     return (
         <div>
-            <Header
-                color="white"
-                routes={dashboardRoutes}
-                brand="FirstCase"
-                rightLinks={<HeaderLinksProfile/>}
-                fixed
-                {...rest}/>
 
             <div className={classNames(classes.main)}>
 

@@ -25,7 +25,7 @@ import { Close as CloseIcon } from "@material-ui/icons";
 
 import AuthProviderList from "../AuthProviderList";
 
-import constraints from "../../data/constraints";
+import constraintsAuth from "../../data/constraintsAuth";
 import authentication from "../../services/authentication";
 
 const styles = (theme) => ({
@@ -98,7 +98,7 @@ class SignInDialog extends Component {
         emailAddress: emailAddress,
       },
       {
-        emailAddress: constraints.emailAddress,
+        emailAddress: constraintsAuth.emailAddress,
       }
     );
 
@@ -165,8 +165,8 @@ class SignInDialog extends Component {
         password: password,
       },
       {
-        emailAddress: constraints.emailAddress,
-        password: constraints.password,
+        emailAddress: constraintsAuth.emailAddress,
+        password: constraintsAuth.password,
       }
     );
 
@@ -228,7 +228,7 @@ class SignInDialog extends Component {
         emailAddress: emailAddress,
       },
       {
-        emailAddress: constraints.emailAddress,
+        emailAddress: constraintsAuth.emailAddress,
       }
     );
 

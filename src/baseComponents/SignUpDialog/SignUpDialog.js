@@ -25,7 +25,7 @@ import { Close as CloseIcon } from "@material-ui/icons";
 
 import AuthProviderList from "../AuthProviderList";
 
-import constraints from "../../data/constraints";
+import constraintsAuth from "../../data/constraintsAuth";
 import authentication from "../../services/authentication";
 
 const styles = (theme) => ({
@@ -80,10 +80,10 @@ class SignUpDialog extends Component {
         passwordConfirmation: passwordConfirmation,
       },
       {
-        emailAddress: constraints.emailAddress,
-        emailAddressConfirmation: constraints.emailAddressConfirmation,
-        password: constraints.password,
-        passwordConfirmation: constraints.passwordConfirmation,
+        emailAddress: constraintsAuth.emailAddress,
+        emailAddressConfirmation: constraintsAuth.emailAddressConfirmation,
+        password: constraintsAuth.password,
+        passwordConfirmation: constraintsAuth.passwordConfirmation,
       }
     );
 

@@ -34,7 +34,7 @@ import {
     Warning as WarningIcon,
 } from "@material-ui/icons";
 
-import constraints from "../../data/constraints";
+import constraintsAuth from "../../data/constraintsAuth";
 import authentication from "../../services/authentication";
 import UserAboutBody from "../../components/UserAboutBody/UserAboutBody";
 import GridItem from "../../components/Grid/GridItem";
@@ -275,8 +275,8 @@ class AccountView extends Component {
                 passwordConfirmation: passwordConfirmation,
             },
             {
-                password: constraints.password,
-                passwordConfirmation: constraints.passwordConfirmation,
+                password: constraintsAuth.password,
+                passwordConfirmation: constraintsAuth.passwordConfirmation,
             }
         );
 
@@ -334,7 +334,7 @@ class AccountView extends Component {
                 firstName: firstName,
             },
             {
-                firstName: constraints.firstName,
+                firstName: constraintsAuth.firstName,
             }
         );
 
@@ -408,7 +408,7 @@ class AccountView extends Component {
                 lastName: lastName,
             },
             {
-                lastName: constraints.lastName,
+                lastName: constraintsAuth.lastName,
             }
         );
 
@@ -482,7 +482,7 @@ class AccountView extends Component {
                 username: username,
             },
             {
-                username: constraints.username,
+                username: constraintsAuth.username,
             }
         );
 
@@ -556,7 +556,7 @@ class AccountView extends Component {
                 emailAddress: emailAddress,
             },
             {
-                emailAddress: constraints.emailAddress,
+                emailAddress: constraintsAuth.emailAddress,
             }
         );
 

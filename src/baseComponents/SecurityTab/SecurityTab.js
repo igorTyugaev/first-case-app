@@ -20,7 +20,7 @@ import {
 
 import { Lock as LockIcon, Edit as EditIcon } from "@material-ui/icons";
 
-import constraints from "../../data/constraints";
+import constraintsAuth from "../../data/constraintsAuth";
 import authentication from "../../services/authentication";
 
 const initialState = {
@@ -74,7 +74,7 @@ class SecurityTab extends Component {
             password: password,
           },
           {
-            password: constraints.password,
+            password: constraintsAuth.password,
           }
         );
 
@@ -114,8 +114,8 @@ class SecurityTab extends Component {
         passwordConfirmation: passwordConfirmation,
       },
       {
-        password: constraints.password,
-        passwordConfirmation: constraints.passwordConfirmation,
+        password: constraintsAuth.password,
+        passwordConfirmation: constraintsAuth.passwordConfirmation,
       }
     );
 

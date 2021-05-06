@@ -7,7 +7,7 @@ const authentication = {};
 authentication.signUp = (fields) => {
     return new Promise((resolve, reject) => {
         if (!fields) {
-            reject(new Error("No fields"));
+            reject(new Error("Нет полей"));
 
             return;
         }
@@ -21,7 +21,7 @@ authentication.signUp = (fields) => {
         if (!firstName || !lastName || !username || !emailAddress || !password) {
             reject(
                 new Error(
-                    "No first name, last name, username, e-mail address, or password"
+                    "Без имени, фамилии, имени пользователя, адреса эл. почты или пароля."
                 )
             );
 
@@ -29,7 +29,7 @@ authentication.signUp = (fields) => {
         }
 
         if (auth.currentUser) {
-            reject(new Error("No current user"));
+            reject(new Error("Нет текущего пользователя"));
 
             return;
         }
@@ -40,7 +40,7 @@ authentication.signUp = (fields) => {
                 const user = value.user;
 
                 if (!user) {
-                    reject(new Error("No user"));
+                    reject(new Error("Нет пользователя"));
 
                     return;
                 }
@@ -48,7 +48,7 @@ authentication.signUp = (fields) => {
                 const uid = user.uid;
 
                 if (!uid) {
-                    reject(new Error("No UID"));
+                    reject(new Error("Нет UID"));
 
                     return;
                 }

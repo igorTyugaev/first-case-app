@@ -12,6 +12,8 @@ import Components from "../../views/Components/Components";
 import OrderList from "../../components/RecommendationsList/OrderList";
 import MentorForCustomerList from "../../components/RecommendationsList/MentorForCustomerList";
 import ProfilePage from "../ProfilePage";
+import AddOrderPage from "../AddOrderPage";
+import AddOrder from "../../views/AddOrder/AddOrder";
 
 class Router extends Component {
     render() {
@@ -64,6 +66,16 @@ class Router extends Component {
                     <Route path="/example/">
                         <Components/>
                     </Route>
+
+                    <Route path="/new_order/">
+                        <AddOrderPage theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}
+                                      onDeleteAccountClick={onDeleteAccountClick}/>
+                    </Route>
+
+                    <Route path="/new_order_old/">
+                        <AddOrder/>
+                    </Route>
+
 
                     <Route>
                         <NotFoundPage/>
