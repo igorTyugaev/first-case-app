@@ -34,7 +34,7 @@ export default function LandingPage(props) {
             <Parallax filter image={require("assets/img/landing-bg.jpg")}>
                 <div className={classes.container}>
                     <GridContainer>
-                        <GridItem xs={13} sm={13} md={7}>
+                        <GridItem xs={12} sm={12} md={7}>
                             <h1 className={classes.title}>
                                 Найдем исполнителя для решения Вашей задачи!
                             </h1>

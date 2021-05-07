@@ -13,7 +13,7 @@ const useStyles = makeStyles(styles);
 
 export default function OfferActions(props) {
     const classes = useStyles();
-    const {products} = props;
+    const {product} = props;
 
     return (
         <div className={classNames(classes.main)}>

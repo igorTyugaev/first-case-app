@@ -2,13 +2,10 @@ import React from "react";
 // @material-ui/core components
 import {makeStyles} from "@material-ui/core/styles";
 import styles from "assets/jss/material-kit-react/components/orderItem.js";
-import ProfileAboutItem from "../ProfileAboutItem/ProfileAboutItem";
-import Button from "../CustomButtons/Button";
-import {ListItem} from "@material-ui/core";
+import ItemDescriptionSmall from "../ItemDescription/ItemDescriptionSmall";
 import classNames from "classnames";
 import OrderActions from "../OrderActions/OrderActions";
 
-const dashboardRoutes = [];
 const useStyles = makeStyles(styles);
 
 
@@ -20,7 +17,7 @@ export default function OrderItem(props) {
         <div className={classNames(classes.main)}>
 
             <div className={classNames(classes.col_1)}>
-                <ProfileAboutItem profile={product}/>
+                <ItemDescriptionSmall dataItem={product}/>
             </div>
 
             <div className={classNames(classes.col_2)}>

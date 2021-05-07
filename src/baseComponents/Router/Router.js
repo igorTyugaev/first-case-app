@@ -30,7 +30,11 @@ class Router extends Component {
 
                 <Switch>
                     <Route path="/" exact>
-                        <HomePage user={user} openSnackbar={openSnackbar}/>
+                        {(user && (true || userData.role === "customer" || userData.role === "mentor" || userData.role === "student")) ? (
+                            <HomePage user={user} openSnackbar={openSnackbar}/>
+                        ) : (
+                            <Redirect to="/settings/"/>
+                        )}
                     </Route>
 
                     <Route path="/admin">
@@ -46,12 +50,12 @@ class Router extends Component {
                                              onDeleteAccountClick={onDeleteAccountClick}/> : <Redirect to="/"/>}
                     </Route>
 
-                    <Route path="/settings/:userId">
+                    <Route path="/settings/">
                         {user ? <SettingsPage theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}
                                               onDeleteAccountClick={onDeleteAccountClick}/> : <Redirect to="/"/>}
                     </Route>
 
-                    <Route path="/orders/:userId">
+                    <Route path="/orders/">
                         {user ? <OrderList theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}
                                            onDeleteAccountClick={onDeleteAccountClick}/> : <Redirect to="/"/>}
                     </Route>
@@ -67,9 +71,8 @@ class Router extends Component {
                         <Components/>
                     </Route>
 
-                    <Route path="/new_order/">
-                        <AddOrderPage theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}
-                                      onDeleteAccountClick={onDeleteAccountClick}/>
+                    <Route path="/new_order/:orderId">
+                        <AddOrderPage theme={theme} openSnackbar={openSnackbar}/>
                     </Route>
 
                     <Route path="/new_order_old/">

@@ -7,7 +7,7 @@ import Button from "../CustomButtons/Button";
 import {ListItem} from "@material-ui/core";
 import classNames from "classnames";
 import OfferActions from "../OfferActions/OfferActions";
-import ProfileAboutItem from "../ProfileAboutItem/ProfileAboutItem";
+import ItemDescriptionSmall from "../ItemDescription/ItemDescriptionSmall";
 
 const dashboardRoutes = [];
 const useStyles = makeStyles(styles);
@@ -25,7 +25,7 @@ export default function MentorForCustomerItem(props) {
             </div>
 
             <div className={classNames(classes.col_2)}>
-                <ProfileAboutItem profile={mentor}/>
+                <ItemDescriptionSmall dataItem={mentor}/>
             </div>
 
             <div className={classNames(classes.col_3)}>

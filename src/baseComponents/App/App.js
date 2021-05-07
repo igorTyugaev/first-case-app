@@ -40,6 +40,10 @@ const initialState = {
         open: false,
     },
 
+    roleDialog: {
+        open: false,
+    },
+
     deleteAccountDialog: {
         open: false,
     },
@@ -135,6 +139,10 @@ class App extends Component {
                 },
 
                 settingsDialog: {
+                    open: false,
+                },
+
+                roleDialog: {
                     open: false,
                 },
 
@@ -257,6 +265,7 @@ class App extends Component {
             signUpDialog,
             signInDialog,
             settingsDialog,
+            roleDialog,
             deleteAccountDialog,
             signOutDialog,
         } = this.state;
@@ -290,6 +299,7 @@ class App extends Component {
                                         onSignInClick={() => this.openDialog("signInDialog")}
                                         onAboutClick={() => this.openDialog("aboutDialog")}
                                         onSettingsClick={() => this.openDialog("settingsDialog")}
+                                        onRoleClick={() => this.openDialog("roleDialog")}
                                         onSignOutClick={() => this.openDialog("signOutDialog")}
                                     />
                                 }
@@ -352,6 +362,14 @@ class App extends Component {
                                         },
                                     },
 
+                                    roleDialog: {
+                                        dialogProps: {
+                                            open: roleDialog.open,
+
+                                            onClose: () => this.closeDialog("roleDialog"),
+                                        },
+                                    },
+
                                     deleteAccountDialog: {
                                         dialogProps: {
                                             open: deleteAccountDialog.open,
@@ -372,15 +390,15 @@ class App extends Component {
                                         },
 
                                         props: {
-                                            title: "Sign out?",
+                                            title: "Выйти?",
                                             contentText:
-                                                "While signed out you are unable to manage your profile and conduct other activities that require you to be signed in.",
+                                                "После выхода из системы вы больше не сможете управлять своим профилем и выполнять другие действия, требующие входа в систему.",
                                             dismissiveAction: (
                                                 <Button
                                                     color="primary"
                                                     onClick={() => this.closeDialog("signOutDialog")}
                                                 >
-                                                    Cancel
+                                                    Отмена
                                                 </Button>
                                             ),
                                             confirmingAction: (
@@ -390,7 +408,7 @@ class App extends Component {
                                                     variant="contained"
                                                     onClick={this.signOut}
                                                 >
-                                                    Sign Out
+                                                    Выйти
                                                 </Button>
                                             ),
                                         },
@@ -449,6 +467,7 @@ class App extends Component {
                                             roles: value || [],
                                         });
                                     });
+                                    console.log(value);
                                 })
                                 .catch((reason) => {
                                     this.resetState(() => {

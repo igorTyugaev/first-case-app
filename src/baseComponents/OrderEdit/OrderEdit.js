@@ -30,6 +30,8 @@ import constraintsAuth from "../../data/constraintsAuth";
 import orders from "../../services/orders";
 import InputLabel from "@material-ui/core/InputLabel";
 import constraintsOrder from "../../data/constraintsOrder";
+import {auth, firestore} from "../../firebase";
+import authentication from "../../services/authentication";
 
 const styles = (theme) => ({
     mainContent: {
@@ -79,7 +81,6 @@ const initialState = {
 class OrderEdit extends Component {
     constructor(props) {
         super(props);
-
         this.state = initialState;
     }
 
@@ -171,9 +172,10 @@ class OrderEdit extends Component {
                 errors: null,
             },
             () => {
-                const {user} = this.props;
+                const {order} = this.props;
+                const {orderId} = this.props;
 
-                if (title === user.title) {
+                if (order && order.title && title === order.title) {
                     return;
                 }
 
@@ -183,7 +185,7 @@ class OrderEdit extends Component {
                     },
                     () => {
                         orders
-                            .changeTitle(title)
+                            .changeTitle(title, orderId)
                             .finally(() => {
                                 this.setState({
                                     performingAction: false,
@@ -195,25 +197,18 @@ class OrderEdit extends Component {
         );
     };
 
-
     render() {
         // Styling
         const {classes} = this.props;
-
-        // Properties
-        const {user, userData} = this.props;
-
-        // Events
-        const {onDeleteAccountClick} = this.props;
 
         const {
             performingAction,
             errors,
             title,
+            order
         } = this.state;
 
-
-        const hasTitle = userData && userData.title;
+        const hasTitle = order && order.title;
 
         return (
             <Container classes={{root: classes.mainContent}}>
@@ -237,11 +232,11 @@ class OrderEdit extends Component {
                                 multiline
                                 placeholder={(errors && errors.title)
                                     ? errors.title[0]
-                                    : (hasTitle && userData.title)
+                                    : (hasTitle && order.title)
                                 }
                                 required
                                 type="text"
-                                value={title ? title.trim() : (hasTitle && userData.title.trim())}
+                                value={title ? title : (hasTitle && order.title)}
                                 variant="filled"
                                 onKeyDown={(event) => this.handleKeyDown(event, "title")}
                                 onChange={this.handleTitleChange}
@@ -309,29 +304,14 @@ class OrderEdit extends Component {
     }
 
     componentDidMount() {
-        const {user, userData} = this.props;
-    }
-
-    componentWillUnmount() {
-        const {avatarUrl} = this.state;
-
-        if (avatarUrl) {
-            URL.revokeObjectURL(avatarUrl);
-
-            this.setState({
-                avatarUrl: "",
-            });
-        }
+        const {orderId} = this.props;
+        orders.getOrder(orderId, this);
     }
 }
 
 OrderEdit.propTypes = {
     // Styling
     classes: PropTypes.object.isRequired,
-
-    // Properties
-    user: PropTypes.object.isRequired,
-    userData: PropTypes.object,
 
     // Functions
     openSnackbar: PropTypes.func.isRequired,

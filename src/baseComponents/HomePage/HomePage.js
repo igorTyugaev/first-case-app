@@ -1,19 +1,12 @@
 import React, {Component} from "react";
 
 import PropTypes from "prop-types";
-
 import {withRouter} from "react-router-dom";
 
 import {auth} from "../../firebase";
-
 import authentication from "../../services/authentication";
 
-import EmptyState from "../EmptyState";
-
-import {ReactComponent as CabinIllustration} from "../../illustrations/cabin.svg";
-import {ReactComponent as InsertBlockIllustration} from "../../illustrations/insert-block.svg";
 import LandingPage from "../../views/LandingPage/LandingPage";
-import Orders from "../../views/Orders/Orders";
 import MainPage from "../../components/MainPage/MainPage";
 
 

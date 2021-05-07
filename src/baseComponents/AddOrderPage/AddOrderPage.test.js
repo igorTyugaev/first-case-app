@@ -22,7 +22,7 @@ it("renders without crashing", () => {
       userData={{}}
       theme={{}}
       openSnackbar={() => {}}
-      onDeleteAccountClick={() => {}}
+      onDeleteOrderClick={() => {}}
     />,
     div
   );

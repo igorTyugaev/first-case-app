@@ -1,16 +1,18 @@
-import React, {Component} from "react";
+import React, {useState} from 'react';
+import {useParams} from "react-router-dom";
+
 import PropTypes from "prop-types";
 
-import {withStyles} from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 
 import OrderEdit from "../OrderEdit";
 import Card from "../../components/Card/Card";
-import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import CardHeader from "../../components/Card/CardHeader";
+import {Box, Breadcrumbs, Link} from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
 
-
-const styles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
     inner: {
         margin: "0 auto",
         padding: "6vh 0",
@@ -19,72 +21,58 @@ const styles = (theme) => ({
     root: {
         margin: "0 auto",
         marginTop: theme.spacing(12),
-    },
-});
-
-const initialState = {};
-
-class AddOrderPage extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = initialState;
     }
+}));
 
-    handleExited = () => {
-        this.setState(initialState);
-    };
 
-    render() {
-        // Styling
-        const {classes} = this.props;
+function AddOrderPage(props) {
+    // Styling
+    const classes = useStyles();
 
-        // Custom Properties
-        const {user, userData, theme} = this.props;
+    // Custom Properties
+    const {theme} = props;
 
-        // Custom Functions
-        const {openSnackbar} = this.props;
+    // Custom Functions
+    const {openSnackbar} = props;
 
-        // Custom Functions
-        const {onDeleteAccountClick} = this.props;
+    const {orderId} = useParams();
 
-        return (
-            <Grid item container xs={12} sm={12} md={10} lg={8} className={classes.root}>
-                <Card>
-                    <CardHeader color="success">
-                        <h4 className={classes.cardTitleWhite}>Создать новый заказ</h4>
-                        <p className={classes.cardCategoryWhite}>
-                            Пожалуйста, укажите детали заказа в форме ниже
-                        </p>
-                    </CardHeader>
+    return (
+        <Grid item container xs={12} sm={12} md={10} lg={8} className={classes.root}>
 
-                    <OrderEdit
-                        theme={theme}
-                        user={user}
-                        userData={userData}
-                        openSnackbar={openSnackbar}
-                        onDeleteAccountClick={onDeleteAccountClick}
-                    />
-                </Card>
-            </Grid>
-        );
-    }
+            <Box mb={2}>
+                <Breadcrumbs aria-label="breadcrumb">
+                    <Link color="inherit" href="/orders/">
+                        Все заказы
+                    </Link>
+                    <Typography color="textPrimary">{orderId}</Typography>
+                </Breadcrumbs>
+            </Box>
+
+            <Card>
+                <CardHeader color="success">
+                    <h4 className={classes.cardTitleWhite}>Создать новый заказ</h4>
+                    <p className={classes.cardCategoryWhite}>
+                        Пожалуйста, укажите детали заказа в форме ниже
+                    </p>
+                </CardHeader>
+
+                <OrderEdit
+                    theme={theme}
+                    openSnackbar={openSnackbar}
+                    orderId={orderId}
+                />
+            </Card>
+        </Grid>
+    );
 }
 
 AddOrderPage.propTypes = {
-    // Styling
-    classes: PropTypes.object.isRequired,
-
     // Custom Properties
     theme: PropTypes.object.isRequired,
-    user: PropTypes.object.isRequired,
-    userData: PropTypes.object,
 
     // Custom Functions
     openSnackbar: PropTypes.func.isRequired,
-
-    // Custom Events
-    onDeleteAccountClick: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(AddOrderPage);
+export default AddOrderPage;

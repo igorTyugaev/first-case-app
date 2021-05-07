@@ -9,8 +9,8 @@ import List from "@material-ui/core/List";
 
 import {v4 as uuid} from 'uuid';
 import {
-    Box,
-    Fab,
+    Box, Breadcrumbs,
+    Fab, Link,
     ListItem,
 } from '@material-ui/core';
 import profile from "../../assets/img/faces/christian.jpg";
@@ -21,8 +21,8 @@ import EmptyState from "../../baseComponents/EmptyState";
 import {ReactComponent as ErrorIllustration} from "../../illustrations/error.svg";
 import {Home as HomeIcon, Refresh as RefreshIcon} from "@material-ui/icons";
 import {ReactComponent as NoDataIllustration} from "../../illustrations/no-data.svg";
-import {Link} from "react-router-dom";
 import Loader from "../../baseComponents/Loader";
+import Typography from "@material-ui/core/Typography";
 
 const products = [
     {
@@ -74,9 +74,6 @@ function OrderList(props) {
     const [error, setError] = useState(null);
     const classes = useStyles();
 
-    const {...rest} = props;
-
-
     const useItems = () => {
         const [items, setItems] = useState([])
         useEffect(() => {
@@ -103,10 +100,7 @@ function OrderList(props) {
         }, [])
         return items
     }
-
     const products = useItems();
-
-    console.log(products[0]);
 
     if (error) {
         return (

@@ -1,6 +1,7 @@
 import firebase, {analytics, auth, firestore, storage} from "../firebase";
 
 import moment from "moment";
+import * as admin from "../firebase";
 
 const authentication = {};
 

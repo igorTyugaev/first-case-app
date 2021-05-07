@@ -43,6 +43,37 @@ orders.changeTitle = (title, uidOrder = null) => {
     });
 };
 
+orders.getOrder = (orderId, context) => {
+    firestore
+        .collection("orders")
+        .doc(orderId)
+        .onSnapshot(
+            (snapshot) => {
+                const data = snapshot.data();
+
+                if (!snapshot.exists || !data) {
+                    return;
+                }
+
+                context.setState({
+                    order: data,
+                });
+            },
+            (error) => {
+                this.resetState(() => {
+                    const code = error.code;
+                    const message = error.message;
+
+                    switch (code) {
+                        default:
+                            this.openSnackbar(message);
+                            return;
+                    }
+                });
+            }
+        );
+}
+
 
 orders.signUp = (fields) => {
     return new Promise((resolve, reject) => {
