@@ -40,10 +40,6 @@ const initialState = {
         open: false,
     },
 
-    roleDialog: {
-        open: false,
-    },
-
     deleteAccountDialog: {
         open: false,
     },
@@ -139,10 +135,6 @@ class App extends Component {
                 },
 
                 settingsDialog: {
-                    open: false,
-                },
-
-                roleDialog: {
                     open: false,
                 },
 
@@ -265,7 +257,6 @@ class App extends Component {
             signUpDialog,
             signInDialog,
             settingsDialog,
-            roleDialog,
             deleteAccountDialog,
             signOutDialog,
         } = this.state;
@@ -299,7 +290,6 @@ class App extends Component {
                                         onSignInClick={() => this.openDialog("signInDialog")}
                                         onAboutClick={() => this.openDialog("aboutDialog")}
                                         onSettingsClick={() => this.openDialog("settingsDialog")}
-                                        onRoleClick={() => this.openDialog("roleDialog")}
                                         onSignOutClick={() => this.openDialog("signOutDialog")}
                                     />
                                 }
@@ -359,14 +349,6 @@ class App extends Component {
                                         props: {
                                             onDeleteAccountClick: () =>
                                                 this.openDialog("deleteAccountDialog"),
-                                        },
-                                    },
-
-                                    roleDialog: {
-                                        dialogProps: {
-                                            open: roleDialog.open,
-
-                                            onClose: () => this.closeDialog("roleDialog"),
                                         },
                                     },
 
@@ -467,7 +449,6 @@ class App extends Component {
                                             roles: value || [],
                                         });
                                     });
-                                    console.log(value);
                                 })
                                 .catch((reason) => {
                                     this.resetState(() => {

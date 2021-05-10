@@ -11,7 +11,6 @@ import SignInDialog from "../SignInDialog";
 import SettingsDialog from "../SettingsDialog";
 import DeleteAccountDialog from "../DeleteAccountDialog";
 import AlertDialog from "../AlertDialog";
-import RoleDialog from "../RoleDialog";
 
 class DialogHost extends Component {
     render() {
@@ -27,7 +26,6 @@ class DialogHost extends Component {
         const settingsDialog = dialogs.settingsDialog;
         const deleteAccountDialog = dialogs.deleteAccountDialog;
         const signOutDialog = dialogs.signOutDialog;
-        const roleDialog = dialogs.roleDialog;
 
         return (
             <>
@@ -39,17 +37,6 @@ class DialogHost extends Component {
                     userData={userData}
                     openSnackbar={openSnackbar}
                     {...aboutDialog.props}
-                />
-
-
-                <RoleDialog
-                    dialogProps={aboutDialog.dialogProps}
-                    performingAction={performingAction}
-                    theme={theme}
-                    user={user}
-                    userData={userData}
-                    openSnackbar={openSnackbar}
-                    {...roleDialog.props}
                 />
 
                 {user && (

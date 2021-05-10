@@ -734,6 +734,44 @@ authentication.changeEducation = (education) => {
     });
 };
 
+authentication.changeRole = (role) => {
+    return new Promise((resolve, reject) => {
+        if (!role) {
+            reject(new Error("No role"));
+            return;
+        }
+
+        const currentUser = auth.currentUser;
+
+        if (!currentUser) {
+            reject(new Error("No current user"));
+            return;
+        }
+
+        const uid = currentUser.uid;
+
+        if (!uid) {
+            reject(new Error("No UID"));
+            return;
+        }
+
+        const userDocumentReference = firestore.collection("users").doc(uid);
+
+        userDocumentReference
+            .update({
+                role: role,
+                isRole: true,
+            })
+            .then((value) => {
+                analytics.logEvent("change_role");
+                resolve(value);
+            })
+            .catch((reason) => {
+                reject(reason);
+            });
+    });
+};
+
 authentication.changeLastName = (lastName) => {
     return new Promise((resolve, reject) => {
         if (!lastName) {
