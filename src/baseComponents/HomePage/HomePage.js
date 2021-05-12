@@ -6,8 +6,8 @@ import {withRouter} from "react-router-dom";
 import {auth} from "../../firebase";
 import authentication from "../../services/authentication";
 
-import LandingPage from "../../views/LandingPage/LandingPage";
 import MainPage from "../../components/MainPage/MainPage";
+import UserForm from "../../views/UserForm/UserForm";
 
 
 class HomePage extends Component {
@@ -29,7 +29,6 @@ class HomePage extends Component {
 
             if (!emailAddress) {
                 this.props.history.push("/");
-
                 return;
             }
 
@@ -41,7 +40,7 @@ class HomePage extends Component {
                     const emailAddress = user.email;
 
                     this.props.openSnackbar(
-                        `Signed in as ${displayName || emailAddress}`
+                        `Вы вошли как ${displayName || emailAddress}`
                     );
                 })
                 .catch((reason) => {
@@ -67,28 +66,28 @@ class HomePage extends Component {
     };
 
     render() {
-        const {user} = this.props;
+        // Styling
+        const {classes} = this.props;
 
-        if (user) {
+        // Custom Properties
+        const {user, userData, theme} = this.props;
+
+        // Custom Functions
+        const {openSnackbar} = this.props;
+
+        // Custom Functions
+        const {onDeleteAccountClick} = this.props;
+
+        if (userData && userData.isRole) {
             return (
-                // <EmptyState
-                //     image={<CabinIllustration/>}
-                //     title="Home"
-                //     description="This is the home page. You can edit it from HomePage.js."
-                // />
-                // <Orders/>
                 <MainPage/>
             );
+        } else {
+            return (
+                <UserForm theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}
+                          onDeleteAccountClick={onDeleteAccountClick}/>
+            );
         }
-
-        return (
-            // <EmptyState
-            //     image={<InsertBlockIllustration/>}
-            //     title="RMUIF"
-            //     description="Supercharged version of Create React App with all the bells and whistles."
-            // />
-            <LandingPage/>
-        );
     }
 
     componentDidMount() {

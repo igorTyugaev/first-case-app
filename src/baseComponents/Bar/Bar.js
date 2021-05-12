@@ -75,7 +75,6 @@ class Bar extends Component {
             onSignOutClick,
             onSignUpClick,
             onSignInClick,
-            onRoleClick,
         } = this.props;
 
         const {menu} = this.state;
@@ -107,8 +106,8 @@ class Bar extends Component {
             },
 
             {
-                name: "Выбрать роль",
-                onClick: onRoleClick,
+                name: "Форма",
+                to: user ? `/form/` : null,
             },
 
             {
@@ -262,7 +261,6 @@ Bar.propTypes = {
 
     // Events
     onAboutClick: PropTypes.func.isRequired,
-    onRoleClick: PropTypes.func.isRequired,
     onSettingsClick: PropTypes.func.isRequired,
     onSignOutClick: PropTypes.func.isRequired,
 };
