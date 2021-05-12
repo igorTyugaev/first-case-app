@@ -14,6 +14,8 @@ import MentorForCustomerList from "../../components/RecommendationsList/MentorFo
 import ProfilePage from "../ProfilePage";
 import AddOrderPage from "../AddOrderPage";
 import AddOrder from "../../views/AddOrder/AddOrder";
+import UserForm from "../../views/UserForm/UserForm";
+import LandingPage from "../../views/LandingPage/LandingPage";
 
 class Router extends Component {
     render() {
@@ -30,10 +32,11 @@ class Router extends Component {
 
                 <Switch>
                     <Route path="/" exact>
-                        {(user && (true || userData.role === "customer" || userData.role === "mentor" || userData.role === "student")) ? (
-                            <HomePage user={user} openSnackbar={openSnackbar}/>
+                        {user ? (
+                            <HomePage theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}
+                                      onDeleteAccountClick={onDeleteAccountClick}/>
                         ) : (
-                            <Redirect to="/settings/"/>
+                            <LandingPage/>
                         )}
                     </Route>
 
@@ -77,6 +80,12 @@ class Router extends Component {
 
                     <Route path="/new_order_old/">
                         <AddOrder/>
+                    </Route>
+
+                    <Route path="/form/">
+                        {user ? <UserForm theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}
+                                          onDeleteAccountClick={onDeleteAccountClick}/> :
+                            <Redirect to="/"/>}
                     </Route>
 
 
