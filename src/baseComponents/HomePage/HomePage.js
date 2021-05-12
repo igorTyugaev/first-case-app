@@ -78,7 +78,7 @@ class HomePage extends Component {
         // Custom Functions
         const {onDeleteAccountClick} = this.props;
 
-        if (userData && userData.isRole) {
+        if (userData && userData.isProfileComplete) {
             return (
                 <MainPage/>
             );

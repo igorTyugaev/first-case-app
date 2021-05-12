@@ -652,6 +652,54 @@ authentication.changeFirstName = (firstName) => {
     });
 };
 
+authentication.updateProfile = (values) => {
+    return new Promise((resolve, reject) => {
+        if (!values) {
+            reject(new Error("No values"));
+            return;
+        }
+
+        const currentUser = auth.currentUser;
+
+        if (!currentUser) {
+            reject(new Error("No current user"));
+            return;
+        }
+
+        const uid = currentUser.uid;
+
+        if (!uid) {
+            reject(new Error("No UID"));
+            return;
+        }
+
+        const userDocumentReference = firestore.collection("users").doc(uid);
+
+        userDocumentReference
+            .update({
+                role: values.role,
+                fullName: values.fullName,
+                dateBirth: values.dateBirth,
+                phone: values.phoneNumber,
+                aboutUser: values.aboutUser,
+                position: values.position,
+                company: values.company,
+                city: values.city,
+                education: values.education,
+                experience: values.experience,
+                serviceCost: values.serviceCost,
+                isProfileComplete: true
+            })
+            .then((value) => {
+                analytics.logEvent("change_fullName");
+                resolve(value);
+            })
+            .catch((reason) => {
+                reject(reason);
+            });
+    });
+};
+
 authentication.changeAbout = (about) => {
     return new Promise((resolve, reject) => {
         if (!about) {

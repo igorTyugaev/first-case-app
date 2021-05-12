@@ -12,6 +12,10 @@ import Button from "@material-ui/core/Button";
 const useStyles = makeStyles({
     root: {
         maxWidth: 345,
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
     },
 });
 
@@ -22,28 +26,30 @@ const roles = [
         label: "Student",
         txtBtn: "Найти наставника",
         description:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit.\n" +
-            "ducimus eum facilis hic illo inventore magni nemo officiis porro, quos repellendus unde",
+            "Выберете профиль студента, если вы хотите найти опытного наставника,\n" +
+            "который научит Вас тому, чего Вы желаете, а так же покажет как работать с \n" +
+            "настоящей задачей и живым заказчиком. ",
     },
 
     {
         img: require("illustrations/teaching.svg"),
         title: "Ментор",
         label: "Mentor",
-        txtBtn: "Взять заказ",
+        txtBtn: "Найти студента",
         description:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit.\n" +
-            "ducimus eum facilis hic illo inventore magni nemo officiis porro, quos repellendus unde",
+            "Выберете профиль Наставника, если вы хотите найти желающих получать\n" +
+            "знания студентов, а также интересные заказы, которыми Вы сможете пополнять\n" +
+            "своё портфолио.",
     },
 
     {
         img: require("illustrations/business_deal.svg"),
         title: "Заказчик",
         label: "Customer",
-        txtBtn: "Опубликовать заказ",
+        txtBtn: "Создать заказ",
         description:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit.\n" +
-            "ducimus eum facilis hic illo inventore magni nemo officiis porro, quos repellendus unde",
+            "Выберете профиль заказчика, если вы хотите разместить задачу, которую\n" +
+            "решит студент, под опытным наблюдением наставника.",
     }
 ]
 

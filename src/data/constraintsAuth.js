@@ -1,4 +1,52 @@
 const constraintsAuth = {
+
+    fullName: {
+        length: {
+            minimum: 2,
+            maximum: 60,
+        },
+
+        presence: {
+            allowEmpty: false,
+        },
+
+        type: "string",
+    },
+
+    phoneNumber: {
+        length: {
+            minimum: 11,
+            maximum: 11,
+        },
+
+        presence: {
+            allowEmpty: false,
+        },
+
+        type: "string",
+    },
+
+    aboutUser: {
+        length: {
+            minimum: 10,
+            maximum: 120,
+        },
+
+        presence: {
+            allowEmpty: false,
+        },
+
+        type: "string",
+    },
+
+    dateBirth: {
+        presence: {
+            allowEmpty: false,
+        },
+
+        type: "number",
+    },
+
     firstName: {
         presence: {
             allowEmpty: false,
@@ -92,6 +140,14 @@ const constraintsAuth = {
     },
 
     education: {
+        presence: {
+            allowEmpty: false,
+        },
+
+        type: "string",
+    },
+
+    serviceCost: {
         presence: {
             allowEmpty: false,
         },
