@@ -8,12 +8,16 @@ import HomePage from "../HomePage";
 import AdminPage from "../AdminPage";
 import NotFoundPage from "../NotFoundPage";
 import SettingsPage from "../SettingsPage";
+
+import Orders from "../../views/Orders/Orders";
+import LandingPage from "../../views/LandingPage/LandingPage";
 import Components from "../../views/Components/Components";
 import OrderList from "../../components/RecommendationsList/OrderList";
 import MentorForCustomerList from "../../components/RecommendationsList/MentorForCustomerList";
 import ProfilePage from "../ProfilePage";
 import AddOrderPage from "../AddOrderPage";
 import AddOrder from "../../views/AddOrder/AddOrder";
+import Reviews from "../../views/Reviews/Reviews";
 
 class Router extends Component {
     render() {
@@ -33,7 +37,7 @@ class Router extends Component {
                         {(user && (true || userData.role === "customer" || userData.role === "mentor" || userData.role === "student")) ? (
                             <HomePage user={user} openSnackbar={openSnackbar}/>
                         ) : (
-                            <Redirect to="/settings/"/>
+                            <LandingPage/>
                         )}
                     </Route>
 
@@ -67,7 +71,7 @@ class Router extends Component {
                             <Redirect to="/"/>}
                     </Route>
 
-                    <Route path="/example/">
+                    <Route path="/example">
                         <Components/>
                     </Route>
 
@@ -75,11 +79,14 @@ class Router extends Component {
                         <AddOrderPage theme={theme} openSnackbar={openSnackbar}/>
                     </Route>
 
-                    <Route path="/new_order_old/">
+                    <Route path="/new_order_old">
                         <AddOrder/>
                     </Route>
-
-
+                    
+                    <Route path="/reviews">
+                        <Reviews/>
+                    </Route>
+                    
                     <Route>
                         <NotFoundPage/>
                     </Route>
