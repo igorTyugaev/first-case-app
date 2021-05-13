@@ -111,6 +111,11 @@ class Bar extends Component {
             },
 
             {
+                name: "Добавить заказ",
+                to: user ? `/create_order/` : null,
+            },
+
+            {
                 name: "Выйти",
                 divide: true,
                 onClick: onSignOutClick,

@@ -3,7 +3,6 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 
 import validate from "validate.js";
-import moment from "moment";
 import {withStyles} from "@material-ui/core/styles";
 
 import {
@@ -13,25 +12,18 @@ import {
     Button,
     List,
     ListItem,
-    ListItemIcon,
     ListItemText,
     ListItemSecondaryAction,
     Hidden,
-    TextField,
-    Divider, Container, Input, Badge, Tooltip, Fab, Fade, CircularProgress, Avatar,
+    Divider, Container, Input,
 } from "@material-ui/core";
 
-import {
-    Close as CloseIcon, CloudUpload as CloudUploadIcon,
-    DeleteForever as DeleteForeverIcon, Lock as LockIcon, Photo as PhotoIcon,
-} from "@material-ui/icons";
-
-import constraintsAuth from "../../data/constraintsAuth";
 import orders from "../../services/orders";
-import InputLabel from "@material-ui/core/InputLabel";
 import constraintsOrder from "../../data/constraintsOrder";
-import {auth, firestore} from "../../firebase";
-import authentication from "../../services/authentication";
+import TagsAutocompleteOrder from "../TagsAutocompleteOrder/TagsAutocompleteOrder";
+import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
+import {getTime} from "date-fns";
 
 const styles = (theme) => ({
     mainContent: {
@@ -76,6 +68,11 @@ const initialState = {
     showingField: "",
     performingAction: false,
     errors: null,
+    name: null,
+    description: null,
+    tags: null,
+    deadline: null,
+    price: null,
 };
 
 class OrderEdit extends Component {
@@ -84,117 +81,106 @@ class OrderEdit extends Component {
         this.state = initialState;
     }
 
-    showField = (fieldId) => {
+    submitForm = () => {
+        this.setState({
+            performingAction: true,
+            errors: null,
+        })
+
+        const {orderId} = this.props;
+        const {history} = this.props;
+        const values = {
+            name: this.state.name,
+            description: this.state.description,
+            tags: this.state.tags,
+            deadline: this.state.deadline,
+            price: this.state.price,
+        }
+
+
+        const errorsCurrent = validate(
+            {
+                name: this.state.name,
+                description: this.state.description,
+                price: this.state.price,
+            },
+            {
+                name: constraintsOrder.getValidator("name"),
+                description: constraintsOrder.getValidator("description"),
+                price: constraintsOrder.getValidator("price"),
+            }
+        );
+
+        if (!errorsCurrent) {
+            this.setState({
+                errors: null,
+            });
+
+            orders
+                .updateOrder(values, orderId)
+                .then(() => {
+                    history.push('/');
+                })
+                .catch((reason) => {
+                    const code = reason.code;
+                    const message = reason.message;
+
+                    switch (code) {
+                        default:
+                            this.props.openSnackbar(message);
+                            return;
+                    }
+                })
+                .finally(() => {
+                    this.setState({
+                        performingAction: false,
+                    })
+                });
+        } else {
+            this.setState({
+                performingAction: false,
+                errors: errorsCurrent,
+            });
+        }
+    };
+
+    checkValidator = (fieldId, value) => {
+        if (constraintsOrder.getValidator(fieldId)) {
+            const errorsCurrent = validate(
+                {
+                    [fieldId]: value,
+                },
+                {
+                    [fieldId]: constraintsOrder.getValidator(fieldId),
+                }
+            );
+
+            if (!errorsCurrent)
+                this.setState({
+                    errors: null,
+                })
+            else {
+                this.setState({
+                    errors: errorsCurrent,
+                })
+            }
+        }
+    }
+
+    changeField = (value, fieldId) => {
         if (!fieldId) {
             return;
         }
 
-        this.setState({
-            showingField: fieldId,
-        });
+        this.checkValidator(fieldId, value);
     };
 
-    hideFields = (callback) => {
-        this.setState(
-            {
-                showingField: "",
-                title: "",
-                errors: null,
-            },
-            () => {
-                if (callback && typeof callback === "function") {
-                    callback();
-                }
-            }
-        );
-    };
-
-    changeFields = () => {
-        this.changeTitle();
-    };
-
-    handleKeyDown = (event, fieldId) => {
-        if (!event || !fieldId) {
-            return;
-        }
-
-        if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) {
-            return;
-        }
-
-        const key = event.key;
-
-        if (!key) {
-            return;
-        }
-
-        if (key === "Escape") {
-            this.hideFields();
-        } else if (key === "Enter") {
-            this.changeFields();
-        }
-    };
-
-    handleTitleChange = (event) => {
-        if (!event) {
-            return;
-        }
-
-        const title = event.target.value;
+    handleChange = (value, fieldId) => {
+        this.changeField(value, fieldId);
 
         this.setState({
-            title: title,
+            [fieldId]: value,
         });
-    };
-
-    changeTitle = () => {
-        const {title} = this.state;
-
-        const errors = validate(
-            {
-                title: title,
-            },
-            {
-                title: constraintsOrder.title,
-            }
-        );
-
-        if (errors) {
-            this.setState({
-                errors: errors,
-            });
-
-            return;
-        }
-
-        this.setState(
-            {
-                errors: null,
-            },
-            () => {
-                const {order} = this.props;
-                const {orderId} = this.props;
-
-                if (order && order.title && title === order.title) {
-                    return;
-                }
-
-                this.setState(
-                    {
-                        performingAction: true,
-                    },
-                    () => {
-                        orders
-                            .changeTitle(title, orderId)
-                            .finally(() => {
-                                this.setState({
-                                    performingAction: false,
-                                });
-                            });
-                    }
-                );
-            }
-        );
     };
 
     render() {
@@ -204,46 +190,125 @@ class OrderEdit extends Component {
         const {
             performingAction,
             errors,
-            title,
-            order
         } = this.state;
 
-        const hasTitle = order && order.title;
 
         return (
             <Container classes={{root: classes.mainContent}}>
                 <List disablePadding>
-
                     <ListItem>
                         <Grid item xs={12} sm={12} md={12} lg={12}>
-                            <InputLabel>
-                                <Typography variant="subtitle1" color="textPrimary" component="p">
-                                    Название заказа
-                                </Typography>
-                            </InputLabel>
+                            <ListItemText
+                                primary="Название"
+                                secondary={errors && errors.name ? (
+                                    <Typography color="error">
+                                        {errors.name[0]}
+                                    </Typography>
+                                ) : "Что нужно сделать?"}
+                            />
 
                             <Input
-                                autoComplete="title"
+                                autoComplete="Что нужно сделать?"
                                 autoFocus
                                 disabled={performingAction}
-                                error={!!(errors && errors.title)}
+                                error={!!(errors && errors.name)}
                                 fullWidth
-                                rowsMax={12}
-                                multiline
-                                placeholder={(errors && errors.title)
-                                    ? errors.title[0]
-                                    : (hasTitle && order.title)
-                                }
+                                placeholder="Реализовать чат бота на..."
                                 required
                                 type="text"
-                                value={title ? title : (hasTitle && order.title)}
-                                variant="filled"
-                                onKeyDown={(event) => this.handleKeyDown(event, "title")}
-                                onChange={this.handleTitleChange}
+                                defaultValue={this.name ? this.name : ""}
+                                onChange={(event) => this.handleChange(event.target.value, "name")}
                             />
                         </Grid>
                     </ListItem>
 
+                    <ListItem>
+                        <Grid item xs={12} sm={12} md={12} lg={12}>
+                            <ListItemText
+                                primary="Описание"
+                                secondary={errors && errors.description ? (
+                                    <Typography color="error">
+                                        {errors.description[0]}
+                                    </Typography>
+                                ) : "Максимально подробно опишите требования и детали вашего заказа"}
+                            />
+
+                            <Input
+                                autoComplete="name"
+                                autoFocus
+                                disabled={performingAction}
+                                error={!!(errors && errors.description)}
+                                fullWidth
+                                placeholder="Бот должен уметь..."
+                                required
+                                type="text"
+                                defaultValue={this.description ? this.description : ""}
+                                onChange={(event) => this.handleChange(event.target.value, "description")}
+                            />
+                        </Grid>
+                    </ListItem>
+
+                    <ListItem>
+                        <Grid item xs={12} sm={12} md={12} lg={12}>
+                            <ListItemText
+                                primary="Теги к заказу"
+                                secondary="Выберите ключевые слова, характеризующие ваш заказ"
+                            />
+                            <TagsAutocompleteOrder handleChange={this.handleChange}/>
+
+                        </Grid>
+                    </ListItem>
+
+                    <ListItem>
+                        <Grid item xs={12} sm={12} md={12} lg={12}>
+                            <ListItemText
+                                primary="Крайний срок выполнения заказа"
+                                secondary="Укажите дату к которой должен быть готов заказ"
+                            />
+
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <KeyboardDatePicker
+                                    disableToolbar
+                                    autoOk={true}
+                                    variant="inline"
+                                    format="MM/dd/yyyy"
+                                    margin="normal"
+                                    id="date-picker-inline"
+                                    value={this.deadline}
+                                    onChange={(data) => this.handleChange(getTime(data), "deadline")}
+                                    KeyboardButtonProps={{
+                                        'aria-label': 'change date',
+                                    }}
+                                />
+                            </MuiPickersUtilsProvider>
+                        </Grid>
+                    </ListItem>
+
+                    <ListItem>
+                        <Grid item xs={12} sm={12} md={12} lg={12}>
+                            <ListItemText
+                                primary="Бюджет на проект"
+                                secondary={errors && errors.price ? (
+                                    <Typography color="error">
+                                        {errors.price[0]}
+                                    </Typography>
+                                ) : "Какую сумму вы готовы залптить за выполение зазака?"}
+                            />
+
+                            <Input
+                                autoComplete="Что нужно сделать?"
+                                autoFocus
+                                disabled={performingAction}
+                                error={!!(errors && errors.price)}
+                                fullWidth
+                                placeholder="999 ₽"
+                                required
+                                type="text"
+                                defaultValue={this.price ? this.price : ""}
+                                onChange={(event) => this.handleChange(event.target.value, "price")}
+                            />
+                        </Grid>
+                    </ListItem>
 
                     <Box mt={1} mb={1}>
                         <Divider light/>
@@ -265,7 +330,7 @@ class OrderEdit extends Component {
                                             color="primary"
                                             disabled={performingAction}
                                             variant="contained"
-                                            onClick={() => this.changeFields()}
+                                            onClick={() => this.submitForm()}
                                         >
                                             Опубликовать
                                         </Button>
@@ -289,7 +354,7 @@ class OrderEdit extends Component {
                                             color="primary"
                                             disabled={performingAction}
                                             variant="contained"
-                                            onClick={() => this.changeFields()}
+                                            onClick={() => this.submitForm()}
                                         >
                                             Опубликовать
                                         </Button>
@@ -303,9 +368,8 @@ class OrderEdit extends Component {
         );
     }
 
-    componentDidMount() {
-        const {orderId} = this.props;
-        orders.getOrder(orderId, this);
+    componentWillUnmount() {
+        this.setState({history: null})
     }
 }
 

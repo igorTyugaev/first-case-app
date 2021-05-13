@@ -16,6 +16,7 @@ import AddOrderPage from "../AddOrderPage";
 import AddOrder from "../../views/AddOrder/AddOrder";
 import UserForm from "../../views/UserForm/UserForm";
 import LandingPage from "../../views/LandingPage/LandingPage";
+import CreateOrderPage from "../CreateOrderPage";
 
 class Router extends Component {
     render() {
@@ -74,12 +75,12 @@ class Router extends Component {
                         <Components/>
                     </Route>
 
-                    <Route path="/new_order/:orderId">
+                    <Route path="/edit_order/:orderId">
                         <AddOrderPage theme={theme} openSnackbar={openSnackbar}/>
                     </Route>
 
-                    <Route path="/new_order_old/">
-                        <AddOrder/>
+                    <Route path="/create_order/">
+                        <CreateOrderPage theme={theme} userID={user.uid} openSnackbar={openSnackbar}/>
                     </Route>
 
                     <Route path="/form/">
