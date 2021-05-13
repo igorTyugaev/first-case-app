@@ -9,7 +9,6 @@ import AdminPage from "../AdminPage";
 import NotFoundPage from "../NotFoundPage";
 import SettingsPage from "../SettingsPage";
 
-import Orders from "../../views/Orders/Orders";
 import LandingPage from "../../views/LandingPage/LandingPage";
 import Components from "../../views/Components/Components";
 import OrderList from "../../components/RecommendationsList/OrderList";
@@ -19,7 +18,7 @@ import AddOrderPage from "../AddOrderPage";
 import AddOrder from "../../views/AddOrder/AddOrder";
 import Reviews from "../../views/Reviews/Reviews";
 import UserForm from "../../views/UserForm/UserForm";
-import LandingPage from "../../views/LandingPage/LandingPage";
+import OrderPage from "./../../components/OrderPage/OrderPage";
 
 class Router extends Component {
     render() {
@@ -87,9 +86,9 @@ class Router extends Component {
                     </Route>
                     
                     <Route path="/reviews">
-                        <Reviews/>
+                        {user ? <Reviews theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}
+                                           onDeleteAccountClick={onDeleteAccountClick}/> : <Redirect to="/"/>}
                     </Route>
-                    
 
                     <Route path="/form/">
                         {user ? <UserForm theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}
@@ -97,6 +96,11 @@ class Router extends Component {
                             <Redirect to="/"/>}
                     </Route>
 
+                    <Route path="/order_page">
+                        {user ? <OrderPage theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}
+                                          onDeleteAccountClick={onDeleteAccountClick}/> :
+                            <Redirect to="/"/>}
+                    </Route>
 
                     <Route>
                         <NotFoundPage/>
