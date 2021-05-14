@@ -8,15 +8,17 @@ import HomePage from "../HomePage";
 import AdminPage from "../AdminPage";
 import NotFoundPage from "../NotFoundPage";
 import SettingsPage from "../SettingsPage";
+
+import LandingPage from "../../views/LandingPage/LandingPage";
 import Components from "../../views/Components/Components";
 import OrderList from "../../components/RecommendationsList/OrderList";
 import MentorForCustomerList from "../../components/RecommendationsList/MentorForCustomerList";
 import ProfilePage from "../ProfilePage";
 import AddOrderPage from "../AddOrderPage";
 import AddOrder from "../../views/AddOrder/AddOrder";
+import Reviews from "../../views/Reviews/Reviews";
 import UserForm from "../../views/UserForm/UserForm";
-import LandingPage from "../../views/LandingPage/LandingPage";
-import CreateOrderPage from "../CreateOrderPage";
+import OrderPage from "./../../components/OrderPage/OrderPage";
 
 class Router extends Component {
     render() {
@@ -71,16 +73,21 @@ class Router extends Component {
                             <Redirect to="/"/>}
                     </Route>
 
-                    <Route path="/example/">
+                    <Route path="/example">
                         <Components/>
                     </Route>
 
-                    <Route path="/edit_order/:orderId">
+                    <Route path="/new_order/:orderId">
                         <AddOrderPage theme={theme} openSnackbar={openSnackbar}/>
                     </Route>
 
-                    <Route path="/create_order/">
-                        <CreateOrderPage theme={theme} userID={user.uid} openSnackbar={openSnackbar}/>
+                    <Route path="/new_order_old">
+                        <AddOrder/>
+                    </Route>
+
+                    <Route path="/reviews">
+                        {user ? <Reviews theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}
+                                         onDeleteAccountClick={onDeleteAccountClick}/> : <Redirect to="/"/>}
                     </Route>
 
                     <Route path="/form/">
@@ -89,6 +96,11 @@ class Router extends Component {
                             <Redirect to="/"/>}
                     </Route>
 
+                    <Route path="/order_page">
+                        {user ? <OrderPage theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}
+                                           onDeleteAccountClick={onDeleteAccountClick}/> :
+                            <Redirect to="/"/>}
+                    </Route>
 
                     <Route>
                         <NotFoundPage/>
