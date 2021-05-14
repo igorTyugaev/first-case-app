@@ -22,7 +22,7 @@ import {ReactComponent as ErrorIllustration} from "../../illustrations/error.svg
 import {Home as HomeIcon, Refresh as RefreshIcon} from "@material-ui/icons";
 import {ReactComponent as NoDataIllustration} from "../../illustrations/no-data.svg";
 import Loader from "../../baseComponents/Loader";
-import Typography from "@material-ui/core/Typography";
+import OrdersFilter from "./../../components/OrdersFilter/OrdersFilter";
 
 const products = [
     {
@@ -73,7 +73,6 @@ function OrderList(props) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const classes = useStyles();
-
     const useItems = () => {
         const [items, setItems] = useState([])
         useEffect(() => {
@@ -138,6 +137,7 @@ function OrderList(props) {
                             Выберите подходящий для вас заказ и нажмите "ПРИНЯТЬ"
                         </p>
                     </CardHeader>
+                    <OrdersFilter/>
                     <List>
                         {products.map((product, i) => (
                             <ListItem
