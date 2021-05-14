@@ -8,17 +8,16 @@ import HomePage from "../HomePage";
 import AdminPage from "../AdminPage";
 import NotFoundPage from "../NotFoundPage";
 import SettingsPage from "../SettingsPage";
-
-import LandingPage from "../../views/LandingPage/LandingPage";
 import Components from "../../views/Components/Components";
 import OrderList from "../../components/RecommendationsList/OrderList";
 import MentorForCustomerList from "../../components/RecommendationsList/MentorForCustomerList";
 import ProfilePage from "../ProfilePage";
 import AddOrderPage from "../AddOrderPage";
-import AddOrder from "../../views/AddOrder/AddOrder";
-import Reviews from "../../views/Reviews/Reviews";
 import UserForm from "../../views/UserForm/UserForm";
-import OrderPage from "./../../components/OrderPage/OrderPage";
+import LandingPage from "../../views/LandingPage/LandingPage";
+import CreateOrderPage from "../CreateOrderPage";
+import OrderPage from "../../components/OrderPage/OrderPage";
+import Footer from "../../components/Footer/Footer";
 
 class Router extends Component {
     render() {
@@ -40,14 +39,6 @@ class Router extends Component {
                                       onDeleteAccountClick={onDeleteAccountClick}/>
                         ) : (
                             <LandingPage/>
-                        )}
-                    </Route>
-
-                    <Route path="/admin">
-                        {user && roles.includes("admin") ? (
-                            <AdminPage/>
-                        ) : (
-                            <Redirect to="/"/>
                         )}
                     </Route>
 
@@ -73,21 +64,17 @@ class Router extends Component {
                             <Redirect to="/"/>}
                     </Route>
 
-                    <Route path="/example">
+                    <Route path="/example/">
                         <Components/>
                     </Route>
 
-                    <Route path="/new_order/:orderId">
+                    <Route path="/edit_order/:orderId">
                         <AddOrderPage theme={theme} openSnackbar={openSnackbar}/>
                     </Route>
 
-                    <Route path="/new_order_old">
-                        <AddOrder/>
-                    </Route>
-                    
-                    <Route path="/reviews">
-                        {user ? <Reviews theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}
-                                           onDeleteAccountClick={onDeleteAccountClick}/> : <Redirect to="/"/>}
+                    <Route path="/create_order/">
+                        {user ? <CreateOrderPage theme={theme} userID={user.uid} openSnackbar={openSnackbar}/> :
+                            <Redirect to="/"/>}
                     </Route>
 
                     <Route path="/form/">
@@ -98,7 +85,7 @@ class Router extends Component {
 
                     <Route path="/order_page">
                         {user ? <OrderPage theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}
-                                          onDeleteAccountClick={onDeleteAccountClick}/> :
+                                           onDeleteAccountClick={onDeleteAccountClick}/> :
                             <Redirect to="/"/>}
                     </Route>
 
