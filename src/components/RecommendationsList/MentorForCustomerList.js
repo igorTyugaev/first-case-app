@@ -27,42 +27,6 @@ import OrdersFilter from "../OrdersFilter/OrdersFilter";
 import OrderItem from "../RecommendationsItem/OrderItem";
 import {ReactComponent as NoDataIllustration} from "../../illustrations/no-data.svg";
 
-const mentors = [
-    {
-        id: uuid(),
-        name: 'Многопоточный парсер данных',
-        imageUrl: {profile},
-        message:
-            "Парсер позволяет собирать: ссылки, населенный пункт, заголовок, описание, имя продавца и стоимость. Собираются данные организаций и юридических лиц. \n" +
-            "Для многопоточной работы программы необходимо отдельно приобрести прокси: IP4 прокси (https или socks) \n" +
-            "Для разгадывания капчи нужен ключ от сервиса распознавания. Поддерживается Рукапча."
-    },
-    {
-        id: uuid(),
-        name: 'Medium Corporation',
-        imageUrl: "../../assets/img/faces/christian.jpg",
-        message: "moment().subtract(2, 'hours')"
-    },
-    {
-        id: uuid(),
-        name: 'Slack',
-        imageUrl: '/static/images/mentors/product_3.png',
-        message: "moment().subtract(3, 'hours')"
-    },
-    {
-        id: uuid(),
-        name: 'Lyft',
-        imageUrl: '/static/images/mentors/product_4.png',
-        message: "moment().subtract(5, 'hours')"
-    },
-    {
-        id: uuid(),
-        name: 'GitHub',
-        imageUrl: '/static/images/mentors/product_5.png',
-        message: "moment().subtract(9, 'hours')"
-    }
-];
-
 const useStyles = makeStyles((theme) => ({
     styles,
     root: {
@@ -70,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(12),
     },
 }));
-
 
 function MentorForCustomerList(props) {
     const [loading, setLoading] = useState(true);
@@ -95,8 +58,8 @@ function MentorForCustomerList(props) {
                             id: doc.id,
                             ...doc.data(),
                         }))
-                    setLoading(false);
                     setItems(listItems)
+                    setLoading(false);
                 }, (error) => {
                     setLoading(false);
                     setError(error);

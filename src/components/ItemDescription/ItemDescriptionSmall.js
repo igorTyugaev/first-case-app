@@ -25,7 +25,7 @@ export default function ItemDescriptionSmall(props) {
                 <Link
                     color="inherit"
                     component={RouterLink}
-                    to={type ? (`/order_page/`) : (`/user/${id}`)}
+                    to={type ? (`/order_page/${id}`) : (`/user/${id}`)}
                     underline="none"
                 >
                     {!title || title.length < 1 ? "Загаловок отсутствует" : title}

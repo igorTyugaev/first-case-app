@@ -43,7 +43,6 @@ export default function Footer(props) {
                     <Grid container direction="row" justify="space-between">
                         <Grid item xs={3} sm={3} md={3} lg={3}>
                             <Box>
-                                &copy; {1900 + new Date().getYear()}, {" "}
                                 <a
                                     href="https://drive.google.com/file/d/1nzF0V54iEXKEBClFUwQAkMWnhkTIzi5N/view?usp=sharing"
                                     className={aClasses}
@@ -70,7 +69,6 @@ export default function Footer(props) {
 
                         <Grid item xs={3} sm={3} md={3} lg={3}>
                             <Box>
-                                &copy; {1900 + new Date().getYear()}, {" "}
                                 <a
                                     href="https://drive.google.com/file/d/1apz3V1QNfm-FFeWt7BdoLVhVl0DDrTqX/view?usp=sharing"
                                     className={aClasses}
@@ -86,7 +84,6 @@ export default function Footer(props) {
                     <Grid container direction="column" justify="space-between" alignItems="center" spacing={2}>
                         <Grid item xs={12} sm={12} md={12} lg={12}>
                             <Box>
-                                &copy; {1900 + new Date().getYear()}, {" "}
                                 <a
                                     href="https://drive.google.com/file/d/1nzF0V54iEXKEBClFUwQAkMWnhkTIzi5N/view?usp=sharing"
                                     className={aClasses}
@@ -113,7 +110,6 @@ export default function Footer(props) {
 
                         <Grid item xs={12} sm={12} md={12} lg={12}>
                             <Box>
-                                &copy; {1900 + new Date().getYear()}, {" "}
                                 <a
                                     href="https://drive.google.com/file/d/1apz3V1QNfm-FFeWt7BdoLVhVl0DDrTqX/view?usp=sharing"
                                     className={aClasses}

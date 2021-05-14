@@ -16,8 +16,7 @@ import AddOrderPage from "../AddOrderPage";
 import UserForm from "../../views/UserForm/UserForm";
 import LandingPage from "../../views/LandingPage/LandingPage";
 import CreateOrderPage from "../CreateOrderPage";
-import OrderPage from "../../components/OrderPage/OrderPage";
-import Footer from "../../components/Footer/Footer";
+import OrderPage from "../OrderPage/OrderPage";
 
 class Router extends Component {
     render() {
@@ -81,7 +80,7 @@ class Router extends Component {
                             <Redirect to="/"/>}
                     </Route>
 
-                    <Route path="/order_page">
+                    <Route path="/order_page/:orderId">
                         {user ? <OrderPage theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}
                                            onDeleteAccountClick={onDeleteAccountClick}/> :
                             <Redirect to="/"/>}

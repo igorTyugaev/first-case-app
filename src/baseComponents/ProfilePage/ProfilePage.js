@@ -1,96 +1,83 @@
-import React, {Component} from "react";
+import React, {Component, useEffect, useState} from "react";
 import PropTypes from "prop-types";
 
-import {withStyles} from "@material-ui/core/styles";
+import {makeStyles, withStyles} from "@material-ui/core/styles";
 
 import AccountView from "../AccountView";
 import Card from "../../components/Card/Card";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import CardHeader from "../../components/Card/CardHeader";
+import OrderPage from "../OrderPage/OrderPage";
+import {firestore} from "../../firebase";
+import {useParams} from "react-router-dom";
 
-
-const styles = (theme) => ({
-    tabs: {
-        display: "initial",
-    },
-    inner: {
-        margin: "0 auto",
-        padding: "6vh 0",
-    },
-
+const useStyles = makeStyles((theme) => ({
     root: {
         margin: "0 auto",
         marginTop: theme.spacing(12),
     },
-});
+}));
 
-const initialState = {
-    selectedTab: 0,
-};
+function ProfilePage(props) {
+    // Styling
+    const classes = useStyles();
 
-class ProfilePage extends Component {
-    constructor(props) {
-        super(props);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [profile, setProfile] = useState(null)
 
-        this.state = initialState;
-    }
+    // Custom Properties
+    const {user, userData} = props;
 
-    handleExited = () => {
-        this.setState(initialState);
-    };
+    const {profileId} = useParams();
 
-    handleTabChange = (event, value) => {
-        this.setState({
-            selectedTab: value,
-        });
-    };
+    useEffect(() => {
+        const unsubscribe = firestore
+            .collection("users")
+            .doc(profileId)
+            .onSnapshot(
+                (snapshot) => {
+                    const data = snapshot.data();
 
-    handleIndexChange = (index) => {
-        this.setState({
-            selectedTab: index,
-        });
-    };
+                    if (!snapshot.exists || !data) {
+                        return;
+                    }
 
-    render() {
-        // Styling
-        const {classes} = this.props;
+                    setProfile(data);
+                    setLoading(false);
+                },
+                (error) => {
+                    setLoading(false);
+                    setError(error);
+                }
+            );
+        return () => unsubscribe()
+    }, []);
 
-        // Custom Properties
-        const {user, userData, theme} = this.props;
+    // Custom Functions
+    const {openSnackbar} = props;
 
-        // Custom Functions
-        const {openSnackbar} = this.props;
+    return (
+        <Grid item container xs={12} sm={12} md={10} lg={8} className={classes.root}>
+            <Card>
+                <CardHeader color="success">
+                    <Typography color="initial" variant="h4" component="h4" align="left">
+                        {(userData.fullName) ? (userData.fullName) : ("информация отсутствует (")}
+                    </Typography>
+                </CardHeader>
 
-        // Custom Function
-
-        return (
-            <Grid item container xs={12} sm={12} md={10} lg={8} className={classes.root}>
-
-                <Card>
-                    <CardHeader color="success">
-                        <Typography color="initial" variant="h4" component="h4" align="left">
-                            {(userData.fullName) ? (userData.fullName) : ("информация отсутствует (")}
-                        </Typography>
-                    </CardHeader>
-
-                    <AccountView
-                        theme={theme}
-                        user={user}
-                        userData={userData}
-                        openSnackbar={openSnackbar}
-                    />
-                </Card>
-
-            </Grid>
-        );
-    }
+                <AccountView
+                    user={user}
+                    userData={userData}
+                    openSnackbar={openSnackbar}
+                />
+            </Card>
+        </Grid>
+    );
 }
 
 ProfilePage.propTypes = {
-    // Styling
-    classes: PropTypes.object.isRequired,
-
     // Custom Properties
     theme: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
@@ -98,9 +85,5 @@ ProfilePage.propTypes = {
 
     // Custom Functions
     openSnackbar: PropTypes.func.isRequired,
-
-    // Custom Events
-    onDeleteAccountClick: PropTypes.func.isRequired,
 };
-
-export default withStyles(styles)(ProfilePage);
+export default ProfilePage;

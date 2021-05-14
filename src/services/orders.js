@@ -106,7 +106,7 @@ orders.changeTitle = (title, uidOrder = null) => {
     });
 };
 
-orders.getOrder = (orderId, context) => {
+orders.getOrder = (orderId, setOrder) => {
     firestore
         .collection("orders")
         .doc(orderId)
@@ -118,9 +118,11 @@ orders.getOrder = (orderId, context) => {
                     return;
                 }
 
-                context.setState({
-                    order: data,
-                });
+                setOrder(data);
+
+                // context.setState({
+                //     order: data,
+                // });
             },
             (error) => {
                 this.resetState(() => {
