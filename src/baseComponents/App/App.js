@@ -23,6 +23,10 @@ const initialState = {
     user: null,
     userData: null,
     roles: [],
+    ordersArr: [
+        {id:1,},
+        {},
+    ],
 
     aboutDialog: {
         open: false,
