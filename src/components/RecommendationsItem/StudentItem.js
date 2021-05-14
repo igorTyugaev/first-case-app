@@ -5,7 +5,8 @@ import styles from "assets/jss/material-kit-react/components/userItem.js";
 import CardProfileStudent from "./../CardProfileStudent/CardProfileStudent";
 import classNames from "classnames";
 import OrderActions from "./../OrderActions/OrderActions";
-import ItemDescriptionSmall from "../ItemDescription/ItemDescriptionSmall";
+import CardProfileOrder from "../CardProfileOrder/CardProfileOrder";
+import ProfileAboutItem from "../ProfileAboutItem/ProfileAboutItem";
 
 const dashboardRoutes = [];
 const useStyles = makeStyles(styles);
@@ -23,7 +24,7 @@ export default function StudentItem(props) {
             </div>
 
             <div className={classNames(classes.col_2)}>
-                <ItemDescriptionSmall dataItem={student}/>
+                <ProfileAboutItem user={student}/>
             </div>
 
             <div className={classNames(classes.col_3)}>

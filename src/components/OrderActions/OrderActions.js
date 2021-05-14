@@ -1,6 +1,6 @@
 import React from "react";
 // @material-ui/core components
-import {makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import styles from "assets/jss/material-kit-react/components/offerActions.js";
 import Button from "../CustomButtons/Button";
 import classNames from "classnames";
@@ -13,25 +13,53 @@ const useStyles = makeStyles(styles);
 
 export default function OfferActions(props) {
     const classes = useStyles();
-    const {product} = props;
+    const { product, variant } = props;
+
+    const placeholderUno = () => {
+        alert(`Вы откликнулись на ${product.name} как ${variant === 'student' ? "студент" : "ментор"}.`)
+    }
+
+    const placeholderDuo = () => {
+        alert(`Вы отклонили на ${product.name} как ${variant === 'student' ? "студент" : "ментор"}.`)
+    }
 
     return (
         <div className={classNames(classes.main)}>
             <Typography variant="subtitle1" color="textPrimary" component="p">
-                Сделаю за: <br/>
-                <span style={{fontWeight: "bold", color: "#000", textAlign: "center"}}>
-                    {product.price ? product.price : "Не указано"}
-                </span>
+                {variant === "mentor" ? (
+                    <>
+                        Сделаю за: <br />
+                        <span style={{ fontWeight: "bold", color: "#000", textAlign: "center" }}>
+                            {product.price}{"₽"}
+                        </span>
+                    </>
+                ) : variant === "student" ? (
+                    <>
+                        Оплачу: <br />
+                        <span style={{ fontWeight: "bold", color: "#000", textAlign: "center" }}>
+                            {product.price}{"₽"}
+                        </span>
+                    </>
+                ) : variant === "customer" ? (
+                    <>
+                        Цена: <br />
+                        <span style={{ fontWeight: "bold", color: "#000", textAlign: "center" }}>
+                            {product.price}{"₽"}
+                        </span>
+                    </>
+                ) : <></>}
             </Typography>
             <Typography variant="subtitle1" color="textPrimary" component="p">
-                Срок исполнения: <br/> <span
-                style={{fontWeight: "bold", color: "#000", textAlign: "center"}}>
-                {product.deadline ? new Date(product.deadline).toDateString() : "Не указано"}
-            </span>
+                Срок исполнения: <br /> <span
+                    style={{ fontWeight: "bold", color: "#000", textAlign: "center" }}>{Date(product.deadline).toLocaleString()}</span>
             </Typography>
 
-            <Button color="success" className={classNames(classes.btn)}>Откликнуться</Button>
-            <Button color="danger" className={classNames(classes.btn)}>Отклонить</Button>
+            {variant !== 'customer' && (
+                <>
+                    <Button color="success" className={classNames(classes.btn)} onClick={placeholderUno}>Откликнуться</Button>
+                    <Button color="danger" className={classNames(classes.btn)} onClick={placeholderDuo}>Отклонить</Button>
+                </>
+            )}
         </div>
     );
 }

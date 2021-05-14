@@ -1,14 +1,13 @@
 import firebase, {analytics, auth, firestore, storage} from "../firebase";
 
 import moment from "moment";
-import * as admin from "../firebase";
 
 const authentication = {};
 
 authentication.signUp = (fields) => {
     return new Promise((resolve, reject) => {
         if (!fields) {
-            reject(new Error("Нет полей"));
+            reject(new Error("No fields"));
 
             return;
         }
@@ -22,7 +21,7 @@ authentication.signUp = (fields) => {
         if (!firstName || !lastName || !username || !emailAddress || !password) {
             reject(
                 new Error(
-                    "Без имени, фамилии, имени пользователя, адреса эл. почты или пароля."
+                    "No first name, last name, username, e-mail address, or password"
                 )
             );
 
@@ -30,7 +29,7 @@ authentication.signUp = (fields) => {
         }
 
         if (auth.currentUser) {
-            reject(new Error("Нет текущего пользователя"));
+            reject(new Error("No current user"));
 
             return;
         }
@@ -41,7 +40,7 @@ authentication.signUp = (fields) => {
                 const user = value.user;
 
                 if (!user) {
-                    reject(new Error("Нет пользователя"));
+                    reject(new Error("No user"));
 
                     return;
                 }
@@ -49,7 +48,7 @@ authentication.signUp = (fields) => {
                 const uid = user.uid;
 
                 if (!uid) {
-                    reject(new Error("Нет UID"));
+                    reject(new Error("No UID"));
 
                     return;
                 }
@@ -652,54 +651,6 @@ authentication.changeFirstName = (firstName) => {
     });
 };
 
-authentication.updateProfile = (values) => {
-    return new Promise((resolve, reject) => {
-        if (!values) {
-            reject(new Error("No values"));
-            return;
-        }
-
-        const currentUser = auth.currentUser;
-
-        if (!currentUser) {
-            reject(new Error("No current user"));
-            return;
-        }
-
-        const uid = currentUser.uid;
-
-        if (!uid) {
-            reject(new Error("No UID"));
-            return;
-        }
-
-        const userDocumentReference = firestore.collection("users").doc(uid);
-
-        userDocumentReference
-            .update({
-                role: values.role,
-                fullName: values.fullName,
-                dateBirth: values.dateBirth,
-                phone: values.phoneNumber,
-                aboutUser: values.aboutUser,
-                position: values.position,
-                company: values.company,
-                city: values.city,
-                education: values.education,
-                experience: values.experience,
-                serviceCost: values.serviceCost,
-                isProfileComplete: true
-            })
-            .then((value) => {
-                analytics.logEvent("change_fullName");
-                resolve(value);
-            })
-            .catch((reason) => {
-                reject(reason);
-            });
-    });
-};
-
 authentication.changeAbout = (about) => {
     return new Promise((resolve, reject) => {
         if (!about) {
@@ -774,44 +725,6 @@ authentication.changeEducation = (education) => {
             .then((value) => {
                 analytics.logEvent("change_education");
 
-                resolve(value);
-            })
-            .catch((reason) => {
-                reject(reason);
-            });
-    });
-};
-
-authentication.changeRole = (role) => {
-    return new Promise((resolve, reject) => {
-        if (!role) {
-            reject(new Error("No role"));
-            return;
-        }
-
-        const currentUser = auth.currentUser;
-
-        if (!currentUser) {
-            reject(new Error("No current user"));
-            return;
-        }
-
-        const uid = currentUser.uid;
-
-        if (!uid) {
-            reject(new Error("No UID"));
-            return;
-        }
-
-        const userDocumentReference = firestore.collection("users").doc(uid);
-
-        userDocumentReference
-            .update({
-                role: role,
-                isRole: true,
-            })
-            .then((value) => {
-                analytics.logEvent("change_role");
                 resolve(value);
             })
             .catch((reason) => {

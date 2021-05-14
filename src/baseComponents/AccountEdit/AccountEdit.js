@@ -8,7 +8,7 @@ import moment from "moment";
 import {withStyles} from "@material-ui/core/styles";
 
 import {
-    mainContent,
+    DialogContent,
     Grid,
     Typography,
     Box,
@@ -44,11 +44,11 @@ import {
     DeleteForever as DeleteForeverIcon, Lock as LockIcon,
 } from "@material-ui/icons";
 
-import constraintsAuth from "../../data/constraintsAuth";
+import constraints from "../../data/constraints";
 import authentication from "../../services/authentication";
 
 const styles = (theme) => ({
-    mainContent: {
+    dialogContent: {
         paddingTop: theme.spacing(2),
     },
 
@@ -283,8 +283,8 @@ class AccountEdit extends Component {
                 passwordConfirmation: passwordConfirmation,
             },
             {
-                password: constraintsAuth.password,
-                passwordConfirmation: constraintsAuth.passwordConfirmation,
+                password: constraints.password,
+                passwordConfirmation: constraints.passwordConfirmation,
             }
         );
 
@@ -342,7 +342,7 @@ class AccountEdit extends Component {
                 firstName: firstName,
             },
             {
-                firstName: constraintsAuth.firstName,
+                firstName: constraints.firstName,
             }
         );
 
@@ -416,7 +416,7 @@ class AccountEdit extends Component {
                 lastName: lastName,
             },
             {
-                lastName: constraintsAuth.lastName,
+                lastName: constraints.lastName,
             }
         );
 
@@ -490,7 +490,7 @@ class AccountEdit extends Component {
                 username: username,
             },
             {
-                username: constraintsAuth.username,
+                username: constraints.username,
             }
         );
 
@@ -564,7 +564,7 @@ class AccountEdit extends Component {
                 emailAddress: emailAddress,
             },
             {
-                emailAddress: constraintsAuth.emailAddress,
+                emailAddress: constraints.emailAddress,
             }
         );
 
@@ -638,7 +638,7 @@ class AccountEdit extends Component {
                 about: about,
             },
             {
-                about: constraintsAuth.about,
+                about: constraints.about,
             }
         );
 
@@ -712,7 +712,7 @@ class AccountEdit extends Component {
                 education: education,
             },
             {
-                education: constraintsAuth.education,
+                education: constraints.education,
             }
         );
 
@@ -1041,7 +1041,7 @@ class AccountEdit extends Component {
         const hasChangedPassword = userData && userData.lastPasswordChange;
 
         return (
-            <Container classes={{root: classes.mainContent}}>
+            <Container classes={{root: classes.dialogContent}}>
                 <Box mb={2}>
                     <Hidden xsDown>
                         <Grid alignItems="center" container>
@@ -1497,7 +1497,7 @@ class AccountEdit extends Component {
                             </ListItemIcon>
                         </Hidden>
 
-                        {!hasEducation && (
+                        {!hasAbout && (
                             <ListItemIcon>
                                 <Tooltip title="Нет информации об образовании">
                                     <WarningIcon color="error"/>
@@ -1520,7 +1520,7 @@ class AccountEdit extends Component {
                                     }
                                     label="Об образовании"
                                     multiline
-                                    placeholder={hasEducation && userData.education}
+                                    placeholder={hasAbout && userData.education}
                                     required
                                     type="text"
                                     value={education}
@@ -1712,7 +1712,7 @@ class AccountEdit extends Component {
 
                                 <ListItemSecondaryAction>
                                     {hasFirstName && (
-                                        <Tooltip title="Редактировать">
+                                        <Tooltip title="Change">
                                             <div>
                                                 <IconButton
                                                     disabled={performingAction}
@@ -1792,7 +1792,7 @@ class AccountEdit extends Component {
 
                                 <ListItemSecondaryAction>
                                     {hasLastName && (
-                                        <Tooltip title="Редактировать">
+                                        <Tooltip title="Change">
                                             <div>
                                                 <IconButton
                                                     disabled={performingAction}
@@ -1872,7 +1872,7 @@ class AccountEdit extends Component {
 
                                 <ListItemSecondaryAction>
                                     {hasUsername && (
-                                        <Tooltip title="Редактировать">
+                                        <Tooltip title="Change">
                                             <div>
                                                 <IconButton
                                                     disabled={performingAction}
@@ -1910,13 +1910,13 @@ class AccountEdit extends Component {
                             <ListItemIcon>
                                 <>
                                     {user.emailVerified && (
-                                        <Tooltip title="Подтверждено">
+                                        <Tooltip title="Verified">
                                             <CheckIcon color="primary"/>
                                         </Tooltip>
                                     )}
 
                                     {!user.emailVerified && (
-                                        <Tooltip title="Не подтверждено">
+                                        <Tooltip title="Not verified">
                                             <WarningIcon color="error"/>
                                         </Tooltip>
                                     )}
@@ -1926,7 +1926,7 @@ class AccountEdit extends Component {
 
                         {!user.email && (
                             <ListItemIcon>
-                                <Tooltip title="Нет адреса эл. почты">
+                                <Tooltip title="No e-mail address">
                                     <WarningIcon color="error"/>
                                 </Tooltip>
                             </ListItemIcon>
@@ -1942,7 +1942,7 @@ class AccountEdit extends Component {
                                 helperText={
                                     errors && errors.emailAddress
                                         ? errors.emailAddress[0]
-                                        : "Нажмите Enter, чтобы изменить свой адрес эл. почты."
+                                        : "Press Enter to change your e-mail address"
                                 }
                                 label="E-mail address"
                                 placeholder={user.email}
@@ -1962,9 +1962,9 @@ class AccountEdit extends Component {
                         {showingField !== "email-address" && (
                             <>
                                 <ListItemText
-                                    primary="Эл. почта"
+                                    primary="E-mail address"
                                     secondary={
-                                        user.email ? user.email : "У вас нет адреса эл. почты"
+                                        user.email ? user.email : "You don’t have an e-mail address"
                                     }
                                 />
 
@@ -1988,7 +1988,7 @@ class AccountEdit extends Component {
 
                                 <ListItemSecondaryAction>
                                     {user.email && (
-                                        <Tooltip title="Редактировать">
+                                        <Tooltip title="Change">
                                             <div>
                                                 <IconButton
                                                     disabled={performingAction}
@@ -2032,7 +2032,7 @@ class AccountEdit extends Component {
                                 helperText={
                                     errors && errors.password
                                         ? errors.password[0]
-                                        : "Нажмите Enter, чтобы изменить пароль"
+                                        : "Press Enter to change your password"
                                 }
                                 label="Password"
                                 required
@@ -2056,7 +2056,7 @@ class AccountEdit extends Component {
                                 helperText={
                                     errors && errors.passwordConfirmation
                                         ? errors.passwordConfirmation[0]
-                                        : "Нажмите Enter, чтобы изменить пароль"
+                                        : "Press Enter to change your password"
                                 }
                                 label="Password confirmation"
                                 required
@@ -2077,32 +2077,32 @@ class AccountEdit extends Component {
                             <>
                                 <Hidden xsDown>
                                     <ListItemText
-                                        primary="Пароль"
+                                        primary="Password"
                                         secondary={
                                             hasChangedPassword
-                                                ? `Последнее изменение ${moment(
+                                                ? `Last changed ${moment(
                                                 userData.lastPasswordChange.toDate()
                                                 ).format("LL")}`
-                                                : "Никогда не менялся"
+                                                : "Never changed"
                                         }
                                     />
                                 </Hidden>
 
                                 <Hidden smUp>
                                     <ListItemText
-                                        primary="Пароль"
+                                        primary="Password"
                                         secondary={
                                             hasChangedPassword
-                                                ? `Последнее изменение ${moment(
+                                                ? `Last changed ${moment(
                                                 userData.lastPasswordChange.toDate()
                                                 ).format("ll")}`
-                                                : "Никогда не изменялся"
+                                                : "Never changed"
                                         }
                                     />
                                 </Hidden>
 
                                 <ListItemSecondaryAction>
-                                    <Tooltip title="Редактировать">
+                                    <Tooltip title="Change">
                                         <div>
                                             <IconButton
                                                 disabled={performingAction}
@@ -2126,14 +2126,14 @@ class AccountEdit extends Component {
 
                         <Hidden xsDown>
                             <ListItemText
-                                primary="Вход"
+                                primary="Signed in"
                                 secondary={moment(user.metadata.lastSignInTime).format("LLLL")}
                             />
                         </Hidden>
 
                         <Hidden smUp>
                             <ListItemText
-                                primary="Вход"
+                                primary="Signed in"
                                 secondary={moment(user.metadata.lastSignInTime).format("llll")}
                             />
                         </Hidden>
@@ -2151,8 +2151,8 @@ class AccountEdit extends Component {
                         </Hidden>
 
                         <ListItemText
-                            primary="Удалить аккаунт"
-                            secondary="Аккаунт невозможно будет восстановить"
+                            primary="Delete account"
+                            secondary="Accounts can’t be recovered"
                         />
 
                         <ListItemSecondaryAction>
@@ -2162,7 +2162,7 @@ class AccountEdit extends Component {
                                 variant="contained"
                                 onClick={onDeleteAccountClick}
                             >
-                                Удалить
+                                Delete
                             </Button>
                         </ListItemSecondaryAction>
                     </ListItem>

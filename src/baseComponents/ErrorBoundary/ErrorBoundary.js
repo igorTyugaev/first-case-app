@@ -44,8 +44,8 @@ class ErrorBoundary extends Component {
       return (
         <EmptyState
           image={<ErrorIllustration />}
-          title="Что-то пошло не так"
-          description="Не удалось загрузить приложение"
+          title="Something went wrong"
+          description="The app failed to load"
         />
       );
     }

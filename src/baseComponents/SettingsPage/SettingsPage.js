@@ -3,6 +3,13 @@ import PropTypes from "prop-types";
 
 import {withStyles} from "@material-ui/core/styles";
 
+import {
+    AccountCircle as AccountCircleIcon,
+    Palette as PaletteIcon,
+    Link as LinkIcon,
+    Security as SecurityIcon,
+} from "@material-ui/icons";
+
 import AccountEdit from "../AccountEdit";
 import Card from "../../components/Card/Card";
 import Typography from "@material-ui/core/Typography";
@@ -11,6 +18,9 @@ import CardHeader from "../../components/Card/CardHeader";
 
 
 const styles = (theme) => ({
+    tabs: {
+        display: "initial",
+    },
     inner: {
         margin: "0 auto",
         padding: "6vh 0",
@@ -22,7 +32,9 @@ const styles = (theme) => ({
     },
 });
 
-const initialState = {};
+const initialState = {
+    selectedTab: 0,
+};
 
 class SettingsPage extends Component {
     constructor(props) {
@@ -33,6 +45,18 @@ class SettingsPage extends Component {
 
     handleExited = () => {
         this.setState(initialState);
+    };
+
+    handleTabChange = (event, value) => {
+        this.setState({
+            selectedTab: value,
+        });
+    };
+
+    handleIndexChange = (index) => {
+        this.setState({
+            selectedTab: index,
+        });
     };
 
     render() {
@@ -48,8 +72,11 @@ class SettingsPage extends Component {
         // Custom Functions
         const {onDeleteAccountClick} = this.props;
 
+        const {selectedTab} = this.state;
+
         return (
             <Grid item container xs={12} sm={12} md={10} lg={8} className={classes.root}>
+
                 <Card>
                     <CardHeader color="success">
                         <Typography color="initial" variant="h4" component="h4" align="left" gutterBottom>
@@ -65,6 +92,7 @@ class SettingsPage extends Component {
                         onDeleteAccountClick={onDeleteAccountClick}
                     />
                 </Card>
+
             </Grid>
         );
     }

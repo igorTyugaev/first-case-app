@@ -1,12 +1,12 @@
-import React, {Component} from "react";
+import React, { Component, createContext } from "react";
 
 import readingTime from "reading-time";
 
-import {MuiThemeProvider} from "@material-ui/core/styles";
+import { MuiThemeProvider } from "@material-ui/core/styles";
 
-import {CssBaseline, Button, Snackbar} from "@material-ui/core";
+import { CssBaseline, Button, Snackbar } from "@material-ui/core";
 
-import {auth, firestore} from "../../firebase";
+import { auth, firestore } from "../../firebase";
 import authentication from "../../services/authentication";
 import appearance from "../../services/appearance";
 
@@ -23,10 +23,6 @@ const initialState = {
     user: null,
     userData: null,
     roles: [],
-    ordersArr: [
-        {id:1,},
-        {},
-    ],
 
     aboutDialog: {
         open: false,
@@ -108,7 +104,7 @@ class App extends Component {
 
         dialog.open = true;
 
-        this.setState({dialog}, callback);
+        this.setState({ dialog }, callback);
     };
 
     closeDialog = (dialogId, callback) => {
@@ -120,7 +116,7 @@ class App extends Component {
 
         dialog.open = false;
 
-        this.setState({dialog}, callback);
+        this.setState({ dialog }, callback);
     };
 
     closeAllDialogs = (callback) => {
@@ -236,7 +232,7 @@ class App extends Component {
     };
 
     closeSnackbar = (clearMessage = false) => {
-        const {snackbar} = this.state;
+        const { snackbar } = this.state;
 
         this.setState({
             snackbar: {
@@ -265,14 +261,14 @@ class App extends Component {
             signOutDialog,
         } = this.state;
 
-        const {snackbar} = this.state;
+        const { snackbar } = this.state;
 
         return (
             <MuiThemeProvider theme={theme}>
-                <CssBaseline/>
+                <CssBaseline />
 
                 <ErrorBoundary>
-                    {!ready && <LaunchScreen/>}
+                    {!ready && <LaunchScreen />}
 
                     {ready && (
                         <>
@@ -297,7 +293,6 @@ class App extends Component {
                                         onSignOutClick={() => this.openDialog("signOutDialog")}
                                     />
                                 }
-                                openSnackbar={this.openSnackbar}
                             />
 
                             <DialogHost
@@ -376,15 +371,15 @@ class App extends Component {
                                         },
 
                                         props: {
-                                            title: "Выйти?",
+                                            title: "Sign out?",
                                             contentText:
-                                                "После выхода из системы вы больше не сможете управлять своим профилем и выполнять другие действия, требующие входа в систему.",
+                                                "While signed out you are unable to manage your profile and conduct other activities that require you to be signed in.",
                                             dismissiveAction: (
                                                 <Button
                                                     color="primary"
                                                     onClick={() => this.closeDialog("signOutDialog")}
                                                 >
-                                                    Отмена
+                                                    Cancel
                                                 </Button>
                                             ),
                                             confirmingAction: (
@@ -394,7 +389,7 @@ class App extends Component {
                                                     variant="contained"
                                                     onClick={this.signOut}
                                                 >
-                                                    Выйти
+                                                    Sign Out
                                                 </Button>
                                             ),
                                         },
@@ -406,7 +401,7 @@ class App extends Component {
                                 autoHideDuration={snackbar.autoHideDuration}
                                 message={snackbar.message}
                                 open={snackbar.open}
-                                onClose={this.closeSnackbar}
+                                onClose={() => this.closeSnackbar()}
                             />
                         </>
                     )}
@@ -445,6 +440,7 @@ class App extends Component {
                             authentication
                                 .getRoles()
                                 .then((value) => {
+                                    console.log(value);
                                     this.setTheme(data.theme, () => {
                                         this.setState({
                                             ready: true,

@@ -1,15 +1,20 @@
 import React, {Component} from "react";
 
 import PropTypes from "prop-types";
+
 import {withRouter} from "react-router-dom";
 
 import {auth} from "../../firebase";
+
 import authentication from "../../services/authentication";
 
+import EmptyState from "../EmptyState";
+
+import {ReactComponent as CabinIllustration} from "../../illustrations/cabin.svg";
+import {ReactComponent as InsertBlockIllustration} from "../../illustrations/insert-block.svg";
+import LandingPage from "../../views/LandingPage/LandingPage";
+import Orders from "../../views/Orders/Orders";
 import MainPage from "../../components/MainPage/MainPage";
-import UserForm from "../../views/UserForm/UserForm";
-import OrderList from "../../components/RecommendationsList/OrderList";
-import MentorForCustomerList from "../../components/RecommendationsList/MentorForCustomerList";
 
 
 class HomePage extends Component {
@@ -31,6 +36,7 @@ class HomePage extends Component {
 
             if (!emailAddress) {
                 this.props.history.push("/");
+
                 return;
             }
 
@@ -42,7 +48,7 @@ class HomePage extends Component {
                     const emailAddress = user.email;
 
                     this.props.openSnackbar(
-                        `Вы вошли как ${displayName || emailAddress}`
+                        `Signed in as ${displayName || emailAddress}`
                     );
                 })
                 .catch((reason) => {
@@ -68,33 +74,28 @@ class HomePage extends Component {
     };
 
     render() {
-        // Styling
-        const {classes} = this.props;
+        const {user} = this.props;
 
-        // Custom Properties
-        const {user, userData, theme} = this.props;
-
-        // Custom Functions
-        const {openSnackbar} = this.props;
-
-        // Custom Functions
-        const {onDeleteAccountClick} = this.props;
-
-        if (userData && userData.isProfileComplete && userData.role && userData.role.toLowerCase() === "mentor") {
+        if (user) {
             return (
-                <OrderList theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}/>
-            );
-        } else if (userData && userData.isProfileComplete && userData.role) {
-            return (
-                <MentorForCustomerList theme={theme} userData={userData} user={user}
-                                       openSnackbar={openSnackbar}/>
-            );
-        } else {
-            return (
-                <UserForm theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}
-                          onDeleteAccountClick={onDeleteAccountClick}/>
+                // <EmptyState
+                //     image={<CabinIllustration/>}
+                //     title="Home"
+                //     description="This is the home page. You can edit it from HomePage.js."
+                // />
+                // <Orders/>
+                <MainPage/>
             );
         }
+
+        return (
+            // <EmptyState
+            //     image={<InsertBlockIllustration/>}
+            //     title="RMUIF"
+            //     description="Supercharged version of Create React App with all the bells and whistles."
+            // />
+            <LandingPage/>
+        );
     }
 
     componentDidMount() {

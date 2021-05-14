@@ -34,6 +34,13 @@ export default function LoginPage(props) {
   const { ...rest } = props;
   return (
     <div>
+      <Header
+        absolute
+        color="transparent"
+        brand="Material Kit React"
+        rightLinks={<HeaderLinks />}
+        {...rest}
+      />
       <div
         className={classes.pageHeader}
         style={{

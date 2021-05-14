@@ -3,7 +3,9 @@ import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import styles from "assets/jss/material-kit-react/components/userItem.js";
 import CardProfileOrder from "../CardProfileOrder/CardProfileOrder";
-import ItemDescriptionSmall from "../ItemDescription/ItemDescriptionSmall";
+import ProfileAboutItem from "../ProfileAboutItem/ProfileAboutItem";
+import Button from "../CustomButtons/Button";
+import {ListItem} from "@material-ui/core";
 import classNames from "classnames";
 import OrderActions from "../OrderActions/OrderActions";
 
@@ -23,7 +25,7 @@ export default function MentorItem(props) {
             </div>
 
             <div className={classNames(classes.col_2)}>
-                <ItemDescriptionSmall dataItem={mentor}/>
+                <ProfileAboutItem user={mentor}/>
             </div>
 
             <div className={classNames(classes.col_3)}>

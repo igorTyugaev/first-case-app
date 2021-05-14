@@ -62,7 +62,10 @@ class ProfilePage extends Component {
         // Custom Functions
         const {openSnackbar} = this.props;
 
-        // Custom Function
+        // Custom Functions
+        const {onDeleteAccountClick} = this.props;
+
+        const {selectedTab} = this.state;
 
         return (
             <Grid item container xs={12} sm={12} md={10} lg={8} className={classes.root}>
@@ -70,7 +73,7 @@ class ProfilePage extends Component {
                 <Card>
                     <CardHeader color="success">
                         <Typography color="initial" variant="h4" component="h4" align="left">
-                            {(userData.fullName) ? (userData.fullName) : ("информация отсутствует (")}
+                            {`${user.firstName} ${user.lastName}`}
                         </Typography>
                     </CardHeader>
 
@@ -79,6 +82,7 @@ class ProfilePage extends Component {
                         user={user}
                         userData={userData}
                         openSnackbar={openSnackbar}
+                        onDeleteAccountClick={onDeleteAccountClick}
                     />
                 </Card>
 
