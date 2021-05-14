@@ -105,8 +105,8 @@ function OrderList(props) {
         return (
             <EmptyState
                 image={<ErrorIllustration/>}
-                title="Couldn’t retrieve user."
-                description="Something went wrong when trying to retrieve the requested user."
+                title="Не удалось получить пользователя."
+                description="Что-то пошло не так при попытке получить пользователя."
                 button={
                     <Fab
                         variant="extended"
@@ -116,7 +116,7 @@ function OrderList(props) {
                         <Box clone mr={1}>
                             <RefreshIcon/>
                         </Box>
-                        Retry
+                        Повторить
                     </Fab>
                 }
             />

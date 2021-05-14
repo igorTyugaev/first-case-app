@@ -25,7 +25,7 @@ export default function MentorForCustomerItem(props) {
             </div>
 
             <div className={classNames(classes.col_2)}>
-                <ItemDescriptionSmall dataItem={mentor}/>
+                <ItemDescriptionSmall type={false} id={mentor.id} title={mentor.fullName} desc={mentor.aboutUser}/>
             </div>
 
             <div className={classNames(classes.col_3)}>

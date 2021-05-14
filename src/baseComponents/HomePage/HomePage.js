@@ -8,6 +8,8 @@ import authentication from "../../services/authentication";
 
 import MainPage from "../../components/MainPage/MainPage";
 import UserForm from "../../views/UserForm/UserForm";
+import OrderList from "../../components/RecommendationsList/OrderList";
+import MentorForCustomerList from "../../components/RecommendationsList/MentorForCustomerList";
 
 
 class HomePage extends Component {
@@ -78,9 +80,14 @@ class HomePage extends Component {
         // Custom Functions
         const {onDeleteAccountClick} = this.props;
 
-        if (userData && userData.isProfileComplete) {
+        if (userData && userData.isProfileComplete && userData.role && userData.role.toLowerCase() === "mentor") {
             return (
-                <MainPage/>
+                <OrderList theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}/>
+            );
+        } else if (userData && userData.isProfileComplete && userData.role) {
+            return (
+                <MentorForCustomerList theme={theme} userData={userData} user={user}
+                                       openSnackbar={openSnackbar}/>
             );
         } else {
             return (

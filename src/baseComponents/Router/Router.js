@@ -31,7 +31,6 @@ class Router extends Component {
         return (
             <BrowserRouter basename={process.env.REACT_APP_BASENAME}>
                 {bar}
-
                 <Switch>
                     <Route path="/" exact>
                         {user ? (
@@ -53,14 +52,13 @@ class Router extends Component {
                     </Route>
 
                     <Route path="/orders/">
-                        {user ? <OrderList theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}
-                                           onDeleteAccountClick={onDeleteAccountClick}/> : <Redirect to="/"/>}
+                        {user ? <OrderList theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}/> :
+                            <Redirect to="/"/>}
                     </Route>
 
-                    <Route path="/people/:userId">
+                    <Route path="/people/">
                         {user ? <MentorForCustomerList theme={theme} userData={userData} user={user}
-                                                       openSnackbar={openSnackbar}
-                                                       onDeleteAccountClick={onDeleteAccountClick}/> :
+                                                       openSnackbar={openSnackbar}/> :
                             <Redirect to="/"/>}
                     </Route>
 

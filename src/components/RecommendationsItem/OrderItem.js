@@ -17,11 +17,11 @@ export default function OrderItem(props) {
         <div className={classNames(classes.main)}>
 
             <div className={classNames(classes.col_1)}>
-                <ItemDescriptionSmall dataItem={product}/>
+                <ItemDescriptionSmall type={true} id={product.id} title={product.name} desc={product.description}/>
             </div>
 
             <div className={classNames(classes.col_2)}>
-                <OrderActions products={product}/>
+                <OrderActions product={product}/>
             </div>
         </div>
     );

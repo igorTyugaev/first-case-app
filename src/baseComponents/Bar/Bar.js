@@ -97,7 +97,7 @@ class Bar extends Component {
 
             {
                 name: "Исполнители",
-                to: user ? `/people/${user.uid}` : null,
+                to: user ? `/people/` : null,
             },
 
             {

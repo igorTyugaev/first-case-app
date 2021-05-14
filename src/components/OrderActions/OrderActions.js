@@ -20,12 +20,14 @@ export default function OfferActions(props) {
             <Typography variant="subtitle1" color="textPrimary" component="p">
                 Сделаю за: <br/>
                 <span style={{fontWeight: "bold", color: "#000", textAlign: "center"}}>
-                    {200}{"₽"}
+                    {product.price ? product.price : "Не указано"}
                 </span>
             </Typography>
             <Typography variant="subtitle1" color="textPrimary" component="p">
                 Срок исполнения: <br/> <span
-                style={{fontWeight: "bold", color: "#000", textAlign: "center"}}>{"30.12.21"}</span>
+                style={{fontWeight: "bold", color: "#000", textAlign: "center"}}>
+                {product.deadline ? new Date(product.deadline).toDateString() : "Не указано"}
+            </span>
             </Typography>
 
             <Button color="success" className={classNames(classes.btn)}>Откликнуться</Button>

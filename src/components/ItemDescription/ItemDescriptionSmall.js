@@ -14,7 +14,10 @@ const useStyles = makeStyles(styles);
 
 export default function ItemDescriptionSmall(props) {
     const classes = useStyles();
-    const {dataItem} = props;
+    const {type} = props;
+    const {id} = props;
+    const {title} = props;
+    const {desc} = props;
 
     return (
         <div className={classNames(classes.main)}>
@@ -22,15 +25,15 @@ export default function ItemDescriptionSmall(props) {
                 <Link
                     color="inherit"
                     component={RouterLink}
-                    to={`/new_order/${dataItem.id}`}
+                    to={type ? (`/order_page/`) : (`/user/${id}`)}
                     underline="none"
                 >
-                    {!dataItem.title || dataItem.title.length < 1 ? "Загаловок отсутствует" : dataItem.title}
+                    {!title || title.length < 1 ? "Загаловок отсутствует" : title}
                 </Link>
             </h3>
 
             <p className={classNames(classes.description)}>
-                {!dataItem.desc || dataItem.desc.length < 1 ? "Описание отсутствует" : dataItem.desc}
+                {!desc || desc.length < 1 ? "Описание отсутствует" : desc}
             </p>
         </div>
     );
