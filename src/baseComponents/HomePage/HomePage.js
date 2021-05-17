@@ -6,7 +6,6 @@ import {withRouter} from "react-router-dom";
 import {auth} from "../../firebase";
 import authentication from "../../services/authentication";
 
-import MainPage from "../../components/MainPage/MainPage";
 import UserForm from "../../views/UserForm/UserForm";
 import OrderList from "../../components/RecommendationsList/OrderList";
 import MentorForCustomerList from "../../components/RecommendationsList/MentorForCustomerList";
@@ -68,9 +67,6 @@ class HomePage extends Component {
     };
 
     render() {
-        // Styling
-        const {classes} = this.props;
-
         // Custom Properties
         const {user, userData, theme} = this.props;
 

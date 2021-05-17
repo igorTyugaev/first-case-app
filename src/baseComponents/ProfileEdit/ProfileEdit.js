@@ -24,10 +24,6 @@ import constraintsAuth from "../../data/constraintsAuth";
 
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
-import CardContent from "@material-ui/core/CardContent";
-import HomePage from "../HomePage/HomePage";
-import LandingPage from "../../views/LandingPage/LandingPage";
-import {Route} from "react-router-dom";
 
 const styles = (theme) => ({
     mainContent: {
@@ -192,7 +188,6 @@ class ProfileEdit extends Component {
         return (
             <Container classes={{root: classes.mainContent}}>
                 <List disablePadding>
-
                     <ListItem>
                         <Grid item xs={12} sm={12} md={12} lg={12}>
                             <ListItemText

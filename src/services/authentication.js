@@ -1,7 +1,6 @@
 import firebase, {analytics, auth, firestore, storage} from "../firebase";
 
 import moment from "moment";
-import * as admin from "../firebase";
 
 const authentication = {};
 
@@ -652,6 +651,88 @@ authentication.changeFirstName = (firstName) => {
     });
 };
 
+authentication.changeFullName = (fullName) => {
+    return new Promise((resolve, reject) => {
+        if (!fullName) {
+            reject(new Error("No fullName"));
+
+            return;
+        }
+
+        const currentUser = auth.currentUser;
+
+        if (!currentUser) {
+            reject(new Error("No current user"));
+
+            return;
+        }
+
+        const uid = currentUser.uid;
+
+        if (!uid) {
+            reject(new Error("No UID"));
+
+            return;
+        }
+
+        const userDocumentReference = firestore.collection("users").doc(uid);
+
+        userDocumentReference
+            .update({
+                fullName: fullName,
+            })
+            .then((value) => {
+                analytics.logEvent("change_fullName");
+
+                resolve(value);
+            })
+            .catch((reason) => {
+                reject(reason);
+            });
+    });
+};
+
+authentication.changePhoneNumber = (phoneNumber) => {
+    return new Promise((resolve, reject) => {
+        if (!phoneNumber) {
+            reject(new Error("No phoneNumber"));
+
+            return;
+        }
+
+        const currentUser = auth.currentUser;
+
+        if (!currentUser) {
+            reject(new Error("No current user"));
+
+            return;
+        }
+
+        const uid = currentUser.uid;
+
+        if (!uid) {
+            reject(new Error("No UID"));
+
+            return;
+        }
+
+        const userDocumentReference = firestore.collection("users").doc(uid);
+
+        userDocumentReference
+            .update({
+                phone: phoneNumber,
+            })
+            .then((value) => {
+                analytics.logEvent("change_phoneNumber");
+
+                resolve(value);
+            })
+            .catch((reason) => {
+                reject(reason);
+            });
+    });
+};
+
 authentication.updateProfile = (values) => {
     return new Promise((resolve, reject) => {
         if (!values) {
@@ -741,10 +822,10 @@ authentication.changeAbout = (about) => {
     });
 };
 
-authentication.changeEducation = (education) => {
+authentication.changeDateBirth = (dateBirth) => {
     return new Promise((resolve, reject) => {
-        if (!education) {
-            reject(new Error("No education"));
+        if (!dateBirth) {
+            reject(new Error("No dateBirth"));
 
             return;
         }
@@ -769,10 +850,10 @@ authentication.changeEducation = (education) => {
 
         userDocumentReference
             .update({
-                education: education,
+                dateBirth: dateBirth,
             })
             .then((value) => {
-                analytics.logEvent("change_education");
+                analytics.logEvent("change_dateBirth");
 
                 resolve(value);
             })
@@ -1134,25 +1215,17 @@ authentication.getNameInitials = (fields) => {
         return null;
     }
 
-    const firstName = fields.firstName;
-    const lastName = fields.lastName;
-    const username = fields.username;
+    const fullName = fields.fullName;
     const displayName = fields.displayName;
 
-    if (firstName && lastName) {
-        return firstName.charAt(0) + lastName.charAt(0);
-    }
 
-    if (firstName) {
-        return firstName.charAt(0);
-    }
+    if (fullName) {
+        const fullNameArray = fullName.split(" ");
+        const firstName = fullNameArray[0];
+        const lastName = fullNameArray[1];
+        const fullNameLatter = `${firstName ? (firstName.charAt(0)) : ""}` + `${lastName ? (lastName.charAt(0)) : ""}`;
 
-    if (username) {
-        return username.charAt(0);
-    }
-
-    if (lastName) {
-        return lastName.charAt(0);
+        return fullNameLatter;
     }
 
     if (displayName) {

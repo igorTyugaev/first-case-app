@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from "@material-ui/core/Grid";
 import Card from "../../components/Card/Card";
 import CardHeader from "../../components/Card/CardHeader";
-import {Box, Container, Input, InputLabel} from "@material-ui/core";
+import {Box, Container} from "@material-ui/core";
 import Hidden from "@material-ui/core/Hidden";
 import RoleCard from "../../baseComponents/RoleCard/RoleCard";
 import authentication from "../../services/authentication";
@@ -385,7 +385,7 @@ function UserForm(props) {
                             <Box className={classes.inner}>
                                 {getStepContent(activeStep, handleNext, setRole)}
 
-                                {activeStep != 0 ? (
+                                {activeStep !== 0 ? (
                                     <Box className={classes.action}>
                                         <Button
                                             disabled={activeStep === 0}

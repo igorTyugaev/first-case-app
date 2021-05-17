@@ -86,7 +86,7 @@ class Bar extends Component {
             },
 
             {
-                name: "Настройки",
+                name: "Ред. профиль",
                 to: user ? `/settings/` : null,
             },
 

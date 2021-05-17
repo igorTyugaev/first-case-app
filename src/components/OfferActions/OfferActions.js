@@ -5,25 +5,12 @@ import styles from "assets/jss/material-kit-react/components/offerActions.js";
 import Button from "../CustomButtons/Button";
 import classNames from "classnames";
 import Typography from "@material-ui/core/Typography";
-import Badge from "../Badge/Badge";
-import LibraryBooks from "@material-ui/icons/LibraryBooks";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import IconButton from "@material-ui/core/IconButton";
-import Close from "@material-ui/icons/Close";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
-import GridItem from "../Grid/GridItem";
-import Slide from "@material-ui/core/Slide";
-import {Container} from "@material-ui/core";
 import WriteMessageDialogBtn from "../WriteMessageDialogBtn/writeMessageDialogBtn";
 
-const dashboardRoutes = [];
 const useStyles = makeStyles(styles);
 
 export default function OfferActions(props) {
     const classes = useStyles();
-    const {...rest} = props;
 
     return (
         <div className={classNames(classes.main)}>

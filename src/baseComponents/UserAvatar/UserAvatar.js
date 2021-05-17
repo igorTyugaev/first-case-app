@@ -52,7 +52,11 @@ class UserAvatar extends Component {
         );
       }
 
-      return <AccountCircleIcon />;
+      return (
+          <Avatar alt="Avatar">
+            <PersonIcon/>
+          </Avatar>
+      );
     }
 
     if (context === "list") {

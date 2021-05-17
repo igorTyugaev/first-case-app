@@ -5,9 +5,7 @@ import styles from "assets/jss/material-kit-react/components/offerActions.js";
 import Button from "../CustomButtons/Button";
 import classNames from "classnames";
 import Typography from "@material-ui/core/Typography";
-import Badge from "../Badge/Badge";
 
-const dashboardRoutes = [];
 const useStyles = makeStyles(styles);
 
 

@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import {BrowserRouter, Switch, Redirect, Route} from "react-router-dom";
 
 import HomePage from "../HomePage";
-import AdminPage from "../AdminPage";
 import NotFoundPage from "../NotFoundPage";
 import SettingsPage from "../SettingsPage";
 import Components from "../../views/Components/Components";
@@ -21,7 +20,7 @@ import OrderPage from "../OrderPage/OrderPage";
 class Router extends Component {
     render() {
         // Properties
-        const {theme, userData, user, roles, bar} = this.props;
+        const {theme, userData, user, bar} = this.props;
 
         // Functions
         const {openSnackbar} = this.props;

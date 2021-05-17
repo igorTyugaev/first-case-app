@@ -5,17 +5,15 @@ import styles from "assets/jss/material-kit-react/views/executors.js";
 // core components
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
-import classNames from "classnames";
 import List from "@material-ui/core/List";
 
 
-import {v4 as uuid} from 'uuid';
 import {
     Box,
     Fab,
     ListItem,
 } from '@material-ui/core';
-import profile from "../../assets/img/faces/christian.jpg";
+
 import MentorForCustomerItem from "../RecommendationsItem/MentorForCustomerItem";
 import Grid from "@material-ui/core/Grid";
 import {firestore} from "../../firebase";
@@ -23,8 +21,7 @@ import EmptyState from "../../baseComponents/EmptyState";
 import {ReactComponent as ErrorIllustration} from "../../illustrations/error.svg";
 import {Refresh as RefreshIcon} from "@material-ui/icons";
 import Loader from "../../baseComponents/Loader";
-import OrdersFilter from "../OrdersFilter/OrdersFilter";
-import OrderItem from "../RecommendationsItem/OrderItem";
+
 import {ReactComponent as NoDataIllustration} from "../../illustrations/no-data.svg";
 
 const useStyles = makeStyles((theme) => ({

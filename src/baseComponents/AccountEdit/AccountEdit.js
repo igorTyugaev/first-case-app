@@ -8,7 +8,6 @@ import moment from "moment";
 import {withStyles} from "@material-ui/core/styles";
 
 import {
-    mainContent,
     Grid,
     Typography,
     Box,
@@ -30,11 +29,14 @@ import {
     Divider, Container,
 } from "@material-ui/core";
 
+
 import {
     Close as CloseIcon,
     Photo as PhotoIcon,
     CloudUpload as CloudUploadIcon,
     Person as PersonIcon,
+    Phone as PhoneIcon,
+    CalendarToday as CalendarIcon,
     Edit as EditIcon,
     PersonOutline as PersonOutlineIcon,
     Email as EmailIcon,
@@ -46,6 +48,13 @@ import {
 
 import constraintsAuth from "../../data/constraintsAuth";
 import authentication from "../../services/authentication";
+
+import DateFnsUtils from '@date-io/date-fns';
+import {
+    DatePicker, KeyboardDatePicker,
+    MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
+import {getTime} from "date-fns";
 
 const styles = (theme) => ({
     mainContent: {
@@ -92,9 +101,10 @@ const initialState = {
     showingField: "",
     avatar: null,
     avatarUrl: "",
-    firstName: "",
-    lastName: "",
+    fullName: "",
+    phoneNumber: "",
     username: "",
+    dateBirth: 0,
     emailAddress: "",
     performingAction: false,
     loadingAvatar: false,
@@ -251,6 +261,12 @@ class AccountEdit extends Component {
             return;
         }
 
+        if (fieldId === "dateBirth") {
+            this.setState({
+                pickerDateBirth: true
+            })
+        }
+
         this.setState({
             showingField: fieldId,
         });
@@ -260,11 +276,14 @@ class AccountEdit extends Component {
         this.setState(
             {
                 showingField: "",
-                firstName: "",
-                lastName: "",
+                fullName: "",
+                phoneNumber: "",
                 username: "",
+                dateBirth: 0,
                 emailAddress: "",
                 errors: null,
+                pickerDateBirth: false,
+                performingAction: false,
             },
             () => {
                 if (callback && typeof callback === "function") {
@@ -334,15 +353,15 @@ class AccountEdit extends Component {
         );
     };
 
-    changeFirstName = () => {
-        const {firstName} = this.state;
+    changeFullName = () => {
+        const {fullName} = this.state;
 
         const errors = validate(
             {
-                firstName: firstName,
+                fullName: fullName,
             },
             {
-                firstName: constraintsAuth.firstName,
+                fullName: constraintsAuth.fullName,
             }
         );
 
@@ -361,7 +380,7 @@ class AccountEdit extends Component {
             () => {
                 const {userData} = this.props;
 
-                if (firstName === userData.firstName) {
+                if (fullName === userData.fullName) {
                     return;
                 }
 
@@ -371,7 +390,7 @@ class AccountEdit extends Component {
                     },
                     () => {
                         authentication
-                            .changeFirstName(firstName)
+                            .changeFullName(fullName)
                             .then(() => {
                                 const {user, userData} = this.props;
 
@@ -408,15 +427,15 @@ class AccountEdit extends Component {
         );
     };
 
-    changeLastName = () => {
-        const {lastName} = this.state;
+    changePhoneNumber = () => {
+        const {phoneNumber} = this.state;
 
         const errors = validate(
             {
-                lastName: lastName,
+                phoneNumber: phoneNumber,
             },
             {
-                lastName: constraintsAuth.lastName,
+                phoneNumber: constraintsAuth.phoneNumber,
             }
         );
 
@@ -435,7 +454,7 @@ class AccountEdit extends Component {
             () => {
                 const {userData} = this.props;
 
-                if (lastName === userData.lastName) {
+                if (phoneNumber === userData.phone) {
                     return;
                 }
 
@@ -445,7 +464,7 @@ class AccountEdit extends Component {
                     },
                     () => {
                         authentication
-                            .changeLastName(lastName)
+                            .changePhoneNumber(phoneNumber)
                             .then(() => {
                                 const {user, userData} = this.props;
 
@@ -704,17 +723,17 @@ class AccountEdit extends Component {
         );
     };
 
-    changeEducation = () => {
-        const {education} = this.state;
-
+    changeDateBirth = (dateBirth) => {
         const errors = validate(
             {
-                education: education,
+                dateBirth: dateBirth,
             },
             {
-                education: constraintsAuth.education,
+                dateBirth: constraintsAuth.dateBirth,
             }
         );
+
+        console.log(dateBirth)
 
         if (errors) {
             this.setState({
@@ -731,7 +750,7 @@ class AccountEdit extends Component {
             () => {
                 const {user} = this.props;
 
-                if (education === user.education) {
+                if (dateBirth === user.dateBirth) {
                     return;
                 }
 
@@ -741,7 +760,7 @@ class AccountEdit extends Component {
                     },
                     () => {
                         authentication
-                            .changeEducation(education)
+                            .changeDateBirth(dateBirth)
                             .then(() => {
                                 const {user, userData} = this.props;
 
@@ -817,12 +836,12 @@ class AccountEdit extends Component {
 
     changeField = (fieldId) => {
         switch (fieldId) {
-            case "first-name":
-                this.changeFirstName();
+            case "full-name":
+                this.changeFullName();
                 return;
 
-            case "last-name":
-                this.changeLastName();
+            case "phone-number":
+                this.changePhoneNumber();
                 return;
 
             case "username":
@@ -835,10 +854,6 @@ class AccountEdit extends Component {
 
             case "about":
                 this.changeAbout();
-                return;
-
-            case "education":
-                this.changeEducation();
                 return;
 
             default:
@@ -931,15 +946,15 @@ class AccountEdit extends Component {
         });
     };
 
-    handleFirstNameChange = (event) => {
+    handleFullNameChange = (event) => {
         if (!event) {
             return;
         }
 
-        const firstName = event.target.value;
+        const fullName = event.target.value;
 
         this.setState({
-            firstName: firstName,
+            fullName: fullName,
         });
     };
 
@@ -967,15 +982,15 @@ class AccountEdit extends Component {
         });
     };
 
-    handleLastNameChange = (event) => {
+    handlePhoneNumberChange = (event) => {
         if (!event) {
             return;
         }
 
-        const lastName = event.target.value;
+        const phoneNumber = event.target.value;
 
         this.setState({
-            lastName: lastName,
+            phoneNumber: phoneNumber,
         });
     };
 
@@ -1003,6 +1018,22 @@ class AccountEdit extends Component {
         });
     };
 
+    handleDateBirthChange = (data) => {
+        this.changeDateBirth(getTime(data));
+        console.log(getTime(data));
+
+        this.setState({
+            dateBirth: data.toDateString(),
+        });
+    };
+
+    onCloseDateBirth = () => {
+        this.setState({
+            pickerDateBirth: false,
+            performingAction: false,
+        })
+    };
+
     render() {
         // Styling
         const {classes} = this.props;
@@ -1021,23 +1052,21 @@ class AccountEdit extends Component {
             loadingAvatar,
             avatar,
             avatarUrl,
-            firstName,
-            lastName,
+            fullName,
+            dateBirth,
+            phoneNumber,
             username,
             emailAddress,
             sentVerificationEmail,
             errors,
             password,
             passwordConfirmation,
-            about,
-            education,
         } = this.state;
 
-        const hasFirstName = userData && userData.firstName;
-        const hasLastName = userData && userData.lastName;
+        const hasFullName = userData && userData.fullName;
+        const hasPhoneNumber = userData && userData.phone;
         const hasUsername = userData && userData.username;
-        const hasAbout = userData && userData.about;
-        const hasEducation = userData && userData.education;
+        const hasDateBirth = userData && userData.dateBirth;
         const hasChangedPassword = userData && userData.lastPasswordChange;
 
         return (
@@ -1407,7 +1436,7 @@ class AccountEdit extends Component {
                                     variant="contained"
                                     onClick={this.uploadAvatar}
                                 >
-                                    Upload
+                                    Загрузить
                                 </Button>
                             )}
 
@@ -1429,7 +1458,7 @@ class AccountEdit extends Component {
                                             startIcon={<PhotoIcon/>}
                                             variant="contained"
                                         >
-                                            Choose...
+                                            Выбирать...
                                         </Button>
                                     </label>
                                 </>
@@ -1497,176 +1526,7 @@ class AccountEdit extends Component {
                             </ListItemIcon>
                         </Hidden>
 
-                        {!hasEducation && (
-                            <ListItemIcon>
-                                <Tooltip title="Нет информации об образовании">
-                                    <WarningIcon color="error"/>
-                                </Tooltip>
-                            </ListItemIcon>
-                        )}
-
-                        {showingField === "education" && (
-                            <Grid item xs={10} sm={10} md={10} lg={10}>
-                                <TextField
-                                    autoComplete="education"
-                                    autoFocus
-                                    disabled={performingAction}
-                                    error={!!(errors && errors.education)}
-                                    fullWidth
-                                    helperText={
-                                        errors && errors.education
-                                            ? errors.education[0]
-                                            : "Нажмите Enter, чтобы ифнормацию об образовании"
-                                    }
-                                    label="Об образовании"
-                                    multiline
-                                    placeholder={hasEducation && userData.education}
-                                    required
-                                    type="text"
-                                    value={education}
-                                    variant="filled"
-                                    InputLabelProps={{required: false}}
-                                    onBlur={this.hideFields}
-                                    onKeyDown={(event) => this.handleKeyDown(event, "education")}
-                                    onChange={this.handleEducationChange}
-                                />
-                            </Grid>
-                        )}
-
-                        {showingField !== "education" && (
-                            <>
-                                <Grid item xs={10} sm={10} md={10} lg={10}>
-                                    <ListItemText
-                                        primary="Об образовании"
-                                        secondary={
-                                            hasEducation
-                                                ? userData.education
-                                                : "Вы не указали информацию об образовании"
-                                        }
-                                    />
-                                </Grid>
-
-                                <ListItemSecondaryAction>
-                                    {hasEducation && (
-                                        <Tooltip title="Редактировать">
-                                            <div>
-                                                <IconButton
-                                                    disabled={performingAction}
-                                                    onClick={() => this.showField("education")}>
-                                                    <EditIcon/>
-                                                </IconButton>
-                                            </div>
-                                        </Tooltip>
-                                    )}
-
-                                    {!hasEducation && (
-                                        <Button
-                                            color="primary"
-                                            disabled={performingAction}
-                                            variant="contained"
-                                            onClick={() => this.showField("education")}
-                                        >
-                                            Добавить
-                                        </Button>
-                                    )}
-                                </ListItemSecondaryAction>
-                            </>
-                        )}
-                    </ListItem>
-
-                    <ListItem>
-                        <Hidden xsDown>
-                            <ListItemIcon>
-                                <PersonIcon/>
-                            </ListItemIcon>
-                        </Hidden>
-
-                        {!hasAbout && (
-                            <ListItemIcon>
-                                <Tooltip title="Нет информации о себе">
-                                    <WarningIcon color="error"/>
-                                </Tooltip>
-                            </ListItemIcon>
-                        )}
-
-                        {showingField === "about" && (
-                            <Grid item xs={10} sm={10} md={10} lg={10}>
-                                <TextField
-                                    autoComplete="about"
-                                    autoFocus
-                                    disabled={performingAction}
-                                    error={!!(errors && errors.about)}
-                                    fullWidth
-                                    helperText={
-                                        errors && errors.about
-                                            ? errors.about[0]
-                                            : "Нажмите Enter, чтобы рассказать о себе"
-                                    }
-                                    label="О себе"
-                                    multiline
-                                    placeholder={hasAbout && userData.about}
-                                    required
-                                    type="text"
-                                    value={about}
-                                    variant="filled"
-                                    InputLabelProps={{required: false}}
-                                    onBlur={this.hideFields}
-                                    onKeyDown={(event) => this.handleKeyDown(event, "about")}
-                                    onChange={this.handleAboutChange}
-                                />
-                            </Grid>
-                        )}
-
-                        {showingField !== "about" && (
-                            <>
-                                <Grid item xs={10} sm={10} md={10} lg={10}>
-                                    <ListItemText
-                                        primary="О себе"
-                                        secondary={
-                                            hasAbout
-                                                ? userData.about
-                                                : "Вы не указали информацию о себе"
-                                        }
-                                    />
-                                </Grid>
-
-                                <ListItemSecondaryAction>
-                                    {hasAbout && (
-                                        <Tooltip title="Редактировать">
-                                            <div>
-                                                <IconButton
-                                                    disabled={performingAction}
-                                                    onClick={() => this.showField("about")}
-                                                >
-                                                    <EditIcon/>
-                                                </IconButton>
-                                            </div>
-                                        </Tooltip>
-                                    )}
-
-                                    {!hasAbout && (
-                                        <Button
-                                            color="primary"
-                                            disabled={performingAction}
-                                            variant="contained"
-                                            onClick={() => this.showField("about")}
-                                        >
-                                            Добавить
-                                        </Button>
-                                    )}
-                                </ListItemSecondaryAction>
-                            </>
-                        )}
-                    </ListItem>
-
-                    <ListItem>
-                        <Hidden xsDown>
-                            <ListItemIcon>
-                                <PersonIcon/>
-                            </ListItemIcon>
-                        </Hidden>
-
-                        {!hasFirstName && (
+                        {!hasFullName && (
                             <ListItemIcon>
                                 <Tooltip title="Нет имени">
                                     <WarningIcon color="error"/>
@@ -1674,49 +1534,49 @@ class AccountEdit extends Component {
                             </ListItemIcon>
                         )}
 
-                        {showingField === "first-name" && (
+                        {showingField === "full-name" && (
                             <TextField
-                                autoComplete="given-name"
+                                autoComplete="full-name"
                                 autoFocus
                                 disabled={performingAction}
-                                error={!!(errors && errors.firstName)}
+                                error={!!(errors && errors.fullName)}
                                 fullWidth
                                 helperText={
-                                    errors && errors.firstName
-                                        ? errors.firstName[0]
-                                        : "Нажмите Enter, чтобы изменить свое имя"
+                                    errors && errors.fullName
+                                        ? errors.fullName[0]
+                                        : "Нажмите Enter, чтобы изменить ФИО"
                                 }
                                 label="Имя"
-                                placeholder={hasFirstName && userData.firstName}
+                                placeholder={hasFullName && userData.fullName}
                                 required
                                 type="text"
-                                value={firstName}
+                                value={fullName}
                                 variant="filled"
                                 InputLabelProps={{required: false}}
                                 onBlur={this.hideFields}
-                                onKeyDown={(event) => this.handleKeyDown(event, "first-name")}
-                                onChange={this.handleFirstNameChange}
+                                onKeyDown={(event) => this.handleKeyDown(event, "full-name")}
+                                onChange={this.handleFullNameChange}
                             />
                         )}
 
-                        {showingField !== "first-name" && (
+                        {showingField !== "full-name" && (
                             <>
                                 <ListItemText
-                                    primary="Имя"
+                                    primary="ФИО"
                                     secondary={
-                                        hasFirstName
-                                            ? userData.firstName
-                                            : "Вы не указали ваше имя"
+                                        hasFullName
+                                            ? userData.fullName
+                                            : "Вы не указали ФИО"
                                     }
                                 />
 
                                 <ListItemSecondaryAction>
-                                    {hasFirstName && (
+                                    {hasFullName && (
                                         <Tooltip title="Редактировать">
                                             <div>
                                                 <IconButton
                                                     disabled={performingAction}
-                                                    onClick={() => this.showField("first-name")}
+                                                    onClick={() => this.showField("full-name")}
                                                 >
                                                     <EditIcon/>
                                                 </IconButton>
@@ -1724,12 +1584,12 @@ class AccountEdit extends Component {
                                         </Tooltip>
                                     )}
 
-                                    {!hasFirstName && (
+                                    {!hasFullName && (
                                         <Button
                                             color="primary"
                                             disabled={performingAction}
                                             variant="contained"
-                                            onClick={() => this.showField("first-name")}
+                                            onClick={() => this.showField("full-name")}
                                         >
                                             Добавить
                                         </Button>
@@ -1742,11 +1602,11 @@ class AccountEdit extends Component {
                     <ListItem>
                         <Hidden xsDown>
                             <ListItemIcon>
-                                <PersonIcon/>
+                                <PhoneIcon/>
                             </ListItemIcon>
                         </Hidden>
 
-                        {!hasLastName && (
+                        {!hasPhoneNumber && (
                             <ListItemIcon>
                                 <Tooltip title="Нет фамилии">
                                     <WarningIcon color="error"/>
@@ -1754,49 +1614,52 @@ class AccountEdit extends Component {
                             </ListItemIcon>
                         )}
 
-                        {showingField === "last-name" && (
+                        {showingField === "phone-number" && (
                             <TextField
-                                autoComplete="family-name"
+                                autoComplete="phone-number"
                                 autoFocus
                                 disabled={performingAction}
-                                error={!!(errors && errors.lastName)}
+                                error={!!(errors && errors.phoneNumber)}
                                 fullWidth
                                 helperText={
-                                    errors && errors.lastName
-                                        ? errors.lastName[0]
-                                        : "Нажмите Enter, чтобы изменить свою фамилию"
+                                    errors && errors.phoneNumber
+                                        ? errors.phoneNumber[0]
+                                        : "Нажмите Enter, чтобы изменить телефон"
                                 }
-                                label="Фамилия"
-                                placeholder={hasLastName && userData.lastName}
+                                label="Телефон"
+                                placeholder={hasPhoneNumber && userData.phone}
                                 required
-                                type="text"
-                                value={lastName}
+                                type="number"
+                                value={phoneNumber}
                                 variant="filled"
                                 InputLabelProps={{required: false}}
                                 onBlur={this.hideFields}
-                                onKeyDown={(event) => this.handleKeyDown(event, "last-name")}
-                                onChange={this.handleLastNameChange}
+                                onKeyDown={(event) => this.handleKeyDown(event, "phone-number")}
+                                onChange={this.handlePhoneNumberChange}
+                                onInput={(e) => {
+                                    e.target.value && (e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 11))
+                                }}
                             />
                         )}
 
-                        {showingField !== "last-name" && (
+                        {showingField !== "phone-number" && (
                             <>
                                 <ListItemText
-                                    primary="Фамилия"
+                                    primary="Телефон"
                                     secondary={
-                                        hasLastName
-                                            ? userData.lastName
-                                            : "Вы не указали вашу фамилию"
+                                        hasPhoneNumber
+                                            ? userData.phone
+                                            : "Вы не указали ваш телефон"
                                     }
                                 />
 
                                 <ListItemSecondaryAction>
-                                    {hasLastName && (
+                                    {hasPhoneNumber && (
                                         <Tooltip title="Редактировать">
                                             <div>
                                                 <IconButton
                                                     disabled={performingAction}
-                                                    onClick={() => this.showField("last-name")}
+                                                    onClick={() => this.showField("phone-number")}
                                                 >
                                                     <EditIcon/>
                                                 </IconButton>
@@ -1804,12 +1667,12 @@ class AccountEdit extends Component {
                                         </Tooltip>
                                     )}
 
-                                    {!hasLastName && (
+                                    {!hasPhoneNumber && (
                                         <Button
                                             color="primary"
                                             disabled={performingAction}
                                             variant="contained"
-                                            onClick={() => this.showField("last-name")}
+                                            onClick={() => this.showField("phone-number")}
                                         >
                                             Добавить
                                         </Button>
@@ -1822,61 +1685,50 @@ class AccountEdit extends Component {
                     <ListItem>
                         <Hidden xsDown>
                             <ListItemIcon>
-                                <PersonOutlineIcon/>
+                                <CalendarIcon/>
                             </ListItemIcon>
                         </Hidden>
 
-                        {!hasUsername && (
+                        {!hasDateBirth && (
                             <ListItemIcon>
-                                <Tooltip title="Нет никнейма">
+                                <Tooltip title="Не указана дата рождения">
                                     <WarningIcon color="error"/>
                                 </Tooltip>
                             </ListItemIcon>
                         )}
 
-                        {showingField === "username" && (
-                            <TextField
-                                autoComplete="username"
-                                autoFocus
-                                disabled={performingAction}
-                                error={!!(errors && errors.username)}
-                                fullWidth
-                                helperText={
-                                    errors && errors.username
-                                        ? errors.username[0]
-                                        : "Нажмите Enter, чтобы изменить свой никнейм."
-                                }
-                                label="Никнейм"
-                                placeholder={hasUsername && userData.username}
-                                required
-                                type="text"
-                                value={username}
-                                variant="filled"
-                                InputLabelProps={{required: false}}
-                                onBlur={this.hideFields}
-                                onKeyDown={(event) => this.handleKeyDown(event, "username")}
-                                onChange={this.handleUsernameChange}
-                            />
+                        {showingField === "dateBirth" && (
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <DatePicker value={dateBirth}
+                                            onClick={() => this.setState({
+                                                pickerDateBirth: true
+                                            })}
+                                            onClose={() => this.onCloseDateBirth}
+                                            open={this.state.pickerDateBirth}
+                                            value={this.state.dateBirth}
+                                            onChange={this.handleDateBirthChange}
+                                />
+                            </MuiPickersUtilsProvider>
                         )}
 
-                        {showingField !== "username" && (
+                        {showingField !== "dateBirth" && (
                             <>
                                 <ListItemText
-                                    primary="Никнейм"
+                                    primary="Дата рождения"
                                     secondary={
-                                        hasUsername
-                                            ? userData.username
-                                            : "Вы не указали ваш никнейм"
+                                        hasDateBirth
+                                            ? (new Date(userData.dateBirth).toDateString())
+                                            : "Вы не указали дату рождения"
                                     }
                                 />
 
                                 <ListItemSecondaryAction>
-                                    {hasUsername && (
+                                    {hasDateBirth && (
                                         <Tooltip title="Редактировать">
                                             <div>
                                                 <IconButton
                                                     disabled={performingAction}
-                                                    onClick={() => this.showField("username")}
+                                                    onClick={() => this.showField("dateBirth")}
                                                 >
                                                     <EditIcon/>
                                                 </IconButton>
@@ -1884,14 +1736,14 @@ class AccountEdit extends Component {
                                         </Tooltip>
                                     )}
 
-                                    {!hasUsername && (
+                                    {!hasDateBirth && (
                                         <Button
                                             color="primary"
                                             disabled={performingAction}
                                             variant="contained"
-                                            onClick={() => this.showField("username")}
+                                            onClick={() => this.showField("dateBirth")}
                                         >
-                                            Add
+                                            Добавить
                                         </Button>
                                     )}
                                 </ListItemSecondaryAction>
@@ -2034,7 +1886,7 @@ class AccountEdit extends Component {
                                         ? errors.password[0]
                                         : "Нажмите Enter, чтобы изменить пароль"
                                 }
-                                label="Password"
+                                label="Пароль"
                                 required
                                 type="password"
                                 value={password}
@@ -2126,7 +1978,7 @@ class AccountEdit extends Component {
 
                         <Hidden xsDown>
                             <ListItemText
-                                primary="Вход"
+                                primary="Активная сессия"
                                 secondary={moment(user.metadata.lastSignInTime).format("LLLL")}
                             />
                         </Hidden>

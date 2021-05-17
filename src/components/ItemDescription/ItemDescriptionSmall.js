@@ -4,7 +4,6 @@ import React from "react";
 import classNames from "classnames";
 import {makeStyles} from "@material-ui/core/styles";
 import styles from "assets/jss/material-kit-react/components/profileAboutOrder.js";
-import Typography from "@material-ui/core/Typography";
 // core components
 import {Link as RouterLink} from "react-router-dom";
 import {Link} from "@material-ui/core";
