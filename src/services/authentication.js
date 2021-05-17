@@ -692,6 +692,47 @@ authentication.changeFullName = (fullName) => {
     });
 };
 
+authentication.changeOther = (value, fieldId) => {
+    return new Promise((resolve, reject) => {
+        if (!value) {
+            reject(new Error("No value"));
+
+            return;
+        }
+
+        const currentUser = auth.currentUser;
+
+        if (!currentUser) {
+            reject(new Error("No current user"));
+
+            return;
+        }
+
+        const uid = currentUser.uid;
+
+        if (!uid) {
+            reject(new Error("No UID"));
+
+            return;
+        }
+
+        const userDocumentReference = firestore.collection("users").doc(uid);
+
+        userDocumentReference
+            .update({
+                [fieldId]: value,
+            })
+            .then((value) => {
+                analytics.logEvent("change_value_by_fieldId");
+
+                resolve(value);
+            })
+            .catch((reason) => {
+                reject(reason);
+            });
+    });
+};
+
 authentication.changePhoneNumber = (phoneNumber) => {
     return new Promise((resolve, reject) => {
         if (!phoneNumber) {
