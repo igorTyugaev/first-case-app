@@ -1,26 +1,21 @@
-import React, {Component, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 
-import {makeStyles, withStyles} from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 
-import AccountView from "../AccountView";
 import Card from "../../components/Card/Card";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import CardHeader from "../../components/Card/CardHeader";
-import OrderList from "../../components/RecommendationsList/OrderList";
 import {firestore} from "../../firebase";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import orders from "../../services/orders";
 import EmptyState from "../EmptyState";
 import {ReactComponent as NoDataIllustration} from "../../illustrations/no-data.svg";
 import {ReactComponent as ErrorIllustration} from "../../illustrations/error.svg";
-import {Box, Fab, ListItem} from "@material-ui/core";
+import {Box, Breadcrumbs, Container, Fab} from "@material-ui/core";
 import {Refresh as RefreshIcon} from "@material-ui/icons";
 import Loader from "../Loader";
-import OrdersFilter from "../../components/OrdersFilter/OrdersFilter";
-import List from "@material-ui/core/List";
-import OrderItem from "../../components/RecommendationsItem/OrderItem";
 import OrderView from "../OrderView";
 
 const useStyles = makeStyles((theme) => ({
@@ -97,7 +92,15 @@ function OrderPage(props) {
 
     if (order) {
         return (
+
             <Grid item container xs={12} sm={12} md={10} lg={8} className={classes.root}>
+                <Container>
+                    <Breadcrumbs aria-label="breadcrumb">
+                        <Link color="inherit" to={"/orders"}>
+                            Все заказы
+                        </Link>
+                    </Breadcrumbs>
+                </Container>
                 <Card>
                     <CardHeader color="success">
                         <Typography color="initial" variant="h4" component="h4" align="left">

@@ -8,14 +8,14 @@ import HomePage from "../HomePage";
 import NotFoundPage from "../NotFoundPage";
 import SettingsPage from "../SettingsPage";
 import Components from "../../views/Components/Components";
-import OrderList from "../../components/RecommendationsList/OrderList";
-import MentorForCustomerList from "../../components/RecommendationsList/MentorForCustomerList";
+import ProfilesList from "../../components/RecommendationsList/ProfilesList";
 import ProfilePage from "../ProfilePage";
 import AddOrderPage from "../AddOrderPage";
 import UserForm from "../../views/UserForm/UserForm";
 import LandingPage from "../../views/LandingPage/LandingPage";
 import CreateOrderPage from "../CreateOrderPage";
 import OrderPage from "../OrderPage/OrderPage";
+import OrderList from "../../components/RecommendationsList/OrderList";
 
 class Router extends Component {
     render() {
@@ -55,8 +55,7 @@ class Router extends Component {
                     </Route>
 
                     <Route path="/people/">
-                        {user ? <MentorForCustomerList theme={theme} userData={userData} user={user}
-                                                       openSnackbar={openSnackbar}/> :
+                        {user ? <ProfilesList theme={theme} user={user} userData={userData} openSnackbar={openSnackbar}/> :
                             <Redirect to="/"/>}
                     </Route>
 

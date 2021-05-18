@@ -8,8 +8,7 @@ import authentication from "../../services/authentication";
 
 import UserForm from "../../views/UserForm/UserForm";
 import OrderList from "../../components/RecommendationsList/OrderList";
-import MentorForCustomerList from "../../components/RecommendationsList/MentorForCustomerList";
-
+import ProfilesList from "../../components/RecommendationsList/ProfilesList";
 
 class HomePage extends Component {
     signInWithEmailLink = () => {
@@ -82,8 +81,8 @@ class HomePage extends Component {
             );
         } else if (userData && userData.isProfileComplete && userData.role) {
             return (
-                <MentorForCustomerList theme={theme} userData={userData} user={user}
-                                       openSnackbar={openSnackbar}/>
+                <ProfilesList theme={theme} userData={userData} user={user}
+                              openSnackbar={openSnackbar}/>
             );
         } else {
             return (

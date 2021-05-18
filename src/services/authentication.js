@@ -1264,7 +1264,7 @@ authentication.getNameInitials = (fields) => {
         const fullNameArray = fullName.split(" ");
         const firstName = fullNameArray[0];
         const lastName = fullNameArray[1];
-        const fullNameLatter = `${firstName ? (firstName.charAt(0)) : ""}` + `${lastName ? (lastName.charAt(0)) : ""}`;
+        const fullNameLatter = `${firstName ? (firstName.charAt(0)) : ""}${lastName ? (lastName.charAt(0)) : ""}`;
 
         return fullNameLatter;
     }

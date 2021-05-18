@@ -7,7 +7,7 @@ import Header from "../../components/Header/Header";
 import HeaderLinksProfile from "../../components/Header/HeaderLinksProfile";
 import classNames from "classnames";
 import Footer from "../../components/Footer/Footer";
-import MentorForCustomerList from "../../components/ExecutorList/MentorForCustomerList";
+import MentorForCustomerList from "../../components/ExecutorList/ProfilesList";
 
 const dashboardRoutes = [];
 const useStyles = makeStyles(styles);

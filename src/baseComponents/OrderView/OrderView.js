@@ -1,18 +1,11 @@
 import React, {Component} from "react";
 
-import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core/styles";
 
 import {
-    Grid,
     Typography,
     Box,
-    Fade,
-    CircularProgress,
-    Badge,
-    Avatar,
-    Hidden,
-    Divider, Container, Link,
+    Container,
 } from "@material-ui/core";
 
 import {
@@ -20,7 +13,6 @@ import {
 } from "@material-ui/icons";
 
 import authentication from "../../services/authentication";
-import ChipsArray from "../ChipsArray/ChipsArray";
 
 const styles = (theme) => ({
     dialogContent: {
@@ -149,7 +141,6 @@ class OrderView extends Component {
                         </>
                     )}
 
-
                     {(order && order.price) && (
                         <>
                             <Typography color="initial" variant="h4" component="h4" align="left" gutterBottom>
@@ -162,11 +153,8 @@ class OrderView extends Component {
                             </div>
                         </>
                     )}
-
                 </Box>
             </Container>
-
-
         );
     }
 

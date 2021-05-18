@@ -7,7 +7,7 @@ import Header from "../../components/Header/Header";
 import HeaderLinksProfile from "../../components/Header/HeaderLinksProfile";
 import classNames from "classnames";
 import Footer from "../../components/Footer/Footer";
-import StudentItem from "../../components/RecommendationsItem/StudentItem";
+import StudentItem from "../../components/Items/StudentItem";
 import {v4 as uuid} from "uuid";
 import profile from "../../assets/img/faces/christian.jpg";
 import GridItem from "../../components/Grid/GridItem";
@@ -15,7 +15,7 @@ import Card from "../../components/Card/Card";
 import CardHeader from "../../components/Card/CardHeader";
 import List from "@material-ui/core/List";
 import {ListItem} from "@material-ui/core";
-import MentorItem from "../../components/RecommendationsItem/MentorItem";
+import MentorItem from "../../components/Items/MentorItem";
 
 const dashboardRoutes = [];
 const useStyles = makeStyles(styles);
