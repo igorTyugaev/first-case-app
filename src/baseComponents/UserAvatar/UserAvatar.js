@@ -1,122 +1,171 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 
 import PropTypes from "prop-types";
 
-import { withStyles } from "@material-ui/core/styles";
+import {withStyles} from "@material-ui/core/styles";
 
-import { Avatar, ListItemAvatar } from "@material-ui/core";
+import {Avatar, ListItemAvatar, Typography} from "@material-ui/core";
 
 import {
-  AccountCircle as AccountCircleIcon,
-  Person as PersonIcon,
+    AccountCircle as AccountCircleIcon,
+    Person as PersonIcon,
 } from "@material-ui/icons";
 
 import authentication from "../../services/authentication";
 
 const styles = (theme) => ({
-  nameInitials: {
-    cursor: "default",
-  },
+    nameInitials: {
+        cursor: "default",
+        wordSpacing: "1px",
+    },
+
+    avatar: {
+        marginRight: "auto",
+        marginLeft: "auto",
+
+        width: theme.spacing(14),
+        height: theme.spacing(14),
+    },
+
+    personIcon: {
+        fontSize: theme.spacing(7),
+    },
 });
 
 class UserAvatar extends Component {
-  render() {
-    // Styling
-    const { classes } = this.props;
+    getNameInitialsOrIcon = (fullName) => {
+        if (!fullName) {
+            return null;
+        }
 
-    // Properties
-    const { context, user, defaultCursor } = this.props;
+        const {classes} = this.props;
 
-    if (context === "standalone") {
-      if (!user) {
-        return <AccountCircleIcon />;
-      }
+        const fullNameArray = fullName.split(" ");
+        const firstName = fullNameArray[0];
+        const lastName = fullNameArray[1];
+        const nameInitials = `${firstName ? (firstName.charAt(0)) : ""}${lastName ? (lastName.charAt(0)) : ""}`;
 
-      const photoUrl = user.photoURL;
+        if (nameInitials) {
+            return (
+                <Typography className={classes.nameInitials} variant="h3">
+                    {nameInitials}
+                </Typography>
+            );
+        }
 
-      if (photoUrl) {
-        return <Avatar alt="Avatar" src={photoUrl} />;
-      }
+        return <PersonIcon className={classes.personIcon}/>;
+    };
 
-      const nameInitials = authentication.getNameInitials({
-        ...user,
-      });
+    render() {
+        // Styling
+        const {classes} = this.props;
 
-      if (nameInitials) {
-        return (
-          <Avatar alt="Avatar">
+        // Properties
+        const {context, user, defaultCursor, title} = this.props;
+
+        if (context === "standalone") {
+            if (!user) {
+                return <AccountCircleIcon/>;
+            }
+
+            const photoUrl = user.photoURL;
+
+            if (photoUrl) {
+                return <Avatar alt="Avatar" src={photoUrl}/>;
+            }
+
+            const nameInitials = authentication.getNameInitials({
+                ...user,
+            });
+
+            if (nameInitials) {
+                return (
+                    <Avatar alt="Avatar">
             <span className={defaultCursor && classes.nameInitials}>
               {nameInitials}
             </span>
-          </Avatar>
-        );
-      }
+                    </Avatar>
+                );
+            }
 
-      return <AccountCircleIcon />;
-    }
+            return (
+                <Avatar alt="Avatar">
+                    <PersonIcon/>
+                </Avatar>
+            );
+        }
 
-    if (context === "list") {
-      if (!user) {
-        return (
-          <ListItemAvatar>
-            <Avatar>
-              <PersonIcon />
-            </Avatar>
-          </ListItemAvatar>
-        );
-      }
+        if (context === "list") {
+            if (!user) {
+                return (
+                    <ListItemAvatar>
+                        <Avatar>
+                            <PersonIcon/>
+                        </Avatar>
+                    </ListItemAvatar>
+                );
+            }
 
-      const photoUrl = user.photoURL;
+            const photoUrl = user.photoURL;
 
-      if (photoUrl) {
-        return (
-          <ListItemAvatar>
-            <Avatar alt="Avatar" src={photoUrl} />
-          </ListItemAvatar>
-        );
-      }
+            if (photoUrl) {
+                return (
+                    <ListItemAvatar>
+                        <Avatar alt="Avatar" src={photoUrl}/>
+                    </ListItemAvatar>
+                );
+            }
 
-      const nameInitials = authentication.getNameInitials({
-        ...user,
-      });
+            const nameInitials = authentication.getNameInitials({
+                ...user,
+            });
 
-      if (nameInitials) {
-        return (
-          <ListItemAvatar>
-            <Avatar alt="Avatar">
+            if (nameInitials) {
+                return (
+                    <ListItemAvatar>
+                        <Avatar alt="Avatar">
               <span className={defaultCursor && classes.nameInitials}>
                 {nameInitials}
               </span>
-            </Avatar>
-          </ListItemAvatar>
-        );
-      }
+                        </Avatar>
+                    </ListItemAvatar>
+                );
+            }
 
-      return (
-        <ListItemAvatar>
-          <Avatar>
-            <PersonIcon />
-          </Avatar>
-        </ListItemAvatar>
-      );
+            return (
+                <ListItemAvatar>
+                    <Avatar>
+                        <PersonIcon/>
+                    </Avatar>
+                </ListItemAvatar>
+            );
+        }
+
+        if (context === "card") {
+            return (
+                <Avatar alt="Avatar" className={classes.avatar}>
+                    {this.getNameInitialsOrIcon(title)}
+                </Avatar>
+            );
+
+        }
+
+        return null;
     }
-
-    return null;
-  }
 }
 
 UserAvatar.defaultProps = {
-  context: "standalone",
+    context: "standalone",
 };
 
 UserAvatar.propTypes = {
-  // Styling
-  classes: PropTypes.object.isRequired,
+    // Styling
+    classes: PropTypes.object.isRequired,
 
-  // Properties
-  context: PropTypes.string,
-  user: PropTypes.object.isRequired,
-  defaultCursor: PropTypes.bool,
+    // Properties
+    context: PropTypes.string,
+    user: PropTypes.object,
+    defaultCursor: PropTypes.bool,
 };
 
 export default withStyles(styles)(UserAvatar);

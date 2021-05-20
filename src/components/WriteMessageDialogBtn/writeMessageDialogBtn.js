@@ -5,17 +5,15 @@ import styles from "assets/jss/material-kit-react/components/offerActions.js";
 import Button from "../CustomButtons/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import IconButton from "@material-ui/core/IconButton";
-import Close from "@material-ui/icons/Close";
+
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Slide from "@material-ui/core/Slide";
 import {Container} from "@material-ui/core";
 import classNames from "classnames";
 import CustomInput from "../CustomInput/CustomInput";
-import GridContainer from "../Grid/GridContainer";
 
-const dashboardRoutes = [];
+
 const useStyles = makeStyles(styles);
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -26,7 +24,6 @@ Transition.displayName = "Transition";
 
 export default function WriteMessageDialogBtn(props) {
     const classes = useStyles();
-    const {...rest} = props;
     const [classicModal, setClassicModal] = React.useState(false);
 
     return (

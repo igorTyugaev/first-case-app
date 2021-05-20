@@ -4,6 +4,68 @@ import moment from "moment";
 
 const orders = {};
 
+orders.updateOrder = (values, orderId) => {
+    return new Promise((resolve, reject) => {
+        if (!values) {
+            reject(new Error("No values"));
+            return;
+        }
+
+        const currentUser = auth.currentUser;
+
+        if (!currentUser) {
+            reject(new Error("No current user"));
+            return;
+        }
+
+        const uid = currentUser.uid;
+
+        if (!uid) {
+            reject(new Error("No UID"));
+            return;
+        }
+
+        const collectionReference = firestore.collection("orders");
+        const orderDocumentReference = (orderId) ? (collectionReference.doc(orderId)) : (collectionReference.doc());
+
+        if (orderId) {
+            orderDocumentReference
+                .update({
+                    name: values.name,
+                    description: values.description,
+                    tags: values.tags,
+                    deadline: values.deadline,
+                    price: values.price,
+                    author: uid,
+                })
+                .then((value) => {
+                    analytics.logEvent("change_order");
+                    resolve(value);
+                })
+                .catch((reason) => {
+                    reject(reason);
+                });
+        } else {
+            orderDocumentReference
+                .set({
+                    name: values.name,
+                    description: values.description,
+                    tags: values.tags,
+                    deadline: values.deadline,
+                    price: values.price,
+                    author: uid,
+                })
+                .then((value) => {
+                    analytics.logEvent("change_order");
+                    resolve(value);
+                })
+                .catch((reason) => {
+                    reject(reason);
+                });
+        }
+    });
+};
+
 orders.changeTitle = (title, uidOrder = null) => {
     return new Promise((resolve, reject) => {
         if (!title) {
@@ -43,7 +105,7 @@ orders.changeTitle = (title, uidOrder = null) => {
     });
 };
 
-orders.getOrder = (orderId, context) => {
+orders.getOrder = (orderId, setOrder) => {
     firestore
         .collection("orders")
         .doc(orderId)
@@ -55,9 +117,11 @@ orders.getOrder = (orderId, context) => {
                     return;
                 }
 
-                context.setState({
-                    order: data,
-                });
+                setOrder(data);
+
+                // context.setState({
+                //     order: data,
+                // });
             },
             (error) => {
                 this.resetState(() => {
@@ -73,7 +137,6 @@ orders.getOrder = (orderId, context) => {
             }
         );
 }
-
 
 orders.signUp = (fields) => {
     return new Promise((resolve, reject) => {

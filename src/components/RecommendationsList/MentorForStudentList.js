@@ -19,7 +19,7 @@ import {
     ListItemText
 } from '@material-ui/core';
 import profile from "../../assets/img/faces/christian.jpg";
-import MentorItem from "../RecommendationsItem/MentorItem";
+import MentorItem from "../Items/MentorItem";
 
 const mentors = [
     {

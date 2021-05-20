@@ -83,20 +83,20 @@ class DeleteAccountDialog extends Component {
         onKeyPress={this.handleKeyPress}
         onExited={this.handleExited}
       >
-        <DialogTitle>Delete account?</DialogTitle>
+        <DialogTitle>Удалить аккаунт?</DialogTitle>
 
         <DialogContent>
           <Box mb={hasUsername ? 2 : 0}>
             <DialogContentText>
-              Deleted accounts can’t be recovered. All data associated with your
-              account will be deleted.
+              Удаленные аккаунты не подлежат восстановлению. Все данные, связанные с вашим
+              аккаунт будет удален.
             </DialogContentText>
 
             {hasUsername && (
               <DialogContentText>
-                Type your username and <Hidden xsDown>click</Hidden>
-                <Hidden smUp>tap</Hidden> Delete to delete your account. This
-                action is irreversible.
+                Введите свое имя пользователя и <Hidden xsDown>нажмите на</Hidden>
+                <Hidden smUp>tap</Hidden> Удалить, чтобы удалить вашу учетную запись. Этот
+                действие необратимо.
               </DialogContentText>
             )}
           </Box>
@@ -125,7 +125,7 @@ class DeleteAccountDialog extends Component {
             disabled={performingAction}
             onClick={dialogProps.onClose}
           >
-            Cancel
+            Отмена
           </Button>
           <Button
             color="secondary"
@@ -136,7 +136,7 @@ class DeleteAccountDialog extends Component {
             variant="contained"
             onClick={deleteAccount}
           >
-            Delete
+            Удалить
           </Button>
         </DialogActions>
       </Dialog>

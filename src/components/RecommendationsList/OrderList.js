@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-// @material-ui/core components
 import {makeStyles} from "@material-ui/core/styles";
 import styles from "assets/jss/material-kit-react/views/executors.js";
 // core components
@@ -7,58 +6,20 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import List from "@material-ui/core/List";
 
-import {v4 as uuid} from 'uuid';
 import {
-    Box, Breadcrumbs,
-    Fab, Link,
+    Box,
+    Fab,
     ListItem,
 } from '@material-ui/core';
-import profile from "../../assets/img/faces/christian.jpg";
-import OrderItem from "../RecommendationsItem/OrderItem";
 import Grid from "@material-ui/core/Grid";
 import {firestore} from "../../firebase";
 import EmptyState from "../../baseComponents/EmptyState";
 import {ReactComponent as ErrorIllustration} from "../../illustrations/error.svg";
-import {Home as HomeIcon, Refresh as RefreshIcon} from "@material-ui/icons";
+import {Refresh as RefreshIcon} from "@material-ui/icons";
 import {ReactComponent as NoDataIllustration} from "../../illustrations/no-data.svg";
 import Loader from "../../baseComponents/Loader";
 import OrdersFilter from "./../../components/OrdersFilter/OrdersFilter";
-
-const products = [
-    {
-        id: uuid(),
-        name: 'Многопоточный парсер данных',
-        imageUrl: {profile},
-        desc:
-            "Парсер позволяет собирать: ссылки, населенный пункт, заголовок, описание, имя продавца и стоимость. Собираются данные организаций и юридических лиц. \n" +
-            "Для многопоточной работы программы необходимо отдельно приобрести прокси: IP4 прокси (https или socks) \n" +
-            "Для разгадывания капчи нужен ключ от сервиса распознавания. Поддерживается Рукапча."
-    },
-    {
-        id: uuid(),
-        name: 'Medium Corporation',
-        imageUrl: "../../assets/img/faces/christian.jpg",
-        desc: "moment().subtract(2, 'hours')"
-    },
-    {
-        id: uuid(),
-        name: 'Slack',
-        imageUrl: '/static/images/products/product_3.png',
-        desc: "moment().subtract(3, 'hours')"
-    },
-    {
-        id: uuid(),
-        name: 'Lyft',
-        imageUrl: '/static/images/products/product_4.png',
-        desc: "moment().subtract(5, 'hours')"
-    },
-    {
-        id: uuid(),
-        name: 'GitHub',
-        imageUrl: '/static/images/products/product_5.png',
-        desc: "moment().subtract(9, 'hours')"
-    }
-];
+import OrderItem from "../Items/Order/OrderItem";
 
 const useStyles = makeStyles((theme) => ({
     styles,
@@ -73,6 +34,7 @@ function OrderList(props) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const classes = useStyles();
+
     const useItems = () => {
         const [items, setItems] = useState([])
         useEffect(() => {
@@ -99,14 +61,14 @@ function OrderList(props) {
         }, [])
         return items
     }
-    const products = useItems();
+    const orders = useItems();
 
     if (error) {
         return (
             <EmptyState
                 image={<ErrorIllustration/>}
-                title="Couldn’t retrieve user."
-                description="Something went wrong when trying to retrieve the requested user."
+                title="Не удалось получить пользователя."
+                description="Что-то пошло не так при попытке получить пользователя."
                 button={
                     <Fab
                         variant="extended"
@@ -116,7 +78,7 @@ function OrderList(props) {
                         <Box clone mr={1}>
                             <RefreshIcon/>
                         </Box>
-                        Retry
+                        Повторить
                     </Fab>
                 }
             />
@@ -127,7 +89,7 @@ function OrderList(props) {
         return <Loader/>;
     }
 
-    if (products.length >= 1) {
+    if (orders.length >= 1) {
         return (
             <Grid item container xs={12} sm={12} md={10} lg={8} className={classes.root}>
                 <Card>
@@ -139,11 +101,11 @@ function OrderList(props) {
                     </CardHeader>
                     <OrdersFilter/>
                     <List>
-                        {products.map((product, i) => (
+                        {orders.map((order, i) => (
                             <ListItem
-                                divider={i < products.length - 1}
-                                key={product.id}>
-                                <OrderItem product={product}/>
+                                divider={i < orders.length - 1}
+                                key={order.id}>
+                                <OrderItem order={order}/>
                             </ListItem>
                         ))}
                     </List>

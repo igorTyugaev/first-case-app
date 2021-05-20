@@ -86,7 +86,7 @@ class Bar extends Component {
             },
 
             {
-                name: "Настройки",
+                name: "Ред. профиль",
                 to: user ? `/settings/` : null,
             },
 
@@ -97,7 +97,7 @@ class Bar extends Component {
 
             {
                 name: "Исполнители",
-                to: user ? `/people/${user.uid}` : null,
+                to: user ? `/people/` : null,
             },
 
             {
@@ -108,6 +108,11 @@ class Bar extends Component {
             {
                 name: "Форма",
                 to: user ? `/form/` : null,
+            },
+
+            {
+                name: "Добавить заказ",
+                to: user ? `/create_order/` : null,
             },
 
             {
