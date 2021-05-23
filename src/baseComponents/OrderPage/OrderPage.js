@@ -92,7 +92,6 @@ function OrderPage(props) {
 
     if (order) {
         return (
-
             <Grid item container xs={12} sm={12} md={10} lg={8} className={classes.root}>
                 <Container>
                     <Breadcrumbs aria-label="breadcrumb">

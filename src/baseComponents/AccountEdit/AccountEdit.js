@@ -2218,7 +2218,7 @@ class AccountEdit extends Component {
                         </ListItem>
                     )}
 
-                    {(userData.role.toLowerCase() === "mentor") && (
+                    {userData.role && (userData.role.toLowerCase() === "mentor") && (
                         <ListItem>
                             <Hidden xsDown>
                                 <ListItemIcon>

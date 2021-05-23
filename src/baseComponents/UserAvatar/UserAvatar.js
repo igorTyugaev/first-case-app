@@ -61,7 +61,7 @@ class UserAvatar extends Component {
         const {classes} = this.props;
 
         // Properties
-        const {context, user, defaultCursor, title} = this.props;
+        const {context, user, userData, defaultCursor, title} = this.props;
 
         if (context === "standalone") {
             if (!user) {
@@ -76,6 +76,7 @@ class UserAvatar extends Component {
 
             const nameInitials = authentication.getNameInitials({
                 ...user,
+                ...userData,
             });
 
             if (nameInitials) {
@@ -118,6 +119,7 @@ class UserAvatar extends Component {
 
             const nameInitials = authentication.getNameInitials({
                 ...user,
+                ...userData
             });
 
             if (nameInitials) {
@@ -141,13 +143,22 @@ class UserAvatar extends Component {
             );
         }
 
+
         if (context === "card") {
+            if (user) {
+                const photoUrl = userData.avatar;
+
+                if (photoUrl) {
+                    return <Avatar alt="Avatar" src={photoUrl} className={classes.avatar}/>;
+                }
+
+            }
+
             return (
                 <Avatar alt="Avatar" className={classes.avatar}>
                     {this.getNameInitialsOrIcon(title)}
                 </Avatar>
             );
-
         }
 
         return null;
@@ -165,6 +176,7 @@ UserAvatar.propTypes = {
     // Properties
     context: PropTypes.string,
     user: PropTypes.object,
+    userData: PropTypes.object,
     defaultCursor: PropTypes.bool,
 };
 

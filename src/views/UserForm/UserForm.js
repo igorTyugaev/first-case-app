@@ -108,14 +108,12 @@ function UserForm(props) {
                 phoneNumber: phoneNumber,
                 education: education,
                 experience: experience,
-                serviceCost: serviceCost,
             },
             {
                 fullName: constraintsAuth.fullName,
                 dateBirth: constraintsAuth.dateBirth,
                 phoneNumber: constraintsAuth.phoneNumber,
                 education: constraintsAuth.education,
-                serviceCost: constraintsAuth.serviceCost,
                 experience: constraintsAuth.experience,
             }
         );
@@ -180,14 +178,12 @@ function UserForm(props) {
                     dateBirth: dateBirth,
                     phoneNumber: phoneNumber,
                     education: education,
-                    serviceCost: serviceCost,
                 },
                 {
                     fullName: constraintsAuth.fullName,
                     dateBirth: constraintsAuth.dateBirth,
                     phoneNumber: constraintsAuth.phoneNumber,
                     education: constraintsAuth.education,
-                    serviceCost: constraintsAuth.serviceCost,
                 }
             );
 
@@ -291,12 +287,6 @@ function UserForm(props) {
                 return (
                     <Box>
                         <Hidden xsDown>
-                            <Box mb={3}>
-                                <Typography variant="h4" color="textPrimary" component="p" align="center">
-                                    Как Вы планируете использовать приложение?
-                                </Typography>
-                            </Box>
-
                             <Grid container spacing={2} mt={4} direction="row">
                                 <Grid item xs={4} sm={4} md={4} lg={4}>
                                     <RoleCard role={0} handleFormNext={handleNextFunc} setRoleForm={setRole}/>
@@ -313,12 +303,6 @@ function UserForm(props) {
                         </Hidden>
 
                         <Hidden smUp>
-                            <Box mb={3}>
-                                <Typography variant="h6" color="textPrimary" component="p" align="center">
-                                    Как Вы планируете использовать приложение?
-                                </Typography>
-                            </Box>
-
                             <Grid container spacing={2} mt={4} direction="column" alignItems="center">
                                 <Grid item md={12} lg={12}>
                                     <RoleCard role={0} handleFormNext={handleNextFunc} setRoleForm={setRole}/>
@@ -351,13 +335,26 @@ function UserForm(props) {
         }
     }
 
+    const getStepTitle = (stepIndex) => {
+        switch (stepIndex) {
+            case 0:
+                return "Как Вы планируете использовать приложение?"
+            case 1:
+                return "Расскажите немного о себе?"
+            case 2:
+                return "Начать пользоваться сайтом"
+            default:
+                return 'Unknown stepIndex';
+        }
+    }
+
     return (
         <Grid item xs={12} sm={12} md={10} lg={8} className={classes.root}>
             <Card>
                 <CardHeader color="success">
                     <Hidden xsDown>
-                        <Typography color="initial" variant="h4" component="p" align="left">
-                            Расскажите немного о себе
+                        <Typography color="initial" variant="h4" component="h4" align="left">
+                            {getStepTitle(activeStep)}
                         </Typography>
                     </Hidden>
 

@@ -16,6 +16,8 @@ import LandingPage from "../../views/LandingPage/LandingPage";
 import CreateOrderPage from "../CreateOrderPage";
 import OrderPage from "../OrderPage/OrderPage";
 import OrderList from "../../components/RecommendationsList/OrderList";
+import DialogPage from "../../views/DialogPage/DialogPage";
+import Dialogs from "../Chat/Dialogs";
 
 class Router extends Component {
     render() {
@@ -25,6 +27,7 @@ class Router extends Component {
         // Functions
         const {openSnackbar} = this.props;
         const {onDeleteAccountClick} = this.props;
+        const isProfileComplete = user && userData && userData.isProfileComplete;
 
         return (
             <BrowserRouter basename={process.env.REACT_APP_BASENAME}>
@@ -40,22 +43,25 @@ class Router extends Component {
                     </Route>
 
                     <Route path="/user/:userId">
-                        {user ? <ProfilePage theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}
-                                             onDeleteAccountClick={onDeleteAccountClick}/> : <Redirect to="/"/>}
+                        {isProfileComplete ? <ProfilePage theme={theme} openSnackbar={openSnackbar}/> :
+                            <Redirect to="/"/>}
                     </Route>
 
                     <Route path="/settings/">
-                        {user ? <SettingsPage theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}
-                                              onDeleteAccountClick={onDeleteAccountClick}/> : <Redirect to="/"/>}
+                        {isProfileComplete ?
+                            <SettingsPage theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}
+                                          onDeleteAccountClick={onDeleteAccountClick}/> : <Redirect to="/"/>}
                     </Route>
 
                     <Route path="/orders/">
-                        {user ? <OrderList theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}/> :
+                        {isProfileComplete ?
+                            <OrderList theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}/> :
                             <Redirect to="/"/>}
                     </Route>
 
                     <Route path="/people/">
-                        {user ? <ProfilesList theme={theme} user={user} userData={userData} openSnackbar={openSnackbar}/> :
+                        {isProfileComplete ?
+                            <ProfilesList theme={theme} user={user} userData={userData} openSnackbar={openSnackbar}/> :
                             <Redirect to="/"/>}
                     </Route>
 
@@ -68,20 +74,35 @@ class Router extends Component {
                     </Route>
 
                     <Route path="/create_order/">
-                        {user ? <CreateOrderPage theme={theme} userID={user.uid} openSnackbar={openSnackbar}/> :
+                        {isProfileComplete ?
+                            <CreateOrderPage theme={theme} userID={user.uid} openSnackbar={openSnackbar}/> :
                             <Redirect to="/"/>}
                     </Route>
 
                     <Route path="/form/">
-                        {user ? <UserForm theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}
-                                          onDeleteAccountClick={onDeleteAccountClick}/> :
+                        {isProfileComplete ?
+                            <UserForm theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}
+                                      onDeleteAccountClick={onDeleteAccountClick}/> :
                             <Redirect to="/"/>}
                     </Route>
 
                     <Route path="/order_page/:orderId">
-                        {user ? <OrderPage theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}
-                                           onDeleteAccountClick={onDeleteAccountClick}/> :
+                        {isProfileComplete ?
+                            <OrderPage theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}
+                                       onDeleteAccountClick={onDeleteAccountClick}/> :
                             <Redirect to="/"/>}
+                    </Route>
+
+                    <Route path="/dialogs/">
+                        {user ? (
+                            <Dialogs theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}/>
+                        ) : <Redirect to="/"/>}
+                    </Route>
+
+                    <Route path="/dialog/:id/">
+                        {user ? (
+                            <DialogPage theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}/>
+                        ) : <Redirect to="/"/>}
                     </Route>
 
                     <Route>

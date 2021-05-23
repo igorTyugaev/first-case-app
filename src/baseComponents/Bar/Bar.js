@@ -159,7 +159,7 @@ class Bar extends Component {
                                     disabled={performingAction}
                                     onClick={this.openMenu}
                                 >
-                                    <UserAvatar user={Object.assign(user, userData)}/>
+                                    <UserAvatar user={user} userData={userData}/>
                                 </IconButton>
 
                                 <Menu

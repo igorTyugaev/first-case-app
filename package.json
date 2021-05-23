@@ -66,6 +66,9 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^3.1.0"
+    "emoji-mart": "^3.0.1",
+    "gh-pages": "^3.1.0",
+    "react-anchorme": "^2.2.0",
+    "react-icons": "^4.2.0"
   }
 }

@@ -21,6 +21,7 @@ import {
 
 import authentication from "../../services/authentication";
 import ChipsArray from "../ChipsArray/ChipsArray";
+import UserAvatar from "../UserAvatar/UserAvatar";
 
 const styles = (theme) => ({
     dialogContent: {
@@ -76,41 +77,12 @@ class AccountView extends Component {
         this.state = initialState;
     }
 
-    getNameInitialsOrIcon = () => {
-        const {user} = this.props;
-
-        if (!user) {
-            return null;
-        }
-
-        const {classes, userData} = this.props;
-
-        if (!userData) {
-            return <PersonIcon className={classes.personIcon}/>;
-        }
-
-        const nameInitials = authentication.getNameInitials({
-            ...user,
-            ...userData,
-        });
-
-        if (nameInitials) {
-            return (
-                <Typography className={classes.nameInitials} variant="h2">
-                    {nameInitials}
-                </Typography>
-            );
-        }
-
-        return <PersonIcon className={classes.personIcon}/>;
-    };
-
     render() {
         // Styling
         const {classes} = this.props;
 
         // Properties
-        const {user, userData} = this.props;
+        const {profile} = this.props;
 
         const {
             profileCompletion,
@@ -120,7 +92,7 @@ class AccountView extends Component {
             avatarUrl,
         } = this.state;
 
-        const dateBirthYear = new Date(userData.dateBirth).getFullYear().valueOf();
+        const dateBirthYear = new Date(profile.dateBirth).getFullYear().valueOf();
         const currentYear = new Date().getFullYear().valueOf();
         const yearOld = currentYear - dateBirthYear;
 
@@ -133,113 +105,7 @@ class AccountView extends Component {
                                 <Grid container direction="column" alignItems="center">
                                     <Box textAlign="center">
                                         <Box mb={1.5}>
-                                            {avatar && avatarUrl && (
-                                                <Badge
-                                                    classes={{badge: classes.badge}}>
-                                                    {loadingAvatar && (
-                                                        <Badge
-                                                            classes={{badge: classes.loadingBadge}}
-                                                            badgeContent={
-                                                                <Fade
-                                                                    style={{transitionDelay: "1s"}}
-                                                                    in={loadingAvatar}
-                                                                    unmountOnExit
-                                                                >
-                                                                    <CircularProgress size={120} thickness={1.8}/>
-                                                                </Fade>
-                                                            }
-                                                        >
-                                                            <Avatar
-                                                                className={classes.avatar}
-                                                                alt="Аватар"
-                                                                src={avatarUrl}
-                                                            />
-                                                        </Badge>
-                                                    )}
-
-                                                    {!loadingAvatar && (
-                                                        <Avatar
-                                                            className={classes.avatar}
-                                                            alt="Аватар"
-                                                            src={avatarUrl}
-                                                        />
-                                                    )}
-
-
-                                                </Badge>
-                                            )}
-
-                                            {!avatar && !avatarUrl && (
-                                                <>
-                                                    {user.photoURL && (
-                                                        <Badge classes={{badge: classes.badge}}>
-                                                            {loadingAvatar && (
-                                                                <Badge
-                                                                    classes={{badge: classes.loadingBadge}}
-                                                                    badgeContent={
-                                                                        <Fade
-                                                                            style={{transitionDelay: "1s"}}
-                                                                            in={loadingAvatar}
-                                                                            unmountOnExit
-                                                                        >
-                                                                            <CircularProgress
-                                                                                size={120}
-                                                                                thickness={1.8}
-                                                                            />
-                                                                        </Fade>
-                                                                    }
-                                                                >
-                                                                    <Avatar
-                                                                        className={classes.avatar}
-                                                                        alt="Аватар"
-                                                                        src={user.photoURL}
-                                                                    />
-                                                                </Badge>
-                                                            )}
-
-                                                            {!loadingAvatar && (
-                                                                <Avatar
-                                                                    className={classes.avatar}
-                                                                    alt="Аватар"
-                                                                    src={user.photoURL}
-                                                                />
-                                                            )}
-                                                        </Badge>
-                                                    )}
-
-                                                    {!user.photoURL && (
-                                                        <>
-                                                            {loadingAvatar && (
-                                                                <Badge
-                                                                    classes={{badge: classes.loadingBadge}}
-                                                                    badgeContent={
-                                                                        <Fade
-                                                                            style={{transitionDelay: "1s"}}
-                                                                            in={loadingAvatar}
-                                                                            unmountOnExit
-                                                                        >
-                                                                            <CircularProgress
-                                                                                size={120}
-                                                                                thickness={1.8}
-                                                                            />
-                                                                        </Fade>
-                                                                    }
-                                                                >
-                                                                    <Avatar className={classes.avatar} alt="Аватар">
-                                                                        {this.getNameInitialsOrIcon()}
-                                                                    </Avatar>
-                                                                </Badge>
-                                                            )}
-
-                                                            {!loadingAvatar && (
-                                                                <Avatar className={classes.avatar} alt="Аватар">
-                                                                    {this.getNameInitialsOrIcon()}
-                                                                </Avatar>
-                                                            )}
-                                                        </>
-                                                    )}
-                                                </>
-                                            )}
+                                            <UserAvatar context="card" title={profile.fullName} user={profile}/>
                                         </Box>
                                     </Box>
 
@@ -297,9 +163,9 @@ class AccountView extends Component {
                                 <Box textAlign="left">
                                     <Typography variant="body1">
                                         {"Телефон: "}
-                                        {(userData.phone) ? (
-                                            <Link color="inherit" href={`tel:${userData.phone}`}>
-                                                {userData.phone}
+                                        {(profile.phone) ? (
+                                            <Link color="inherit" href={`tel:${profile.phone}`}>
+                                                {profile.phone}
                                             </Link>
                                         ) : ("не указан")}
                                     </Typography>
@@ -312,9 +178,9 @@ class AccountView extends Component {
                                 <Box textAlign="left">
                                     <Typography variant="body1">
                                         {"Email: "}
-                                        {(user.email) ? (
-                                            <Link color="inherit" href={`mailto:${user.email}`}>
-                                                {user.email}
+                                        {(profile.email) ? (
+                                            <Link color="inherit" href={`mailto:${profile.email}`}>
+                                                {profile.email}
                                             </Link>
                                         ) : ("не указан")}
                                     </Typography>
@@ -327,7 +193,7 @@ class AccountView extends Component {
                                 <Box textAlign="left">
                                     <Typography variant="body1">
                                         {"Возраст: "}
-                                        {(userData.dateBirth) ? (
+                                        {(profile.dateBirth) ? (
                                             yearOld
                                         ) : ("не указан")}
                                         {((yearOld % 10) in [2, 3, 4]) ? " года" : " лет"}
@@ -349,110 +215,7 @@ class AccountView extends Component {
                     <Hidden smUp>
                         <Box textAlign="center" mb={3}>
                             <Box mb={1.5}>
-                                {avatar && avatarUrl && (
-                                    <div>
-                                        {loadingAvatar && (
-                                            <Badge
-                                                classes={{badge: classes.loadingBadge}}
-                                                badgeContent={
-                                                    <Fade
-                                                        style={{transitionDelay: "1s"}}
-                                                        in={loadingAvatar}
-                                                        unmountOnExit
-                                                    >
-                                                        <CircularProgress size={120} thickness={1.8}/>
-                                                    </Fade>
-                                                }
-                                            >
-                                                <Avatar
-                                                    className={classes.avatar}
-                                                    alt="Аватар"
-                                                    src={avatarUrl}
-                                                />
-                                            </Badge>
-                                        )}
-
-                                        {!loadingAvatar && (
-                                            <Avatar
-                                                className={classes.avatar}
-                                                alt="Аватар"
-                                                src={avatarUrl}
-                                            />
-                                        )}
-                                    </div>
-                                )}
-
-                                {!avatar && !avatarUrl && (
-                                    <>
-                                        {user.photoURL && (
-                                            <div>
-                                                {loadingAvatar && (
-                                                    <Badge
-                                                        classes={{badge: classes.loadingBadge}}
-                                                        badgeContent={
-                                                            <Fade
-                                                                style={{transitionDelay: "1s"}}
-                                                                in={loadingAvatar}
-                                                                unmountOnExit
-                                                            >
-                                                                <CircularProgress
-                                                                    size={120}
-                                                                    thickness={1.8}
-                                                                />
-                                                            </Fade>
-                                                        }
-                                                    >
-                                                        <Avatar
-                                                            className={classes.avatar}
-                                                            alt="Аватар"
-                                                            src={user.photoURL}
-                                                        />
-                                                    </Badge>
-                                                )}
-
-                                                {!loadingAvatar && (
-                                                    <Avatar
-                                                        className={classes.avatar}
-                                                        alt="Аватар"
-                                                        src={user.photoURL}
-                                                    />
-                                                )}
-                                            </div>
-                                        )}
-
-                                        {!user.photoURL && (
-                                            <>
-                                                {loadingAvatar && (
-                                                    <Badge
-                                                        classes={{badge: classes.loadingBadge}}
-                                                        badgeContent={
-                                                            <Fade
-                                                                style={{transitionDelay: "1s"}}
-                                                                in={loadingAvatar}
-                                                                unmountOnExit
-                                                            >
-                                                                <CircularProgress
-                                                                    size={120}
-                                                                    thickness={1.8}
-                                                                />
-                                                            </Fade>
-                                                        }
-                                                    >
-                                                        <Avatar className={classes.avatar} alt="Аватар">
-                                                            {this.getNameInitialsOrIcon()}
-                                                        </Avatar>
-                                                    </Badge>
-                                                )}
-
-                                                {!loadingAvatar && (
-                                                    <Avatar className={classes.avatar} alt="Аватар">
-                                                        {this.getNameInitialsOrIcon()}
-                                                    </Avatar>
-                                                )}
-                                            </>
-                                        )}
-                                    </>
-                                )}
+                                <UserAvatar context="card" title={profile.fullName} user={profile}/>
                             </Box>
                         </Box>
 
@@ -515,9 +278,9 @@ class AccountView extends Component {
                                 <Box textAlign="left">
                                     <Typography variant="body1">
                                         {"Телефон: "}
-                                        {(userData.phone) ? (
-                                            <Link color="inherit" href={`tel:${userData.phone}`}>
-                                                {userData.phone}
+                                        {(profile.phone) ? (
+                                            <Link color="inherit" href={`tel:${profile.phone}`}>
+                                                {profile.phone}
                                             </Link>
                                         ) : ("не указан")}
                                     </Typography>
@@ -530,9 +293,9 @@ class AccountView extends Component {
                                 <Box textAlign="left">
                                     <Typography variant="body1">
                                         {"Email: "}
-                                        {(user.email) ? (
-                                            <Link color="inherit" href={`mailto:${user.email}`}>
-                                                {user.email}
+                                        {(profile.email) ? (
+                                            <Link color="inherit" href={`mailto:${profile.email}`}>
+                                                {profile.email}
                                             </Link>
                                         ) : ("не указан")}
                                     </Typography>
@@ -545,7 +308,7 @@ class AccountView extends Component {
                                 <Box textAlign="left">
                                     <Typography variant="body1">
                                         {"Возраст: "}
-                                        {(userData.dateBirth) ? (
+                                        {(profile.dateBirth) ? (
                                             yearOld
                                         ) : ("не указан")}
                                         {((yearOld % 10) in [2, 3, 4]) ? " года" : " лет"}
@@ -571,93 +334,93 @@ class AccountView extends Component {
                 </Box>
 
                 <Box>
-                    {(userData.aboutUser) && (
+                    {(profile.aboutUser) && (
                         <>
                             <Typography color="initial" variant="h4" component="h4" align="left" gutterBottom>
                                 О себе
                             </Typography>
                             <div className={classes.description}>
                                 <p>
-                                    {userData.aboutUser}
+                                    {profile.aboutUser}
                                 </p>
                             </div>
                         </>
                     )}
 
 
-                    {(userData.position) && (
+                    {(profile.position) && (
                         <>
                             <Typography color="initial" variant="h4" component="h4" align="left" gutterBottom>
                                 Должность
                             </Typography>
                             <div className={classes.description}>
                                 <p>
-                                    {userData.position}
+                                    {profile.position}
                                 </p>
                             </div>
                         </>
                     )}
 
-                    {(userData.company) && (
+                    {(profile.company) && (
                         <>
                             <Typography color="initial" variant="h4" component="h4" align="left" gutterBottom>
                                 Организация
                             </Typography>
                             <div className={classes.description}>
                                 <p>
-                                    {userData.company}
+                                    {profile.company}
                                 </p>
                             </div>
                         </>
                     )}
 
-                    {(userData.city) && (
+                    {(profile.city) && (
                         <>
                             <Typography color="initial" variant="h4" component="h4" align="left" gutterBottom>
                                 Город
                             </Typography>
                             <div className={classes.description}>
                                 <p>
-                                    {userData.city}
+                                    {profile.city}
                                 </p>
                             </div>
                         </>
                     )}
 
-                    {(userData.education) && (
+                    {(profile.education) && (
                         <>
                             <Typography color="initial" variant="h4" component="h4" align="left" gutterBottom>
                                 Образование
                             </Typography>
                             <div className={classes.description}>
                                 <p>
-                                    {userData.education}
+                                    {profile.education}
                                 </p>
                             </div>
                         </>
                     )}
 
-                    {(userData.experience) && (
+                    {(profile.experience) && (
                         <>
                             <Typography color="initial" variant="h4" component="h4" align="left" gutterBottom>
                                 Опыт
                             </Typography>
                             <div className={classes.description}>
                                 <p>
-                                    {userData.experience}
+                                    {profile.experience}
                                 </p>
                             </div>
                         </>
                     )}
 
-                    {(userData.serviceCost) && (
+                    {(profile.serviceCost) && (
                         <>
                             <Typography color="initial" variant="h4" component="h4" align="left" gutterBottom>
                                 Стоимость услуг
                             </Typography>
                             <div className={classes.description}>
                                 <p>
-                                    {userData.serviceCost}
+                                    {profile.serviceCost}
                                 </p>
                             </div>
                         </>

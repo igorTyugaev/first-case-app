@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 // @material-ui/core components
@@ -27,7 +27,7 @@ export default function ProfileItemAvatar(props) {
                     color="inherit"
                     component={Link} to={`/user/${profile.id}`}
                 >
-                    <UserAvatar context="card" title={profile.fullName}/>
+                    <UserAvatar context="card" title={profile.fullName} user={profile}/>
                 </IconButton>
 
                 <div style={{padding: "5px"}}>
