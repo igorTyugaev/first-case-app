@@ -145,7 +145,6 @@ function FileUpload({setState, file}) {
                             margin="normal"
                             variant="outlined"
                             style={{
-                                backgroundColor: "rgb(45, 45, 73)",
                                 borderRadius: "5px",
                             }}
                             onChange={(e) => {

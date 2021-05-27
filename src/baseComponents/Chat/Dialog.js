@@ -20,6 +20,7 @@ import {
 } from "@material-ui/icons";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import classNames from "classnames";
+import DeleteModal from "./DeleteModal";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -69,6 +70,12 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: "primary",
         borderRadius: "5px",
         marginBottom: theme.spacing(1),
+    },
+    title: {
+        maxWidth: "68vw",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
     },
     message: {
         width: "100%",
@@ -221,6 +228,8 @@ function Dialog(props) {
         <Paper className={classes.root}>
             {modalState ? <FileUpload setState={openModal} file={file}/> : null}
 
+
+
             <Box className={classes.header}>
                 <Button
                     startIcon={<BackIcon/>}
@@ -243,8 +252,13 @@ function Dialog(props) {
                     <MoreVertIcon/>
                 </IconButton>
             </Box>
+            <Grid container spacing={1} direction="row" className={classes.subheader}>
+                <Grid item>
+                    <Typography color="inherit" variant="h6" component="p">
+                        Вы готовы выполнить данный заказ?
+                    </Typography>
+                </Grid>
 
-            <Grid container spacing={2} direction="row" className={classes.subheader}>
                 <Grid item>
                     <Button color="primary" variant="contained" className={classNames(classes.btn)}>
                         Принять

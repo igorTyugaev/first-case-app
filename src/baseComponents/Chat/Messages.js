@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
         color: "black",
         borderRadius: theme.spacing(1),
-        padding: theme.spacing(1.5),
+        padding: theme.spacing(1.4),
         width: "100%",
 
         "&:hover": {
