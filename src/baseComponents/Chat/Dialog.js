@@ -11,7 +11,7 @@ import {FiSend} from "react-icons/fi";
 import {RiImageAddLine} from "react-icons/ri";
 import FileUpload from "./FileUpload";
 import "emoji-mart/css/emoji-mart.css";
-import {Box, Divider, Link, Paper, Typography} from "@material-ui/core";
+import {Box, Divider, Grid, Link, Paper, Typography} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import {useHistory} from "react-router-dom";
 
@@ -19,6 +19,7 @@ import {
     ArrowBackIos as BackIcon,
 } from "@material-ui/icons";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import classNames from "classnames";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -37,6 +38,15 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
+        alignItems: "center",
+    },
+    subheader: {
+        height: "10%",
+        paddingBottom: "15px",
+
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
         alignItems: "center",
     },
     body: {
@@ -233,6 +243,21 @@ function Dialog(props) {
                     <MoreVertIcon/>
                 </IconButton>
             </Box>
+
+            <Grid container spacing={2} direction="row" className={classes.subheader}>
+                <Grid item>
+                    <Button color="primary" variant="contained" className={classNames(classes.btn)}>
+                        Принять
+                    </Button>
+                </Grid>
+
+                <Grid item>
+                    <Button color="secondary" variant="contained" className={classNames(classes.btn)}>
+                        Отклонить
+                    </Button>
+                </Grid>
+            </Grid>
+
             <Divider light/>
             <Box className={classes.body}>
                 <ScrollableFeed>
