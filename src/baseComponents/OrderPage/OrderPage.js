@@ -3,32 +3,42 @@ import PropTypes from "prop-types";
 
 import {makeStyles} from "@material-ui/core/styles";
 
-import Card from "../../components/Card/Card";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import CardHeader from "../../components/Card/CardHeader";
 import {firestore} from "../../firebase";
-import {Link, useParams} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 import orders from "../../services/orders";
 import EmptyState from "../EmptyState";
 import {ReactComponent as NoDataIllustration} from "../../illustrations/no-data.svg";
 import {ReactComponent as ErrorIllustration} from "../../illustrations/error.svg";
-import {Box, Breadcrumbs, Container, Fab} from "@material-ui/core";
-import {Refresh as RefreshIcon} from "@material-ui/icons";
+import {Box, Grid, Card, Divider, Fab} from "@material-ui/core";
+import {ArrowBackIos as BackIcon, Refresh as RefreshIcon} from "@material-ui/icons";
 import Loader from "../Loader";
 import OrderView from "../OrderView";
+import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
     root: {
         margin: "0 auto",
-        marginTop: theme.spacing(12),
+        marginTop: theme.spacing(8),
+    },
+    header: {
+        height: theme.spacing(8),
+        padding: "15px",
+
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
     },
 }));
-
 
 function OrderPage(props) {
     // Styling
     const classes = useStyles();
+
+    const history = useHistory();
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -92,23 +102,27 @@ function OrderPage(props) {
 
     if (order) {
         return (
-            <Grid item container xs={12} sm={12} md={10} lg={8} className={classes.root}>
-                <Container>
-                    <Breadcrumbs aria-label="breadcrumb">
-                        <Link color="inherit" to={"/orders"}>
-                            Все заказы
-                        </Link>
-                    </Breadcrumbs>
-                </Container>
+            <Grid item xs={12} sm={12} md={10} lg={8} className={classes.root}>
                 <Card>
-                    <CardHeader color="success">
-                        <Typography color="initial" variant="h4" component="h4" align="left">
+                    <Box className={classes.header}>
+                        <Button
+                            startIcon={<BackIcon/>}
+                            onClick={() => history.goBack()}
+                        >
+                            Назад
+                        </Button>
+
+                        <Typography color="initial" variant="h6" component="p" align="center">
                             {(order.name) ? (order.name) : ("информация отсутствует (")}
                         </Typography>
-                    </CardHeader>
+
+                        <IconButton>
+                            <MoreVertIcon/>
+                        </IconButton>
+                    </Box>
+                    <Divider light/>
 
                     <OrderView order={order}/>
-
                 </Card>
             </Grid>
         );

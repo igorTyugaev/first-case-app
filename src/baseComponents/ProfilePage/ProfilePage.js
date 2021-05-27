@@ -10,25 +10,38 @@ import Grid from "@material-ui/core/Grid";
 import CardHeader from "../../components/Card/CardHeader";
 import OrderPage from "../OrderPage/OrderPage";
 import {firestore} from "../../firebase";
-import {Link, useParams} from "react-router-dom";
+import {Link, useHistory, useParams} from "react-router-dom";
 import EmptyState from "../EmptyState";
 import {ReactComponent as ErrorIllustration} from "../../illustrations/error.svg";
-import {Box, Breadcrumbs, Container, Fab} from "@material-ui/core";
-import {Refresh as RefreshIcon} from "@material-ui/icons";
+import {Box, Breadcrumbs, Container, Divider, Fab} from "@material-ui/core";
+import {ArrowBackIos as BackIcon, Refresh as RefreshIcon} from "@material-ui/icons";
 import Loader from "../Loader";
 import OrderView from "../OrderView/OrderView";
 import {ReactComponent as NoDataIllustration} from "../../illustrations/no-data.svg";
+import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 
 const useStyles = makeStyles((theme) => ({
     root: {
         margin: "0 auto",
-        marginTop: theme.spacing(12),
+        marginTop: theme.spacing(8),
+    },
+    header: {
+        height: theme.spacing(8),
+        padding: "15px",
+
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
     },
 }));
 
 function ProfilePage(props) {
     // Styling
     const classes = useStyles();
+    const history = useHistory();
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -92,13 +105,24 @@ function ProfilePage(props) {
 
     if (profile) {
         return (
-            <Grid item container xs={12} sm={12} md={10} lg={8} className={classes.root}>
+            <Grid item xs={12} sm={12} md={10} lg={8} className={classes.root}>
                 <Card>
-                    <CardHeader color="success">
-                        <Typography color="initial" variant="h4" component="h4" align="left">
+                    <Box className={classes.header}>
+                        <Button
+                            startIcon={<BackIcon/>}
+                            onClick={() => history.goBack()}
+                        >
+                            Назад
+                        </Button>
+
+                        <Typography color="initial" variant="h6" component="p" align="center">
                             {(profile.fullName) ? (profile.fullName) : ("информация отсутствует (")}
                         </Typography>
-                    </CardHeader>
+
+                        <IconButton>
+                            <MoreVertIcon/>
+                        </IconButton>
+                    </Box>
 
                     <AccountView
                         profile={profile}

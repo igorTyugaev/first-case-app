@@ -2,8 +2,6 @@ import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import styles from "assets/jss/material-kit-react/views/executors.js";
 // core components
-import Card from "components/Card/Card.js";
-import CardHeader from "components/Card/CardHeader.js";
 import List from "@material-ui/core/List";
 
 import {
@@ -11,14 +9,19 @@ import {
     Fab,
     ListItem,
 } from '@material-ui/core';
+
 import Grid from "@material-ui/core/Grid";
 import {firestore} from "../../firebase";
 import EmptyState from "../../baseComponents/EmptyState";
 import {ReactComponent as ErrorIllustration} from "../../illustrations/error.svg";
 import {Refresh as RefreshIcon} from "@material-ui/icons";
-import {ReactComponent as NoDataIllustration} from "../../illustrations/no-data.svg";
 import Loader from "../../baseComponents/Loader";
-import OrderItem from "../Items/Order/OrderItem";
+
+import {ReactComponent as NoDataIllustration} from "../../illustrations/no-data.svg";
+import DialogItem from "../Items/Dialog/DialogItem";
+import CardHeader from "../Card/CardHeader";
+import Card from "../Card/Card";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
     styles,
@@ -28,42 +31,38 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function OrderList(props) {
+function DialogsList(props) {
+    const [dialogs, setDialogs] = useState([])
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const classes = useStyles();
-    const {user, userData, openSnackbar} = props;
+    const {theme, user, userData, openSnackbar} = props;
 
-    const useItems = () => {
-        const [items, setItems] = useState([])
-        useEffect(() => {
-            const unsubscribe = firestore
-                .collection("orders")
-                .onSnapshot(snapshot => {
-                    const listItems = snapshot.docs
-                        .map(doc => ({
-                            id: doc.id,
-                            disabled: (doc.data().responses && doc.data().responses.includes(user.uid)),
-                            ...doc.data(),
-                        }))
-                    setLoading(false);
-                    setItems(listItems)
-                }, (error) => {
-                    setLoading(false);
-                    setError(error);
-                })
-            return () => unsubscribe()
-        }, [])
-        return items
-    }
-    const orders = useItems();
+    useEffect(() => {
+        const unsubscribe = firestore
+            .collection("channels")
+            .orderBy("channelName", "asc")
+            .onSnapshot((snapshot) => {
+                const listItems = snapshot.docs
+                    .map(doc => ({
+                        id: doc.id,
+                        ...doc.data(),
+                    }))
+                setDialogs(listItems)
+                setLoading(false);
+            }, (error) => {
+                setLoading(false);
+                setError(error);
+            })
+        return () => unsubscribe
+    }, []);
 
     if (error) {
         return (
             <EmptyState
                 image={<ErrorIllustration/>}
-                title="Не удалось получить пользователя."
-                description="Что-то пошло не так при попытке получить пользователя."
+                title="Не удалось получить диалоги."
+                description="Что-то пошло не так при попытке загрузить диалоги."
                 button={
                     <Fab
                         variant="extended"
@@ -84,23 +83,23 @@ function OrderList(props) {
         return <Loader/>;
     }
 
-    if (orders.length >= 1) {
+    if (dialogs.length >= 1) {
         return (
             <Grid item container xs={12} sm={12} md={10} lg={8} className={classes.root}>
                 <Card>
                     <CardHeader color="success">
                         <h4 className={classes.cardTitleWhite}>Выбор заказа</h4>
                         <p className={classes.cardCategoryWhite}>
-                            Выберите подходящий для вас заказ и нажмите "Оставить заявку"
+                            Выберите подходящий для вас диалог и нажмите "Перейти к обсуждению"
                         </p>
                     </CardHeader>
+
                     <List>
-                        {orders.map((order, i) => (
+                        {dialogs.map((dialog, i) => (
                             <ListItem
-                                divider={i < orders.length - 1}
-                                disabled={order.disabled}
-                                key={order.id}>
-                                <OrderItem setLoading={setLoading} openSnackbar={openSnackbar} userData={userData} order={order}/>
+                                divider={i < dialogs.length - 1}
+                                key={dialog.id}>
+                                <DialogItem theme={theme} dialog={dialog} openSnackbar={openSnackbar}/>
                             </ListItem>
                         ))}
                     </List>
@@ -118,4 +117,5 @@ function OrderList(props) {
     );
 }
 
-export default OrderList;
+export default DialogsList;
+

@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Dialog from "../../baseComponents/Chat/Dialog";
 import Grid from "@material-ui/core/Grid";
-import DialogBar from "../../baseComponents/Chat/DialogBar";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -27,14 +26,8 @@ function DialogPage(props) {
     const {user, userData} = props;
 
     return (
-        <Grid container direction="row" className={classes.root}>
-            <Grid item xs={2} sm={2} md={2} lg={2}>
-                <DialogBar theme={theme} user={user}/>
-            </Grid>
-
-            <Grid item xs={10} sm={10} md={10} lg={10}>
-                <Dialog theme={theme} user={user} userData={userData}/>
-            </Grid>
+        <Grid item container xs={12} sm={12} md={10} lg={8} className={classes.root}>
+            <Dialog theme={theme} user={user} userData={userData}/>
         </Grid>
     );
 }

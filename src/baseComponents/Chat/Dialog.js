@@ -1,21 +1,24 @@
 import React, {useEffect, useState} from "react";
 import TextField from "@material-ui/core/TextField";
 import {makeStyles} from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
 import Messages from "./Messages";
 import IconButton from "@material-ui/core/IconButton";
-import {useParams} from "react-router-dom";
+import {NavLink, useParams} from "react-router-dom";
 import {firestore} from "../../firebase";
 import firebase from "firebase/app";
 import ScrollableFeed from "react-scrollable-feed";
-import {BiHash} from "react-icons/bi";
 import {FiSend} from "react-icons/fi";
-import {GrEmoji} from "react-icons/gr";
-import {Picker} from "emoji-mart";
 import {RiImageAddLine} from "react-icons/ri";
 import FileUpload from "./FileUpload";
 import "emoji-mart/css/emoji-mart.css";
-import {Box} from "@material-ui/core";
+import {Box, Divider, Link, Paper, Typography} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import {useHistory} from "react-router-dom";
+
+import {
+    ArrowBackIos as BackIcon,
+} from "@material-ui/icons";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,28 +31,27 @@ const useStyles = makeStyles((theme) => ({
         width: "100%",
     },
     header: {
-        padding: "15px",
-        color: "#e5e5e5",
-        display: "flex",
         height: "10%",
+        padding: "15px",
+
+        display: "flex",
         flexDirection: "row",
-        justifyContent: "flex-start",
+        justifyContent: "space-between",
         alignItems: "center",
     },
     body: {
         position: "relative",
         overflowY: "auto",
-        paddingLeft: "10px",
-        paddingBottom: "5px",
-        paddingTop: "5px",
+        padding: theme.spacing(2),
+        paddingTop: 0,
         flexGrow: 1,
         display: "flex",
         flexDirection: "column",
+        width: "100%",
         justifyContent: "space-between"
     },
     footer: {
         display: "flex",
-        flexGrow: 1,
         alignItems: "flex-end",
         flexDirection: "row",
         justifyContent: "space-between",
@@ -69,7 +71,6 @@ const useStyles = makeStyles((theme) => ({
     },
     iconDesign: {
         fontSize: "1.5em",
-        color: "#e5e5e5",
     },
     inputFile: {
         display: "none",
@@ -87,13 +88,15 @@ function Dialog(props) {
     const [file, setFileName] = useState(null);
 
     const {user, userData} = props;
+    const history = useHistory();
 
     useEffect(() => {
         if (params.id) {
             firestore.collection("channels")
                 .doc(params.id)
                 .onSnapshot((snapshot) => {
-                    setChannelName(snapshot.data().channelName);
+                    if (snapshot && snapshot.data() && snapshot.data().channelName)
+                        setChannelName(snapshot.data().channelName);
                 });
 
             firestore.collection("channels")
@@ -150,14 +153,25 @@ function Dialog(props) {
                         console.log(err);
                     });
 
+                firestore.collection("channels")
+                    .doc(params.id)
+                    .update({
+                        text: userNewMsg,
+                        avatar: imgUrl ? imgUrl : null,
+                        userName: displayName ? displayName : "Don't have a display name",
+                        uid: uid,
+                    })
+                    .then((res) => {
+                        console.log("message sent");
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+
             }
 
             setUserNewMsg("");
         }
-    };
-
-    const addEmoji = (e) => {
-        setUserNewMsg(userNewMsg + e.native);
     };
 
     const openModal = () => {
@@ -194,13 +208,32 @@ function Dialog(props) {
     };
 
     return (
-        <Box className={classes.root}>
+        <Paper className={classes.root}>
             {modalState ? <FileUpload setState={openModal} file={file}/> : null}
 
             <Box className={classes.header}>
-                <BiHash className={classes.iconDesign}/>
-                <h3 className={classes.roomNameText}>{channelName}</h3>
+                <Button
+                    startIcon={<BackIcon/>}
+                    onClick={() => history.goBack()}
+                >
+                    Назад
+                </Button>
+
+                <Link
+                    color="inherit"
+                    component={NavLink}
+                    to="/"
+                    underline="none">
+                    <Typography color="primary" variant="h5">
+                        {channelName}
+                    </Typography>
+                </Link>
+
+                <IconButton>
+                    <MoreVertIcon/>
+                </IconButton>
             </Box>
+            <Divider light/>
             <Box className={classes.body}>
                 <ScrollableFeed>
                     {allMessages.map((message) => (
@@ -257,7 +290,7 @@ function Dialog(props) {
                     </IconButton>
                 </form>
             </Box>
-        </Box>
+        </Paper>
     );
 }
 

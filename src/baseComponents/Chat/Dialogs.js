@@ -12,7 +12,6 @@ import {Box} from "@material-ui/core";
 import PropTypes from "prop-types";
 import CardHeader from "../../components/Card/CardHeader";
 
-
 const useStyles = makeStyles((theme) => ({
     root: {
         margin: "0 auto",
@@ -86,7 +85,6 @@ function Dialogs() {
                         Ваши беседы
                     </Typography>
                 </CardHeader>
-
                 <Box>
                     <Grid container className={classes.rootChannel}>
                         {channels.map((channel) => (

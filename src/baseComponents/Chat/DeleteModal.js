@@ -6,7 +6,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
-function DeleteModal({msgId, text, deleteMsg, handleModal, postImg}) {
+function DeleteModal({msgId, text, deleteMsg, handleModal, postImg, title}) {
     const [open, setOpen] = useState(true);
 
     const handleClose = () => {
@@ -28,12 +28,12 @@ function DeleteModal({msgId, text, deleteMsg, handleModal, postImg}) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"Вы уверены, что хотите удалить сообщение?"}
+                    {title ? title : "Вы уверены, что хотите удалить сообщение?"}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText
                         id="alert-dialog-description"
-                        style={{color: "white", fontSize: "1.2rem"}}
+                        style={{fontSize: "1.2rem"}}
                     >
                         {text}
                     </DialogContentText>
@@ -56,7 +56,7 @@ function DeleteModal({msgId, text, deleteMsg, handleModal, postImg}) {
                         autoFocus
                         variant="contained"
                     >
-                        Удалить
+                        Подтвердить
                     </Button>
                 </DialogActions>
             </Dialog>

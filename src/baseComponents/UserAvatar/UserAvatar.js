@@ -27,6 +27,14 @@ const styles = (theme) => ({
         height: theme.spacing(14),
     },
 
+    avatarLittle: {
+        marginRight: "auto",
+        marginLeft: "auto",
+
+        width: theme.spacing(5),
+        height: theme.spacing(5),
+    },
+
     personIcon: {
         fontSize: theme.spacing(7),
     },
@@ -59,6 +67,7 @@ class UserAvatar extends Component {
     render() {
         // Styling
         const {classes} = this.props;
+        const {theme} = this.props;
 
         // Properties
         const {context, user, userData, defaultCursor, title} = this.props;
@@ -143,19 +152,46 @@ class UserAvatar extends Component {
             );
         }
 
-
         if (context === "card") {
-            if (user) {
+
+            if (user && user.photoURL) {
+                const photoUrl = user.photoURL;
+
+                if (photoUrl) {
+                    return <Avatar alt="Avatar" src={photoUrl} className={classes.avatar}/>;
+                }
+            } else if (userData && userData.avatar) {
                 const photoUrl = userData.avatar;
 
                 if (photoUrl) {
                     return <Avatar alt="Avatar" src={photoUrl} className={classes.avatar}/>;
                 }
-
             }
 
             return (
                 <Avatar alt="Avatar" className={classes.avatar}>
+                    {this.getNameInitialsOrIcon(title)}
+                </Avatar>
+            );
+        }
+
+        if (context === "dialog") {
+            if (user && user.photoURL) {
+                const photoUrl = user.photoURL;
+
+                if (photoUrl) {
+                    return <Avatar alt="Avatar" src={photoUrl} className={classes.avatarLittle}/>;
+                }
+            } else if (userData && userData.avatar) {
+                const photoUrl = userData.avatar;
+
+                if (photoUrl) {
+                    return <Avatar alt="Avatar" src={photoUrl} className={classes.avatarLittle}/>;
+                }
+            }
+
+            return (
+                <Avatar alt="Avatar" className={classes.avatarLittle}>
                     {this.getNameInitialsOrIcon(title)}
                 </Avatar>
             );

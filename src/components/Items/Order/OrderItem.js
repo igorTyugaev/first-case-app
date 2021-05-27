@@ -10,7 +10,7 @@ const useStyles = makeStyles(styles);
 
 export default function OrderItem(props) {
     const classes = useStyles();
-    const {order} = props;
+    const {setLoading, openSnackbar, order, userData} = props;
 
     return (
         <div className={classNames(classes.main)}>
@@ -20,7 +20,7 @@ export default function OrderItem(props) {
             </div>
 
             <div className={classNames(classes.col_2)}>
-                <OrderActions order={order}/>
+                <OrderActions setLoading={setLoading} openSnackbar={openSnackbar} userData={userData} order={order}/>
             </div>
         </div>
     );

@@ -17,12 +17,12 @@ import CreateOrderPage from "../CreateOrderPage";
 import OrderPage from "../OrderPage/OrderPage";
 import OrderList from "../../components/RecommendationsList/OrderList";
 import DialogPage from "../../views/DialogPage/DialogPage";
-import Dialogs from "../Chat/Dialogs";
+import DialogsList from "../../components/RecommendationsList/DialogsList";
 
 class Router extends Component {
     render() {
         // Properties
-        const {theme, userData, user, bar} = this.props;
+        const {theme, userData, user, bar, roles} = this.props;
 
         // Functions
         const {openSnackbar} = this.props;
@@ -95,7 +95,8 @@ class Router extends Component {
 
                     <Route path="/dialogs/">
                         {user ? (
-                            <Dialogs theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}/>
+                            // <Dialogs theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}/>
+                            <DialogsList theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}/>
                         ) : <Redirect to="/"/>}
                     </Route>
 

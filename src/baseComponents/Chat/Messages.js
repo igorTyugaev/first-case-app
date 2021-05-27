@@ -9,16 +9,15 @@ import {AiFillFire} from "react-icons/ai";
 import {AiFillHeart} from "react-icons/ai";
 import {AiFillDelete} from "react-icons/ai";
 import {firestore} from "../../firebase";
-import {useParams} from "react-router-dom";
+import {NavLink, useParams} from "react-router-dom";
 import DeleteModal from "./DeleteModal";
 import {Anchorme} from "react-anchorme";
-import {Box} from "@material-ui/core";
+import {Link} from "@material-ui/core";
+import UserAvatar from "../UserAvatar/UserAvatar";
 
 const useStyles = makeStyles((theme) => ({
     root: {
         position: "relative",
-        display: "flex",
-        alignItems: "center",
         width: "100%",
     },
     paperSent: {
@@ -75,7 +74,9 @@ const useStyles = makeStyles((theme) => ({
         marginBlockEnd: 0,
         display: "inline-block",
     },
-    chatText: {},
+    chatText: {
+        wordBreak: "break-all",
+    },
     purple: {
         color: theme.palette.getContrastText(deepPurple[500]),
         backgroundColor: "#3f51b5",
@@ -123,7 +124,7 @@ function Messages(props) {
 
     const {values, msgId, user, userData} = props;
 
-    const uid = user.uid;
+    const senderUid = user.uid;
     const messegerUid = values.uid;
     const date = values.timestamp.toDate();
     const day = date.getDate();
@@ -137,9 +138,9 @@ function Messages(props) {
     const numFire = values.fireCount;
     const numHeart = values.heartCount;
 
-    const userLiked = values.likes[uid];
-    const userFire = values.fire[uid];
-    const userHeart = values.heart[uid];
+    const userLiked = values.likes[senderUid];
+    const userFire = values.fire[senderUid];
+    const userHeart = values.heart[senderUid];
 
     const postImg = values.postImg;
 
@@ -179,7 +180,7 @@ function Messages(props) {
 
                         let newHeartCount = doc.data().heartCount - 1;
                         let newHeart = doc.data().heart ? doc.data().heart : {};
-                        newHeart[uid] = false;
+                        newHeart[senderUid] = false;
 
                         transaction.update(messageDoc, {
                             heartCount: newHeartCount,
@@ -205,7 +206,7 @@ function Messages(props) {
 
                         let newHeartCount = doc.data().heartCount + 1;
                         let newHeart = doc.data().heart ? doc.data().heart : {};
-                        newHeart[uid] = true;
+                        newHeart[senderUid] = true;
 
                         transaction.update(messageDoc, {
                             heartCount: newHeartCount,
@@ -240,7 +241,7 @@ function Messages(props) {
 
                         let newFireCount = doc.data().fireCount - 1;
                         let newFire = doc.data().fire ? doc.data().fire : {};
-                        newFire[uid] = false;
+                        newFire[senderUid] = false;
 
                         transaction.update(messageDoc, {
                             fireCount: newFireCount,
@@ -266,7 +267,7 @@ function Messages(props) {
 
                         let newFireCount = doc.data().fireCount + 1;
                         let newFire = doc.data().fire ? doc.data().fire : {};
-                        newFire[uid] = true;
+                        newFire[senderUid] = true;
 
                         transaction.update(messageDoc, {
                             fireCount: newFireCount,
@@ -301,7 +302,7 @@ function Messages(props) {
 
                         let newLikeCount = doc.data().likeCount - 1;
                         let newLikes = doc.data().likes ? doc.data().likes : {};
-                        newLikes[uid] = false;
+                        newLikes[senderUid] = false;
 
                         transaction.update(messageDoc, {
                             likeCount: newLikeCount,
@@ -327,7 +328,7 @@ function Messages(props) {
 
                         let newLikeCount = doc.data().likeCount + 1;
                         let newLikes = doc.data().likes ? doc.data().likes : {};
-                        newLikes[uid] = true;
+                        newLikes[senderUid] = true;
 
                         transaction.update(messageDoc, {
                             likeCount: newLikeCount,
@@ -358,10 +359,10 @@ function Messages(props) {
             });
     };
 
-    const messageClass = messegerUid === uid ? classes.paperSent : classes.paperReceived;
+    const messageClass = messegerUid === senderUid ? classes.paperSent : classes.paperReceived;
 
     return (
-        <Box className={classes.root}>
+        <div className={classes.root}>
             {deleteModal ? (
                 <DeleteModal
                     msgId={msgId}
@@ -371,7 +372,7 @@ function Messages(props) {
                     handleModal={showDeleteModal}
                 />
             ) : null}
-            <Box
+            <div
                 // className={classes.paper}
                 className={messageClass}
                 onMouseEnter={(e) => {
@@ -381,27 +382,41 @@ function Messages(props) {
                     setStyle({display: "none"});
                 }}
             >
-                <Box className={classes.avatar}>
-                    <Avatar
-                        alt={values.userName}
-                        src={values.userImg}
-                        className={classes.purple}
-                    />
-                </Box>
+                <div className={classes.avatar}>
+                    <IconButton
+                        color="inherit"
+                        component={NavLink} to={`/user/${messegerUid}`}
+                    >
+                        <Avatar
+                            alt={values.userName}
+                            src={values.userImg}
+                            className={classes.purple}
+                        />
+                    </IconButton>
+                </div>
 
-                <Box className={classes.message}>
+                <div className={classes.message}>
                     <Grid item container direction="row">
-                        <h6 className={classes.chatHeading}>{values.userName}</h6>
+                        <h6 className={classes.chatHeading}>
+                            <Link
+                                color="inherit"
+                                component={NavLink}
+                                to={`/user/${messegerUid}`}
+                                underline="none"
+                            >
+                                {values.userName}
+                            </Link>
+                        </h6>
                         <p className={classes.chatTimming}>{time}</p>
                     </Grid>
 
                     <div className={classes.chatText}>
                         {values.text.split("\n").map((txt, idx) => (
-                            <div key={idx}>
+                            <p key={idx}>
                                 <Anchorme target="_blank" rel="noreferrer noopener">
                                     {txt}
                                 </Anchorme>
-                            </div>
+                            </p>
                         ))}
                     </div>
 
@@ -458,9 +473,9 @@ function Messages(props) {
                             </div>
                         ) : null}
                     </div>
-                </Box>
+                </div>
 
-                <Box className={classes.emojiDiv} style={style}>
+                <div className={classes.emojiDiv} style={style}>
                     <div className={classes.emojiDivInner}>
                         <div className={classes.allEmoji}>
                             <IconButton
@@ -484,7 +499,7 @@ function Messages(props) {
                             >
                                 <AiFillHeart className={classes.emojiBtn}/>
                             </IconButton>
-                            {uid === messegerUid ? (
+                            {senderUid === messegerUid ? (
                                 <IconButton
                                     component="span"
                                     style={{padding: "4px"}}
@@ -498,9 +513,9 @@ function Messages(props) {
                             ) : null}
                         </div>
                     </div>
-                </Box>
-            </Box>
-        </Box>
+                </div>
+            </div>
+        </div>
     );
 }
 
