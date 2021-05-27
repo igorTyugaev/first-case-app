@@ -38,46 +38,52 @@ function ProfilesList(props) {
     const {user, userData} = props;
 
     const getHeaderByType = (role) => {
-        switch (role.toLowerCase()) {
-            case "student":
-                return (
-                    <CardHeader color="success">
-                        <h4 className={classes.cardTitleWhite}>Наставники, готовые вам помочь</h4>
-                        <p className={classes.cardCategoryWhite}>
-                            Выберите подходящего для вас наставника и нажмите "ОТКЛИКНУТЬСЯ"
-                        </p>
-                    </CardHeader>
-                );
-            case "customer":
-                return (
-                    <CardHeader color="success">
-                        <h4 className={classes.cardTitleWhite}>Наставники, готовые выполнить ваш заказ</h4>
-                        <p className={classes.cardCategoryWhite}>
-                            Выберите подходящего для вас наставника и нажмите "ОТКЛИКНУТЬСЯ"
-                        </p>
-                    </CardHeader>
-                );
-            case "mentor":
-                return (
-                    <CardHeader color="success">
-                        <h4 className={classes.cardTitleWhite}>Студенты, подходящие под ваш профиль</h4>
-                        <p className={classes.cardCategoryWhite}>
-                            Выберите подходящего для вас студента и нажмите "ОТКЛИКНУТЬСЯ"
-                        </p>
-                    </CardHeader>
-                );
-        }
+        if (userData.role) {
+            switch (role.toLowerCase()) {
+                case "student":
+                    return (
+                        <CardHeader color="success">
+                            <h4 className={classes.cardTitleWhite}>Наставники, готовые вам помочь</h4>
+                            <p className={classes.cardCategoryWhite}>
+                                Выберите подходящего для вас наставника и нажмите "ОТКЛИКНУТЬСЯ"
+                            </p>
+                        </CardHeader>
+                    );
+                case "customer":
+                    return (
+                        <CardHeader color="success">
+                            <h4 className={classes.cardTitleWhite}>Наставники, готовые выполнить ваш заказ</h4>
+                            <p className={classes.cardCategoryWhite}>
+                                Выберите подходящего для вас наставника и нажмите "ОТКЛИКНУТЬСЯ"
+                            </p>
+                        </CardHeader>
+                    );
+                case "mentor":
+                    return (
+                        <CardHeader color="success">
+                            <h4 className={classes.cardTitleWhite}>Студенты, подходящие под ваш профиль</h4>
+                            <p className={classes.cardCategoryWhite}>
+                                Выберите подходящего для вас студента и нажмите "ОТКЛИКНУТЬСЯ"
+                            </p>
+                        </CardHeader>
+                    );
+            }
+        } else
+            return null;
     }
 
     const getFindTypeUser = (role) => {
-        switch (role.toLowerCase()) {
-            case "student":
-                return "Mentor";
-            case "customer":
-                return "Mentor";
-            case "mentor":
-                return "Student";
-        }
+        if (userData.role) {
+            switch (role.toLowerCase()) {
+                case "student":
+                    return "Mentor";
+                case "customer":
+                    return "Mentor";
+                case "mentor":
+                    return "Student";
+            }
+        } else
+            return null;
     }
 
     const useItems = () => {
@@ -85,7 +91,7 @@ function ProfilesList(props) {
         useEffect(() => {
             const unsubscribe = firestore
                 .collection("users")
-                .where("role", "==", getFindTypeUser(userData.role))
+                // .where("role", "==", getFindTypeUser(userData.role))
                 // .orderBy("createdAt");
                 .get()
                 .then(snapshot => {

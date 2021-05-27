@@ -15,7 +15,7 @@ import {
     Divider,
     Menu,
     MenuItem,
-    Link, colors,
+    Link,
 } from "@material-ui/core";
 
 import UserAvatar from "../UserAvatar";
@@ -23,15 +23,23 @@ import {withStyles} from "@material-ui/core/styles";
 import Header from "../../components/Header/Header";
 
 const styles = (theme) => ({
-    header__link: {
+    header__logo: {
         color: "#FFFFFF",
-
         "&:hover,&:focus": {
             color: "#FFFFFF",
             textDecoration: "underline",
             cursor: "pointer"
         }
+    },
+
+    header__link: {
+        color: "#FFFFFF",
+        "&:hover,&:focus": {
+            color: "#FFFFFF",
+            cursor: "pointer"
+        }
     }
+
 });
 
 class Bar extends Component {
@@ -63,6 +71,26 @@ class Bar extends Component {
         });
     };
 
+    getTitleForOrder = (userData) => {
+        if (!userData && !userData.role)
+            return null;
+
+        switch (userData.role.toLowerCase()) {
+            case "mentor":
+                return "Найти заказ";
+                break;
+            case "customer":
+                return "Все заказы";
+                break;
+            case "student":
+                return "Найти заказ";
+                break;
+            default:
+                return null;
+                break;
+        }
+    }
+
     render() {
         // Properties
         const {performingAction, theme, user, userData, roles} = this.props;
@@ -71,7 +99,6 @@ class Bar extends Component {
         // Events
         const {
             onAboutClick,
-            onSettingsClick,
             onSignOutClick,
             onSignUpClick,
             onSignInClick,
@@ -129,7 +156,7 @@ class Bar extends Component {
                         <Box display="flex" flexGrow={1}>
                             <Typography color="inherit" variant="h6">
                                 <Link
-                                    className={classes.header__link}
+                                    className={classes.header__logo}
                                     component={RouterLink}
                                     to="/"
                                     underline="none"
@@ -141,17 +168,43 @@ class Bar extends Component {
 
                         {user && (
                             <>
-                                {roles.includes("admin") && (
-                                    <Box mr={1}>
-                                        <Button
-                                            color="inherit"
-                                            component={RouterLink}
-                                            to="/admin"
-                                            variant="outlined"
-                                        >
-                                            Admin
-                                        </Button>
-                                    </Box>
+                                {userData.role && (
+                                    <>
+                                        <Box mr={1}>
+                                            <Button
+                                                className={classes.header__link}
+                                                component={RouterLink}
+                                                variant="text"
+                                                to="/orders/"
+                                            >
+                                                {this.getTitleForOrder(userData)}
+                                            </Button>
+                                        </Box>
+
+                                        <Box mr={1}>
+                                            <Button
+                                                className={classes.header__link}
+                                                component={RouterLink}
+                                                variant="text"
+                                                to="/dialogs/"
+                                            >
+                                                Сообщения
+                                            </Button>
+                                        </Box>
+
+                                        {userData.role.toLowerCase() === "customer" && (
+                                            <Box mr={1}>
+                                                <Button
+                                                    className={classes.header__link}
+                                                    component={RouterLink}
+                                                    variant="text"
+                                                    to="/create_order/"
+                                                >
+                                                    Новый заказ
+                                                </Button>
+                                            </Box>
+                                        )}
+                                    </>
                                 )}
 
                                 <IconButton
@@ -159,7 +212,7 @@ class Bar extends Component {
                                     disabled={performingAction}
                                     onClick={this.openMenu}
                                 >
-                                    <UserAvatar user={Object.assign(user, userData)}/>
+                                    <UserAvatar user={user} userData={userData}/>
                                 </IconButton>
 
                                 <Menu

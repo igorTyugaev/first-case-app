@@ -18,7 +18,6 @@ import {ReactComponent as ErrorIllustration} from "../../illustrations/error.svg
 import {Refresh as RefreshIcon} from "@material-ui/icons";
 import {ReactComponent as NoDataIllustration} from "../../illustrations/no-data.svg";
 import Loader from "../../baseComponents/Loader";
-import OrdersFilter from "./../../components/OrdersFilter/OrdersFilter";
 import OrderItem from "../Items/Order/OrderItem";
 
 const useStyles = makeStyles((theme) => ({
@@ -29,26 +28,22 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-
 function OrderList(props) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const classes = useStyles();
+    const {user, userData, openSnackbar} = props;
 
     const useItems = () => {
         const [items, setItems] = useState([])
         useEffect(() => {
             const unsubscribe = firestore
                 .collection("orders")
-                // .where("status", "==", true)
-                // .orderBy("createdAt");
                 .onSnapshot(snapshot => {
                     const listItems = snapshot.docs
-                        // TODO: Сделать фильтрацию: убирать пустые order-ы
-                        // TODO: Считывать только необходимые для item-ов поля
-                        // .filter((doc) => doc.data())
                         .map(doc => ({
                             id: doc.id,
+                            disabled: (doc.data().responses && doc.data().responses.includes(user.uid)),
                             ...doc.data(),
                         }))
                     setLoading(false);
@@ -96,16 +91,16 @@ function OrderList(props) {
                     <CardHeader color="success">
                         <h4 className={classes.cardTitleWhite}>Выбор заказа</h4>
                         <p className={classes.cardCategoryWhite}>
-                            Выберите подходящий для вас заказ и нажмите "ПРИНЯТЬ"
+                            Выберите подходящий для вас заказ и нажмите "Оставить заявку"
                         </p>
                     </CardHeader>
-                    <OrdersFilter/>
                     <List>
                         {orders.map((order, i) => (
                             <ListItem
                                 divider={i < orders.length - 1}
+                                disabled={order.disabled}
                                 key={order.id}>
-                                <OrderItem order={order}/>
+                                <OrderItem setLoading={setLoading} openSnackbar={openSnackbar} userData={userData} order={order}/>
                             </ListItem>
                         ))}
                     </List>

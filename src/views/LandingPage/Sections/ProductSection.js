@@ -3,7 +3,7 @@ import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 
 // @material-ui/icons
-import Chat from "@material-ui/icons/Chat";
+
 import VerifiedUser from "@material-ui/icons/VerifiedUser";
 import Fingerprint from "@material-ui/icons/Fingerprint";
 // core components
@@ -12,6 +12,7 @@ import GridItem from "components/Grid/GridItem.js";
 import InfoArea from "components/InfoArea/InfoArea.js";
 
 import styles from "assets/jss/material-kit-react/views/landingPageSections/productStyle.js";
+import Chat from "@material-ui/icons/Chat";
 
 const useStyles = makeStyles(styles);
 
@@ -35,7 +36,7 @@ export default function ProductSection() {
                 <GridContainer>
                     <GridItem xs={12} sm={12} md={4}>
                         <InfoArea
-                            title="Free Chat"
+                            title="Free Dialog"
                             description="Помогай тем, кто слабее и гарантированно получай помощь от тех, кто сильнее"
                             icon={Chat}
                             iconColor="info"

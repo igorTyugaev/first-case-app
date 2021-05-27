@@ -27,7 +27,7 @@ const userItemStyle = {
     },
 
     col_3: {
-        flex: "1.2",
+        flex: "1.5",
         width: "100%",
     },
 

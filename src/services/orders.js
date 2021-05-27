@@ -66,6 +66,44 @@ orders.updateOrder = (values, orderId) => {
     });
 };
 
+orders.addMemberToOrder = (orderId) => {
+    return new Promise((resolve, reject) => {
+        if (!orderId) {
+            reject(new Error("No orderId"));
+            return;
+        }
+
+        const currentUser = auth.currentUser;
+
+        if (!currentUser) {
+            reject(new Error("No current user"));
+            return;
+        }
+
+        const uid = currentUser.uid;
+
+        if (!uid) {
+            reject(new Error("No UID"));
+            return;
+        }
+
+        const collectionReference = firestore.collection("orders");
+        const orderDocumentReference = collectionReference.doc(orderId);
+
+        orderDocumentReference
+            .update({
+                responses: firebase.firestore.FieldValue.arrayUnion(uid)
+            })
+            .then((value) => {
+                analytics.logEvent("add_member_to_order");
+                resolve(value);
+            })
+            .catch((reason) => {
+                reject(reason);
+            });
+    });
+};
+
 orders.changeTitle = (title, uidOrder = null) => {
     return new Promise((resolve, reject) => {
         if (!title) {

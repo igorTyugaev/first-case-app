@@ -191,7 +191,7 @@ class ProfileEdit extends Component {
                     <ListItem>
                         <Grid item xs={12} sm={12} md={12} lg={12}>
                             <ListItemText
-                                primary="Как к Вам обращаться?"
+                                primary="Как к Вам обращаться? *"
                                 secondary={errors && errors.fullName ? (
                                     <Typography color="error">
                                         {errors.fullName[0]}
@@ -246,7 +246,7 @@ class ProfileEdit extends Component {
                     <ListItem>
                         <Grid item xs={12} sm={12} md={12} lg={12}>
                             <ListItemText
-                                primary="Телефон"
+                                primary="Телефон *"
                                 secondary={errors && errors.phoneNumber ? (
                                     <Typography color="error">
                                         {errors.phoneNumber[0]}
@@ -389,7 +389,7 @@ class ProfileEdit extends Component {
                         <ListItem>
                             <Grid item xs={12} sm={12} md={12} lg={12}>
                                 <ListItemText
-                                    primary="Образование"
+                                    primary="Образование *"
                                     secondary={errors && errors.education ? (
                                         <Typography color="error">
                                             {errors.education[0]}

@@ -24,7 +24,7 @@ const initialState = {
     userData: null,
     roles: [],
     ordersArr: [
-        {id:1,},
+        {id: 1,},
         {},
     ],
 
@@ -439,8 +439,10 @@ class App extends Component {
 
                             // The user doesn’t have a data point, equivalent to not signed in.
                             if (!snapshot.exists || !data) {
+                                authentication.setAvatar(user.photoURL).then().catch().finally();
                                 return;
                             }
+
 
                             authentication
                                 .getRoles()
@@ -453,6 +455,10 @@ class App extends Component {
                                             roles: value || [],
                                         });
                                     });
+
+                                    if (!data.avatar) {
+                                        authentication.setAvatar(user.photoURL).then().catch().finally();
+                                    }
                                 })
                                 .catch((reason) => {
                                     this.resetState(() => {

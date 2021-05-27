@@ -547,12 +547,12 @@ authentication.changeAvatar = (avatar) => {
                             })
                             .then((value) => {
                                 analytics.logEvent("change_avatar");
-
                                 resolve(value);
                             })
                             .catch((reason) => {
                                 reject(reason);
                             });
+                        authentication.setAvatar(value).then().catch().finally();
                     })
                     .catch((reason) => {
                         reject(reason);
@@ -603,6 +603,7 @@ authentication.removeAvatar = () => {
                     .catch((reason) => {
                         reject(reason);
                     });
+                authentication.setAvatar(null).then().catch().finally();
             })
             .catch((reason) => {
                 reject(reason);
@@ -683,6 +684,40 @@ authentication.changeFullName = (fullName) => {
             })
             .then((value) => {
                 analytics.logEvent("change_fullName");
+                resolve(value);
+            })
+            .catch((reason) => {
+                reject(reason);
+            });
+    });
+};
+
+authentication.setAvatar = (photoURL) => {
+    return new Promise((resolve, reject) => {
+        const currentUser = auth.currentUser;
+
+        if (!currentUser) {
+            reject(new Error("No current user"));
+
+            return;
+        }
+
+        const uid = currentUser.uid;
+
+        if (!uid) {
+            reject(new Error("No UID"));
+
+            return;
+        }
+
+        const userDocumentReference = firestore.collection("users").doc(uid);
+
+        userDocumentReference
+            .update({
+                avatar: photoURL,
+            })
+            .then((value) => {
+                analytics.logEvent("change_photoURL");
 
                 resolve(value);
             })

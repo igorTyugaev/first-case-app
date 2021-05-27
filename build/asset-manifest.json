@@ -1,19 +1,19 @@
 {
   "files": {
     "main.css": "/first-case-app/static/css/main.da5221c3.chunk.css",
-    "main.js": "/first-case-app/static/js/main.968e1101.chunk.js",
-    "main.js.map": "/first-case-app/static/js/main.968e1101.chunk.js.map",
+    "main.js": "/first-case-app/static/js/main.9c0bada9.chunk.js",
+    "main.js.map": "/first-case-app/static/js/main.9c0bada9.chunk.js.map",
     "runtime-main.js": "/first-case-app/static/js/runtime-main.c19add04.js",
     "runtime-main.js.map": "/first-case-app/static/js/runtime-main.c19add04.js.map",
-    "static/css/2.3577e40c.chunk.css": "/first-case-app/static/css/2.3577e40c.chunk.css",
-    "static/js/2.c3f09381.chunk.js": "/first-case-app/static/js/2.c3f09381.chunk.js",
-    "static/js/2.c3f09381.chunk.js.map": "/first-case-app/static/js/2.c3f09381.chunk.js.map",
+    "static/css/2.0a39a38f.chunk.css": "/first-case-app/static/css/2.0a39a38f.chunk.css",
+    "static/js/2.4fe4510d.chunk.js": "/first-case-app/static/js/2.4fe4510d.chunk.js",
+    "static/js/2.4fe4510d.chunk.js.map": "/first-case-app/static/js/2.4fe4510d.chunk.js.map",
     "index.html": "/first-case-app/index.html",
-    "precache-manifest.ce5f5ffae2a13b7c0dc29874c9e1dacb.js": "/first-case-app/precache-manifest.ce5f5ffae2a13b7c0dc29874c9e1dacb.js",
+    "precache-manifest.cd8fe98e04e9998c8c4c734e6b76f777.js": "/first-case-app/precache-manifest.cd8fe98e04e9998c8c4c734e6b76f777.js",
     "service-worker.js": "/first-case-app/service-worker.js",
-    "static/css/2.3577e40c.chunk.css.map": "/first-case-app/static/css/2.3577e40c.chunk.css.map",
+    "static/css/2.0a39a38f.chunk.css.map": "/first-case-app/static/css/2.0a39a38f.chunk.css.map",
     "static/css/main.da5221c3.chunk.css.map": "/first-case-app/static/css/main.da5221c3.chunk.css.map",
-    "static/js/2.c3f09381.chunk.js.LICENSE.txt": "/first-case-app/static/js/2.c3f09381.chunk.js.LICENSE.txt",
+    "static/js/2.4fe4510d.chunk.js.LICENSE.txt": "/first-case-app/static/js/2.4fe4510d.chunk.js.LICENSE.txt",
     "static/media/avatar.jpg": "/first-case-app/static/media/avatar.f1d71f77.jpg",
     "static/media/bg.jpg": "/first-case-app/static/media/bg.e5241971.jpg",
     "static/media/bg2.jpg": "/first-case-app/static/media/bg2.84378183.jpg",
@@ -35,9 +35,9 @@
   },
   "entrypoints": [
     "static/js/runtime-main.c19add04.js",
-    "static/css/2.3577e40c.chunk.css",
-    "static/js/2.c3f09381.chunk.js",
+    "static/css/2.0a39a38f.chunk.css",
+    "static/js/2.4fe4510d.chunk.js",
     "static/css/main.da5221c3.chunk.css",
-    "static/js/main.968e1101.chunk.js"
+    "static/js/main.9c0bada9.chunk.js"
   ]
 }
