@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, Redirect} from "react";
 import PropTypes from "prop-types";
 
 import {makeStyles} from "@material-ui/core/styles";
@@ -9,8 +9,13 @@ import orders from "../../services/orders";
 import EmptyState from "../EmptyState";
 import {ReactComponent as NoDataIllustration} from "../../illustrations/no-data.svg";
 import {ReactComponent as ErrorIllustration} from "../../illustrations/error.svg";
+<<<<<<< Updated upstream
 import {Box, Grid, Card, Divider, Fab} from "@material-ui/core";
 import {ArrowBackIos as BackIcon, Refresh as RefreshIcon} from "@material-ui/icons";
+=======
+import {Box, Breadcrumbs, Container, Fab, Button} from "@material-ui/core";
+import {Refresh as RefreshIcon} from "@material-ui/icons";
+>>>>>>> Stashed changes
 import Loader from "../Loader";
 import OrderView from "../OrderView";
 import Button from "@material-ui/core/Button";
@@ -31,6 +36,12 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
+    },
+    link: {
+        color: 'white',
+    },
+    button: {
+        paddingBottom: 10,
     },
 }));
 
@@ -102,7 +113,24 @@ function OrderPage(props) {
 
     if (order) {
         return (
+<<<<<<< Updated upstream
             <Grid item xs={12} sm={12} md={10} lg={8} className={classes.root}>
+=======
+
+            <Grid item container xs={12} sm={12} md={10} lg={8} className={classes.root}>
+                <Container>
+                    <Breadcrumbs aria-label="breadcrumb" className={classes.button}>
+                        <Button
+                            color="primary"
+                            variant="contained"
+                        >
+                            <Link color="inherit" to={"/orders"} className={classes.link}>
+                                Все заказы
+                            </Link>
+                        </Button>
+                    </Breadcrumbs>
+                </Container>
+>>>>>>> Stashed changes
                 <Card>
                     <Box className={classes.header}>
                         <Button

@@ -1,11 +1,8 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import styles from "assets/jss/material-kit-react/views/editProfile.js";
 // core components
-import Header from "../../components/Header/Header";
-import HeaderLinksProfile from "../../components/Header/HeaderLinksProfile";
 import classNames from "classnames";
-import Footer from "../../components/Footer/Footer";
 import Typography from "@material-ui/core/Typography";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -19,116 +16,115 @@ import profile from "../../assets/img/faces/avatar.jpg";
 import ReviewItem from '../../components/ReviewItem/ReviewItem';
 import List from "@material-ui/core/List";
 import {v4 as uuid} from 'uuid';
-import {
-    IconButton,
-    ListItem,
-    ListItemAvatar,
-    ListItemText
-} from '@material-ui/core';
 import InputLabel from "@material-ui/core/InputLabel";
 import MakeRating from './../../components/MakeRating/MakeRating';
+import Loader from "../../baseComponents/Loader";
+import {
+    Box,
+    Fab,
+    ListItem,
+} from '@material-ui/core';
+import EmptyState from "../../baseComponents/EmptyState";
+import {ReactComponent as ErrorIllustration} from "../../illustrations/error.svg";
+import {Refresh as RefreshIcon} from "@material-ui/icons";
+import {ReactComponent as NoDataIllustration} from "../../illustrations/no-data.svg";
+import {firestore, auth} from "../../firebase";
 
-const reviews = [
-    {
-        id:uuid(),
-        name:'Лена',
-        text:'Отличный исполнитель, очень довольны работой',
-        imageUrl: {profile},
-    },
-    {
-        id:uuid(),
-        name:'Наташа',
-        text:'Отлично',
-        imageUrl: {profile},
-    },
-    {
-        id:uuid(),
-        name:'Влада',
-        text:'Хорошо',
-        imageUrl: {profile},
-    },
-    {
-        id:uuid(),
-        name:'Маша',
-        text:'Прекрасная работа',
-        imageUrl: {profile},
-    },
-];
 
-const dashboardRoutes = [];
-const useStyles = makeStyles(styles);
+const useStyles = makeStyles((theme) => ({
+    styles,
+    root: {
+        margin: "0 auto",
+        marginTop: theme.spacing(16),
+    },
+}));
 
 export default function Reviews(props) {
     const classes = useStyles();
-    const {...rest} = props;
-    const [value, setValue] = React.useState(1);
-    return (
-        <div>
-            <Header
-            color="white"
-            routes={dashboardRoutes}
-            brand="FirstCase"
-            rightLinks={<HeaderLinksProfile/>}
-            fixed
-            {...rest}/>
-            
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    const useItems = () => {
+        const [items, setItems] = useState([]);
+        useEffect(() => {
+            const unsubscribe = firestore
+                .collection("reviews")
+                .onSnapshot(snapshot => {
+                    const listItems = snapshot.docs
+                        .map(doc => ({
+                            id: doc.id,
+                            ...doc.data(),
+                        }))
+                    setLoading(false);
+                    setItems(listItems);
+                }, (error) => {
+                    setLoading(false);
+                    setError(error);
+                })
+
+            return () => unsubscribe()
+        }, []);
+        return items
+    }
+
+    const reviews = useItems();
+
+    if (loading) {
+        return <Loader/>;
+    };
+
+    if (error) {
+        return (
+            <EmptyState
+                image={<ErrorIllustration/>}
+                title="Не удалось получить пользователя."
+                description="Что-то пошло не так при попытке получить пользователя."
+                button={
+                    <Fab
+                        variant="extended"
+                        color="primary"
+                        onClick={() => window.location.reload()}
+                    >
+                        <Box clone mr={1}>
+                            <RefreshIcon/>
+                        </Box>
+                        Повторить
+                    </Fab>
+                }
+            />
+        );
+    };
+
+    if (reviews.length >= 1) {
+        return (
             <div className={classNames(classes.main)}>
-                <GridItem xs={12} sm={12} md={8} className={classNames(classes.inner)}>
+                <GridItem xs={12} sm={12} md={8}  className={classes.root}>
                     <Card>
                         <CardHeader color="success">
-                            <h4 className={classes.cardTitleWhite}>Создать отзыв</h4>
-                            <p className={classes.cardCategoryWhite}>
-                                Пожалуйста, укажите ваш отзыв ниже
-                            </p>
+                            <h4 className={classes.cardTitleWhite}>Просмотр отзывов</h4>
                         </CardHeader>
 
-                        <MakeRating/>
-                        
-                        <form>
-                            <CardBody>
-                                <InputLabel>
-                                    <Typography variant="subtitle1" color="textPrimary" component="p">
-                                        Отзыв
-                                    </Typography>
-                                </InputLabel>
-
-                                <GridContainer>
-                                    <GridItem xs={12} sm={12} md={12}>
-                                        <CustomInput
-                                            className={classes.customInput}
-                                            labelText="Что вы думаете об этом исполнителе?"
-                                            id="about-me"
-                                            formControlProps={{
-                                                fullWidth: true
-                                            }}
-                                            inputProps={{
-                                                multiline: true,
-                                                rows: 5
-                                            }}
-                                        />
-                                    </GridItem>
-                                </GridContainer>
-                            </CardBody>
-                            <CardFooter>
-                                <Button color="success">Добавить отзыв</Button>
-                            </CardFooter>
-                        </form>
-                        <Typography variant="subtitle1" color="textPrimary" component="p" style={{paddingLeft: "35px"}}>
-                            Отзывы 
-                        </Typography>
                         <List>
                             {reviews.map((review, i) => (
+                                review.targetPerson === auth.currentUser.uid?
                                 <ListItem
                                     divider={i < reviews.length - 1}
-                                    key={reviews.id}>
+                                    key={review.id}>
                                     <ReviewItem review={review}/>
-                                </ListItem>
+                                </ListItem> : null
                             ))}
                         </List>
                     </Card>
                 </GridItem>
             </div>
-            <Footer/>
-        </div>
+        );
+    };
+
+    return (
+        <EmptyState
+            image={<NoDataIllustration/>}
+            title="No reviews"
+            description="Сорян, братан, но отзывов пока нет("
+        />
     )
 };

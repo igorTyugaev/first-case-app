@@ -86,7 +86,7 @@ class OrderEdit extends Component {
             performingAction: true,
             errors: null,
         })
-
+        
         const {orderId} = this.props;
         const {history} = this.props;
         const values = {
@@ -97,7 +97,7 @@ class OrderEdit extends Component {
             price: this.state.price,
         }
 
-
+        console.log(orderId);
         const errorsCurrent = validate(
             {
                 name: this.state.name,
