@@ -15,13 +15,10 @@ import LandingPage from "../../views/LandingPage/LandingPage";
 import CreateOrderPage from "../CreateOrderPage";
 import OrderPage from "../OrderPage/OrderPage";
 import OrderList from "../../components/RecommendationsList/OrderList";
-<<<<<<< Updated upstream
 import DialogPage from "../../views/DialogPage/DialogPage";
 import DialogsList from "../../components/RecommendationsList/DialogsList";
-=======
 import Reviews from "../../views/Reviews/Reviews";
 import AddReview from "../../views/AddReview/AddReviewContainer";
->>>>>>> Stashed changes
 
 class Router extends Component {
     render() {
