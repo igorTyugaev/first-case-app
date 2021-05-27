@@ -5,23 +5,18 @@ import {makeStyles} from "@material-ui/core/styles";
 
 import {firestore} from "../../firebase";
 import {useHistory, useParams} from "react-router-dom";
-import orders from "../../services/orders";
 import EmptyState from "../EmptyState";
 import {ReactComponent as NoDataIllustration} from "../../illustrations/no-data.svg";
 import {ReactComponent as ErrorIllustration} from "../../illustrations/error.svg";
-<<<<<<< Updated upstream
-import {Box, Grid, Card, Divider, Fab} from "@material-ui/core";
-import {ArrowBackIos as BackIcon, Refresh as RefreshIcon} from "@material-ui/icons";
-=======
-import {Box, Breadcrumbs, Container, Fab, Button} from "@material-ui/core";
-import {Refresh as RefreshIcon} from "@material-ui/icons";
->>>>>>> Stashed changes
+import {Box, Breadcrumbs, Container, Fab, Button, Grid, Divider} from "@material-ui/core";
+import {Link} from "react-router-dom";
 import Loader from "../Loader";
+import Card from "components/Card/Card.js";
 import OrderView from "../OrderView";
-import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Typography from "@material-ui/core/Typography";
+import {ArrowBackIos as BackIcon, Refresh as RefreshIcon} from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -113,10 +108,6 @@ function OrderPage(props) {
 
     if (order) {
         return (
-<<<<<<< Updated upstream
-            <Grid item xs={12} sm={12} md={10} lg={8} className={classes.root}>
-=======
-
             <Grid item container xs={12} sm={12} md={10} lg={8} className={classes.root}>
                 <Container>
                     <Breadcrumbs aria-label="breadcrumb" className={classes.button}>
@@ -130,7 +121,6 @@ function OrderPage(props) {
                         </Button>
                     </Breadcrumbs>
                 </Container>
->>>>>>> Stashed changes
                 <Card>
                     <Box className={classes.header}>
                         <Button
