@@ -1,4 +1,4 @@
-import firebase, {analytics, auth, firestore, storage} from "../firebase";
+import firebase, {analytics, auth, firestore} from "../firebase";
 
 const channels = {};
 
@@ -107,7 +107,6 @@ channels.addChannelProfile = (profile, userData) => {
                 })
                 .then((res) => {
                     analytics.logEvent("add_channel");
-                    console.log("Create new channel with id:", res.id)
                     resolve(res.id);
                 })
                 .catch((reason) => {

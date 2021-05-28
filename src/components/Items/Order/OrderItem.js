@@ -1,12 +1,36 @@
 import React from "react";
-// @material-ui/core components
 import {makeStyles} from "@material-ui/core/styles";
-import styles from "assets/jss/material-kit-react/components/orderItem.js";
 import classNames from "classnames";
 import OrderItemDescription from "./OrderItemDescription";
 import OrderActions from "./OrderActions";
 
-const useStyles = makeStyles(styles);
+const useStyles = makeStyles({
+    main: {
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "flex-start",
+
+        "@media (max-width: 642px)": {
+            display: "flex",
+            flexDirection: "column",
+        },
+    },
+
+    col_1: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        flex: "2.5",
+        width: "100%",
+    },
+
+    col_2: {
+        flex: "1",
+        width: "100%",
+    },
+});
 
 export default function OrderItem(props) {
     const classes = useStyles();

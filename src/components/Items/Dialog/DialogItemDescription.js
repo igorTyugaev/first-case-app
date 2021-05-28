@@ -7,7 +7,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import {NavLink} from "react-router-dom";
 import {IconButton, Link} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import UserAvatar from "../../../baseComponents/UserAvatar/UserAvatar";
+import UserAvatar from "../../UserAvatar/UserAvatar";
 
 const useStyles = makeStyles({
     root: {

@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import styles from "assets/jss/material-kit-react/views/executors.js";
 // core components
 import List from "@material-ui/core/List";
 
@@ -12,10 +11,10 @@ import {
 
 import Grid from "@material-ui/core/Grid";
 import {firestore} from "../../firebase";
-import EmptyState from "../../baseComponents/EmptyState";
+import EmptyState from "../EmptyState";
 import {ReactComponent as ErrorIllustration} from "../../illustrations/error.svg";
 import {Refresh as RefreshIcon} from "@material-ui/icons";
-import Loader from "../../baseComponents/Loader";
+import Loader from "../Loader";
 
 import {ReactComponent as NoDataIllustration} from "../../illustrations/no-data.svg";
 import DialogItem from "../Items/Dialog/DialogItem";
@@ -24,7 +23,6 @@ import Card from "../Card/Card";
 import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
-    styles,
     root: {
         margin: "0 auto",
         marginTop: theme.spacing(12),

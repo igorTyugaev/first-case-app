@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import styles from "assets/jss/material-kit-react/views/executors.js";
 // core components
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
@@ -13,15 +12,14 @@ import {
 } from '@material-ui/core';
 import Grid from "@material-ui/core/Grid";
 import {firestore} from "../../firebase";
-import EmptyState from "../../baseComponents/EmptyState";
+import EmptyState from "../EmptyState";
 import {ReactComponent as ErrorIllustration} from "../../illustrations/error.svg";
 import {Refresh as RefreshIcon} from "@material-ui/icons";
 import {ReactComponent as NoDataIllustration} from "../../illustrations/no-data.svg";
-import Loader from "../../baseComponents/Loader";
+import Loader from "../Loader";
 import OrderItem from "../Items/Order/OrderItem";
 
 const useStyles = makeStyles((theme) => ({
-    styles,
     root: {
         margin: "0 auto",
         marginTop: theme.spacing(12),
@@ -100,7 +98,8 @@ function OrderList(props) {
                                 divider={i < orders.length - 1}
                                 disabled={order.disabled}
                                 key={order.id}>
-                                <OrderItem setLoading={setLoading} openSnackbar={openSnackbar} userData={userData} order={order}/>
+                                <OrderItem setLoading={setLoading} openSnackbar={openSnackbar} userData={userData}
+                                           order={order}/>
                             </ListItem>
                         ))}
                     </List>

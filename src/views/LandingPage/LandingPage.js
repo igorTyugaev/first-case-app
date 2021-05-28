@@ -5,20 +5,16 @@ import classNames from "classnames";
 import {makeStyles} from "@material-ui/core/styles";
 
 // core components
-import Footer from "components/Footer/Footer.js";
-import GridContainer from "components/Grid/GridContainer.js";
-import GridItem from "components/Grid/GridItem.js";
-import Button from "components/CustomButtons/Button.js";
-import Parallax from "components/Parallax/Parallax.js";
-
 import styles from "assets/jss/material-kit-react/views/landingPage.js";
 
 // Sections for this page
 import ProductSection from "./Sections/ProductSection.js";
 import TeamSection from "./Sections/TeamSection.js";
-import WorkSection from "./Sections/WorkSection.js";
-import HeaderLinksAuth from "../../components/Header/HeaderLinksAuth";
-import HeaderLinksRole from "../../components/Header/HeaderLinksRole";
+import {Button} from "@material-ui/core";
+import Footer from "./Footer/Footer";
+import Parallax from "./Parallax/Parallax";
+import GridContainer from "./Grid/GridContainer";
+import GridItem from "./Grid/GridItem";
 
 const useStyles = makeStyles(styles);
 
@@ -40,13 +36,8 @@ export default function LandingPage(props) {
                             </h4>
                             <br/>
                             <Button
-                                color="danger"
-                                size="lg"
-                                href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ref=creativetim"
-                                target="_blank"
-                                rel="noopener noreferrer"
+                                color="secondary"
                             >
-                                <i className="fas fa-play"/>
                                 Смотреть промо
                             </Button>
                         </GridItem>
@@ -57,7 +48,6 @@ export default function LandingPage(props) {
                 <div className={classes.container}>
                     <ProductSection/>
                     <TeamSection/>
-                    <WorkSection/>
                 </div>
             </div>
             <Footer/>
