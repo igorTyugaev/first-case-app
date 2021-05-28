@@ -12,7 +12,7 @@ const useStyles = makeStyles(styles);
 
 export default function ProfileItem(props) {
     const classes = useStyles();
-    const {profile} = props;
+    const {profile, userData, openSnackbar, setLoading} = props;
 
     return (
         <div className={classNames(classes.main)}>
@@ -26,7 +26,7 @@ export default function ProfileItem(props) {
             </div>
 
             <div className={classNames(classes.col_3)}>
-                <ProfileActions profile={profile}/>
+                <ProfileActions profile={profile} userData={userData} openSnackbar={openSnackbar} setLoading={setLoading}/>
             </div>
         </div>
     );

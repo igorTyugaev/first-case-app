@@ -18,7 +18,16 @@ export default function ProfileItemAvatar(props) {
     const classes = useStyles();
     const {profile} = props;
 
-    const [value, setValue] = React.useState(4);
+    const getRandomInt = (max) => {
+        return Math.floor(Math.random() * max);
+    }
+
+    const getRandomBadge = (type) => {
+        if (type)
+            return <Badge color="success">Аккаунт проверен</Badge>
+        else
+            return <Badge color="warning">Не подтвержден</Badge>
+    }
 
     return (
         <div className={classNames(classes.body)}>
@@ -31,11 +40,11 @@ export default function ProfileItemAvatar(props) {
                 </IconButton>
 
                 <div style={{padding: "5px"}}>
-                    <Badge color="success">Аккаунт проверен</Badge>
+                    {getRandomBadge(getRandomInt(2))}
                 </div>
 
                 <Typography variant="body2" color="textSecondary" component="p">
-                    Выполненых работ: 200
+                    Выполненых работ: {getRandomInt(75)}
                 </Typography>
 
                 {/*<Rating name="read-only" value={value} readOnly style={{padding: "5px"}}/>*/}

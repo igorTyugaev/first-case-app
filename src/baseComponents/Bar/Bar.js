@@ -197,6 +197,18 @@ class Bar extends Component {
                                             </Button>
                                         </Box>
 
+
+                                        <Box mr={1}>
+                                            <Button
+                                                className={classes.header__link}
+                                                component={RouterLink}
+                                                variant="text"
+                                                to="/people/"
+                                            >
+                                                Исполнители
+                                            </Button>
+                                        </Box>
+
                                         {userData.role.toLowerCase() === "customer" && (
                                             <Box mr={1}>
                                                 <Button

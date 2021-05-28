@@ -35,7 +35,7 @@ function ProfilesList(props) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const classes = useStyles();
-    const {user, userData} = props;
+    const {user, userData, openSnackbar} = props;
 
     const getHeaderByType = (role) => {
         if (userData.role) {
@@ -100,6 +100,7 @@ function ProfilesList(props) {
                         .map(doc => ({
                             id: doc.id,
                             ...doc.data(),
+                            disabled: (doc.data().responses && doc.data().responses.includes(user.uid)),
                         }))
                     setItems(listItems)
                     setLoading(false);
@@ -148,8 +149,9 @@ function ProfilesList(props) {
                         {profiles.map((profile, i) => (
                             <ListItem
                                 divider={i < profiles.length - 1}
-                                key={profile.id}>
-                                <ProfileItem profile={profile}/>
+                                key={profile.id}
+                                disabled={profile.disabled}>
+                                <ProfileItem profile={profile} userData={userData} openSnackbar={openSnackbar} setLoading={setLoading}/>
                             </ListItem>
                         ))}
                     </List>
@@ -161,8 +163,8 @@ function ProfilesList(props) {
     return (
         <EmptyState
             image={<NoDataIllustration/>}
-            title="No orders"
-            description="Сорян, братан, но заказов пока нет("
+            title="Не найдено"
+            description="Извините, но подходящих кандидатов нет"
         />
     );
 }

@@ -24,7 +24,7 @@ export default function OrderActions(props) {
     const handleChannel = () => {
         setLoading(true);
         channels
-            .addChannel(order, userData)
+            .addChannelOrder(order, userData)
             .then((id) => {
                 console.log(id)
                 goToChannel(id);

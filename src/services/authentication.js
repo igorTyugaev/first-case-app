@@ -1,6 +1,7 @@
 import firebase, {analytics, auth, firestore, storage} from "../firebase";
 
 import moment from "moment";
+import orders from "./orders";
 
 const authentication = {};
 
@@ -1376,6 +1377,44 @@ authentication.getSecurityRating = (user, userData) => {
     }
 
     return securityRating;
+};
+
+authentication.addMemberToResponses = (userId) => {
+    return new Promise((resolve, reject) => {
+        if (!userId) {
+            reject(new Error("No orderId"));
+            return;
+        }
+
+        const currentUser = auth.currentUser;
+
+        if (!currentUser) {
+            reject(new Error("No current user"));
+            return;
+        }
+
+        const uid = currentUser.uid;
+
+        if (!uid) {
+            reject(new Error("No UID"));
+            return;
+        }
+
+        const collectionReference = firestore.collection("users");
+        const orderDocumentReference = collectionReference.doc(userId);
+
+        orderDocumentReference
+            .update({
+                responses: firebase.firestore.FieldValue.arrayUnion(uid)
+            })
+            .then((value) => {
+                analytics.logEvent("add_member_to_responses");
+                resolve(value);
+            })
+            .catch((reason) => {
+                reject(reason);
+            });
+    });
 };
 
 export default authentication;
