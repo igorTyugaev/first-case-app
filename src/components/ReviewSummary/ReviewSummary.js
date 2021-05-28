@@ -15,16 +15,16 @@ const useStyles = makeStyles(styles);
 
 export default function ReviewSummary(props) {
     const classes = useStyles();
-    const {name,text} = props.review;
+    const {review} = props;
 
     return (
         <div className={classNames(classes.body)}>
-            <h3 className={classes.title}>{name}</h3>
+            <h3 className={classes.title}>{review.author}</h3>
             <div>
-                <p>{text}</p>
+                <p>{review.description}</p>
             </div>
             
-            <ProfileRating/>
+            <ProfileRating rating={review.rating}/>
         </div>
     );
 }

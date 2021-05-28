@@ -14,13 +14,15 @@ const useStyles = makeStyles(styles);
 
 export default function ReviewItem(props) {
     const classes = useStyles();
+    const {review} = props;
+
     return (
         <div className={classes.body}>
             <div className={classNames(classes.card)}>
-                <UserReview/>
+                <UserReview photo={review.athorPhoto}/>
             </div>
             <div className={classNames(classes.summary)} style={{paddingLeft: "45px"}}>
-                <ReviewSummary review={props.review}/>
+                <ReviewSummary review={review}/>
             </div>
         </div>
     );

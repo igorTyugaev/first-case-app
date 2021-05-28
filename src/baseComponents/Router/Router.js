@@ -7,7 +7,6 @@ import {BrowserRouter, Switch, Redirect, Route} from "react-router-dom";
 import HomePage from "../HomePage";
 import NotFoundPage from "../NotFoundPage";
 import SettingsPage from "../SettingsPage";
-import Components from "../../views/Components/Components";
 import ProfilesList from "../../components/RecommendationsList/ProfilesList";
 import ProfilePage from "../ProfilePage";
 import AddOrderPage from "../AddOrderPage";
@@ -18,6 +17,8 @@ import OrderPage from "../OrderPage/OrderPage";
 import OrderList from "../../components/RecommendationsList/OrderList";
 import DialogPage from "../../views/DialogPage/DialogPage";
 import DialogsList from "../../components/RecommendationsList/DialogsList";
+import Reviews from "../../views/Reviews/Reviews";
+import AddReview from "../../views/AddReview/AddReviewContainer";
 
 class Router extends Component {
     render() {
@@ -65,10 +66,6 @@ class Router extends Component {
                             <Redirect to="/"/>}
                     </Route>
 
-                    <Route path="/example/">
-                        <Components/>
-                    </Route>
-
                     <Route path="/edit_order/:orderId">
                         <AddOrderPage theme={theme} openSnackbar={openSnackbar}/>
                     </Route>
@@ -76,6 +73,16 @@ class Router extends Component {
                     <Route path="/create_order/">
                         {isProfileComplete ?
                             <CreateOrderPage theme={theme} userID={user.uid} openSnackbar={openSnackbar}/> :
+                            <Redirect to="/"/>}
+                    </Route>
+                    
+                    <Route path="/create_review/">
+                        {user ? <AddReview theme={theme} userID={user.uid} openSnackbar={openSnackbar}/> :
+                            <Redirect to="/"/>}
+                    </Route>
+
+                    <Route path="/reviews/">
+                        {user ? <Reviews theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}/>:
                             <Redirect to="/"/>}
                     </Route>
 

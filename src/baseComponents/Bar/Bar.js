@@ -143,6 +143,11 @@ class Bar extends Component {
             },
 
             {
+                name: "Мои отзывы",
+                to: user ? `/reviews/` : null,
+            },
+
+            {
                 name: "Выйти",
                 divide: true,
                 onClick: onSignOutClick,

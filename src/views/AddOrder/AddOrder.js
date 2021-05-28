@@ -12,13 +12,9 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
-import Header from "../../components/Header/Header";
-import HeaderLinksProfile from "../../components/Header/HeaderLinksProfile";
 import classNames from "classnames";
 import Footer from "../../components/Footer/Footer";
 import Typography from "@material-ui/core/Typography";
-import FormControl from "@material-ui/core/FormControl";
-import Datetime from "react-datetime";
 
 const useStyles = makeStyles(styles);
 

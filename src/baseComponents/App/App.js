@@ -28,6 +28,11 @@ const initialState = {
         {},
     ],
 
+    reviewsArr: [
+        {id:1,},
+        {},
+    ],
+
     aboutDialog: {
         open: false,
     },

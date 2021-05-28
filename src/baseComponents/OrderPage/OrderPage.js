@@ -1,22 +1,22 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, Redirect} from "react";
 import PropTypes from "prop-types";
 
 import {makeStyles} from "@material-ui/core/styles";
 
 import {firestore} from "../../firebase";
 import {useHistory, useParams} from "react-router-dom";
-import orders from "../../services/orders";
 import EmptyState from "../EmptyState";
 import {ReactComponent as NoDataIllustration} from "../../illustrations/no-data.svg";
 import {ReactComponent as ErrorIllustration} from "../../illustrations/error.svg";
-import {Box, Grid, Card, Divider, Fab} from "@material-ui/core";
-import {ArrowBackIos as BackIcon, Refresh as RefreshIcon} from "@material-ui/icons";
+import {Box, Breadcrumbs, Container, Fab, Button, Grid, Divider} from "@material-ui/core";
+import {Link} from "react-router-dom";
 import Loader from "../Loader";
+import Card from "components/Card/Card.js";
 import OrderView from "../OrderView";
-import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Typography from "@material-ui/core/Typography";
+import {ArrowBackIos as BackIcon, Refresh as RefreshIcon} from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -31,6 +31,12 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
+    },
+    link: {
+        color: 'white',
+    },
+    button: {
+        paddingBottom: 10,
     },
 }));
 
@@ -102,7 +108,19 @@ function OrderPage(props) {
 
     if (order) {
         return (
-            <Grid item xs={12} sm={12} md={10} lg={8} className={classes.root}>
+            <Grid item container xs={12} sm={12} md={10} lg={8} className={classes.root}>
+                <Container>
+                    <Breadcrumbs aria-label="breadcrumb" className={classes.button}>
+                        <Button
+                            color="primary"
+                            variant="contained"
+                        >
+                            <Link color="inherit" to={"/orders"} className={classes.link}>
+                                Все заказы
+                            </Link>
+                        </Button>
+                    </Breadcrumbs>
+                </Container>
                 <Card>
                     <Box className={classes.header}>
                         <Button
