@@ -22,11 +22,11 @@ function DialogPage(props) {
 
     // Custom Properties
     const {theme} = props;
-    const {user, userData} = props;
+    const {user, userData, openSnackbar} = props;
 
     return (
         <Grid item container xs={12} sm={12} md={10} lg={8} className={classes.root}>
-            <Dialog theme={theme} user={user} userData={userData}/>
+            <Dialog theme={theme} user={user} userData={userData} openSnackbar={openSnackbar}/>
         </Grid>
     );
 }

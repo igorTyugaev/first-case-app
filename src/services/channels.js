@@ -25,7 +25,6 @@ channels.addChannelOrder = (order, userData) => {
 
         const collectionReference = firestore.collection("channels");
 
-
         collectionReference
             .where("orderId", "==", order.id)
             .where("members", "array-contains", uid)
@@ -47,6 +46,24 @@ channels.addChannelOrder = (order, userData) => {
                     members: [uid, order.author],
                     avatar: currentUser.photoURL,
                     userName: userData && userData.fullName ? userData.fullName : null,
+                    status: 'request_order',
+                })
+                .then((res) => {
+                    analytics.logEvent("add_channel");
+                    resolve(res.id);
+                })
+                .catch((reason) => {
+                    reject(reason);
+                });
+        }
+
+        function addStatusChannel(userId) {
+            collectionReference
+                .doc(userId)
+                .collection("actions")
+                .doc(uid)
+                .set({
+                    status: "out_intent",
                 })
                 .then((res) => {
                     analytics.logEvent("add_channel");
@@ -84,7 +101,6 @@ channels.addChannelProfile = (profile, userData) => {
 
         const collectionReference = firestore.collection("channels");
 
-
         collectionReference
             .where("members", "array-contains", [uid, profile.id])
             .get()
@@ -104,6 +120,7 @@ channels.addChannelProfile = (profile, userData) => {
                     members: [uid, profile.id],
                     avatar: currentUser.photoURL,
                     userName: userData && userData.fullName ? userData.fullName : null,
+                    status: 'request_profile',
                 })
                 .then((res) => {
                     analytics.logEvent("add_channel");
@@ -114,6 +131,23 @@ channels.addChannelProfile = (profile, userData) => {
                 });
         }
 
+        function addStatusChannel(userId) {
+            collectionReference
+                .doc(userId)
+                .collection("actions")
+                .doc(uid)
+                .set({
+                    status: "out_intent",
+                })
+                .then((res) => {
+                    analytics.logEvent("add_channel");
+                    console.log("Create new channel with id:", res.id)
+                    resolve(res.id);
+                })
+                .catch((reason) => {
+                    reject(reason);
+                });
+        }
     });
 };
 

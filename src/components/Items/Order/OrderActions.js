@@ -22,7 +22,6 @@ const useStyles = makeStyles({
     },
 });
 
-
 export default function OrderActions(props) {
     const classes = useStyles();
     const {setLoading, openSnackbar, order, userData} = props;
@@ -89,10 +88,12 @@ export default function OrderActions(props) {
             </span>
             </Typography>
 
-            <Button color="primary" variant="contained" className={classNames(classes.btn)}
-                    onClick={handleRespondBtn}>
-                {order.disabled ? "Перейти к обсуждению" : "Оставить заявку"}
-            </Button>
+            {userData && userData.role && userData.role.toLowerCase() != 'customer' && (
+                <Button color="primary" variant="contained" className={classNames(classes.btn)}
+                        onClick={handleRespondBtn}>
+                    {order.disabled ? "Перейти к обсуждению" : "Оставить заявку"}
+                </Button>
+            )}
         </div>
     );
 }

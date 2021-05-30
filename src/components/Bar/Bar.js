@@ -15,7 +15,7 @@ import {
     Divider,
     Menu,
     MenuItem,
-    Link,
+    Link, Grid,
 } from "@material-ui/core";
 
 import UserAvatar from "../UserAvatar";
@@ -130,16 +130,26 @@ class Bar extends Component {
                 <AppBar color="primary" position="fixed">
                     <Toolbar>
                         <Box display="flex" flexGrow={1}>
-                            <Typography color="inherit" variant="h6">
-                                <Link
-                                    className={classes.header__logo}
-                                    component={RouterLink}
-                                    to="/"
-                                    underline="none"
-                                >
-                                    {process.env.REACT_APP_TITLE}
-                                </Link>
-                            </Typography>
+                            <Grid container direction="row" spacing={1} alignItems="center">
+                                <Grid item>
+                                    <Typography color="inherit" variant="h6">
+                                        <Link
+                                            className={classes.header__logo}
+                                            component={RouterLink}
+                                            to="/"
+                                            underline="none"
+                                        >
+                                            {process.env.REACT_APP_TITLE}
+                                        </Link>
+                                    </Typography>
+                                </Grid>
+
+                                <Grid item>
+                                    <Typography color="textSecondary" variant="h6">
+                                        {userData.role}
+                                    </Typography>
+                                </Grid>
+                            </Grid>
                         </Box>
 
                         {user && (
