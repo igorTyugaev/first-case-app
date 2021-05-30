@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 // @material-ui/core components
 import {makeStyles} from "@material-ui/core/styles";
 import classNames from "classnames";
@@ -23,10 +23,13 @@ const useStyles = makeStyles({
 });
 
 
-export default function OrderActions(props) {
+ const OrderActions = (props) => {
     const classes = useStyles();
     const {setLoading, openSnackbar, order, userData} = props;
     const history = useHistory();
+    //const [disabledBtn, setDisabledBtn] = useState(false);
+
+    //if (userData.role !== 'Customer'){setDisabledBtn(true)}
 
     const goToChannel = (id) => {
         history.push(`/dialog/${id}`);
@@ -65,15 +68,31 @@ export default function OrderActions(props) {
                 const code = reason.code;
                 const message = reason.message;
 
+                console.log(reason);
                 switch (code) {
                     default:
                         openSnackbar(message);
                         return;
                 }
             })
-
     }
 
+    const disabledBtn = (userData) => {
+        if (!userData && !userData.role)
+            return null;
+        
+        switch (userData.role) {
+            case "Mentor":
+                return false;
+            case "Customer":
+                return true;
+            case "Student":
+                return false;
+            default:
+                return null;
+        }
+    };
+    
     return (
         <div className={classNames(classes.main)}>
             <Typography variant="subtitle1" color="textPrimary" component="p">
@@ -89,11 +108,16 @@ export default function OrderActions(props) {
             </span>
             </Typography>
 
-            <Button color="primary" variant="contained" className={classNames(classes.btn)}
-                    onClick={handleRespondBtn}>
+            <Button color="primary" variant="contained" 
+                className={classNames(classes.btn)}
+                onClick={handleRespondBtn}
+                disabled={disabledBtn(userData)} 
+                >
                 {order.disabled ? "Перейти к обсуждению" : "Оставить заявку"}
             </Button>
         </div>
     );
-}
+};
+
+export default OrderActions;
 

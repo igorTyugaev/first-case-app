@@ -461,7 +461,6 @@ AccountView.propTypes = {
     classes: PropTypes.object.isRequired,
 
     // Properties
-    user: PropTypes.object.isRequired,
     userData: PropTypes.object,
 
     // Functions

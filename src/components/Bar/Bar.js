@@ -27,7 +27,7 @@ const styles = (theme) => ({
         color: "#FFFFFF",
         "&:hover,&:focus": {
             color: "#FFFFFF",
-            textDecoration: "underline",
+            textDecoration: "none",
             cursor: "pointer"
         }
     },
@@ -87,6 +87,22 @@ class Bar extends Component {
         }
     }
 
+    getTitleForRole = (userData) => {
+        if (!userData && !userData.role)
+            return null
+        
+        switch (userData.role) {
+            case "Mentor":
+                return "Наставник";
+            case "Customer":
+                return "Заказчик";
+            case "Student":
+                return "Студент";
+            default:
+                return null;
+        } 
+    }
+
     render() {
         // Properties
         const {performingAction, user, userData} = this.props;
@@ -137,8 +153,11 @@ class Bar extends Component {
                                     to="/"
                                     underline="none"
                                 >
-                                    {process.env.REACT_APP_TITLE}
-                                </Link>
+                                    {process.env.REACT_APP_TITLE + ' > ' + this.getTitleForRole(userData)}
+                                </Link>           
+                            </Typography>
+                            <Typography color="inherit" variant="h6" className={classes.header__logo}>
+                                {}
                             </Typography>
                         </Box>
 

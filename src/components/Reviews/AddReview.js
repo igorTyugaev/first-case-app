@@ -1,7 +1,7 @@
 import React, {useState} from "react";
-import {Typography, Input, Button, Card, Grid, ListItem} from "@material-ui/core";
+import {Typography, Input, Button, Card, Grid} from "@material-ui/core";
 import InputLabel from "@material-ui/core/InputLabel";
-
+import { useHistory } from "react-router-dom";
 import reviews from '../../services/reviews';
 import constraintsReview from '../../data/constraintsReview';
 import validate from "validate.js";
@@ -20,67 +20,84 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function AddReviewForm(props) {
-    const [performingAction, setPerformingAction] = useState(false);
-    const [errors, setErrors] = useState(null);
-    const [rating, setRating] = useState(null);
-    const [description, setDescription] = useState(null);
+const initialState = {
+    performingAction: false,
+    errors: null,
+    rating: null,
+    description: null,
+    targetPerson: null,
+};
 
-    const classes = useStyles();
-    const {userID} = props;
+export default class AddReviewForm extends React.Component {
+    state = initialState;
 
-    const onSubmit = () => {
-        setPerformingAction(true);
-        setErrors(null);
+    onSubmit = () => {
+        this.setState({
+            performingAction: true,
+            errors: null,
+        });
 
-        const {reviewId} = props;
-        const {history} = props;
-
+        const {reviewId} = this.props;
+        const {history} = this.props;
+        const current = this.props.currentId;
+        const fullname = this.props.userData.fullName;
+  
+        console.log('rating onSubmit: '+this.state.rating+' | description onSubmit: '+this.state.description+' | currentId onSubmit: '+current);
         const values = {
-            rating: String(rating),
-            description: description,
+            rating: String(this.state.rating),
+            description: this.state.description,
+            targetPerson: current,
+            fullName: fullname,
         }
-
+        console.log(values);
         const errorsCurrent = validate(
             {
-                rating: String(rating),
-                description: description,
+                rating: String(this.state.rating),
+                description: this.state.description,
+                targetPerson: current,
+                fullName: fullname,
             },
             {
                 description: constraintsReview.getValidator("description"),
                 rating: constraintsReview.getValidator("rating"),
+                targetPerson: constraintsReview.getValidator("currentId"),
             }
         );
-
-
+        console.log('errorsCurrent: '+errorsCurrent);
         if (!errorsCurrent) {
-            setErrors(null);
+            this.setState({
+                errors: null,
+            });
 
             reviews
-                .updateReview(values, reviewId)
-                .then(() => {
-                    history.push('/');
+            .updateReview(values, reviewId)
+            .then(() => {
+                history.push('/');
+            })
+            .catch((reason) => {
+                const code = reason.code;
+                const message = reason.message;
+                console.log('reason: ' + reason);
+                switch (code) {
+                    default:
+                        this.props.openSnackbar(message);
+                        return;
+                }
+            })
+            .finally(() => {
+                this.setState({
+                    performingAction: false,
                 })
-                .catch((reason) => {
-                    const code = reason.code;
-                    const message = reason.message;
-
-                    switch (code) {
-                        default:
-                            props.openSnackbar(message);
-                            return;
-                    }
-                })
-                .finally(() => {
-                    setPerformingAction(false);
-                });
+            });
         } else {
-            setPerformingAction(true);
-            setErrors(errorsCurrent);
+            this.setState({
+                performingAction: false,
+                errors: errorsCurrent,
+            });
         }
     };
 
-    const checkValidator = (fieldId, value) => {
+    checkValidator = (fieldId, value) => {
         if (constraintsReview.getValidator(fieldId)) {
             const errorsCurrent = validate(
                 {
@@ -92,79 +109,97 @@ function AddReviewForm(props) {
             );
 
             if (!errorsCurrent) {
-                setErrors(null);
-            } else {
-                setErrors(errorsCurrent);
+                this.setState({
+                    errors: null,
+                })}
+            else {
+                this.setState({
+                    errors: errorsCurrent,
+                })
             }
         }
     };
 
-    const changeField = (value, fieldId) => {
+    changeField = (value, fieldId) => {
         if (!fieldId) {
             return;
         }
 
-        checkValidator(fieldId, value);
+        this.checkValidator(fieldId, value);
     };
 
-    const handleChange = (value, fieldId) => {
-        changeField(value, fieldId);
+    handleChange = (value, fieldId) => {
+        this.changeField(value, fieldId);
+        this.setState({
+            [fieldId]: value,
+        });
     };
 
-    return (
-        <Grid item xs={12} sm={12} md={8} className={classes.root}>
-            <Card>
-                <form>
-                    <MakeRating
-                        disabled={performingAction}
-                        error={!!(errors && errors.name)}
-                        value={rating}
-                        onChange={(event) => handleChange(event.target.value, "rating")}
-                    />
-                    <CardBody>
-                        <InputLabel>
-                            <Typography variant="subtitle1" color="textPrimary" component="p">
-                                Отзыв
-                            </Typography>
-                        </InputLabel>
+    render() {
+        const {userID, userData,currentId} = this.props;
+        //console.log(userID);
+        //console.log(userData);
+        //console.log(currentId);
+        
+        const {
+            performingAction,
+            errors,
+        } = this.state;
 
-                        <GridContainer>
-                            <GridItem xs={12} sm={12} md={12}>
-                                <Input
-                                    autoComplete="Что нужно сделать?"
-                                    autoFocus
-                                    disabled={performingAction}
-                                    error={!!(errors && errors.price)}
-                                    fullWidth
-                                    placeholder="Что вы думаете об этом исполнителе?"
-                                    required
-                                    type="text"
-                                    defaultValue={description ? description : ""}
-                                    onChange={(event) => handleChange(event.target.value, "description")}
-                                />
-                            </GridItem>
-                        </GridContainer>
-                    </CardBody>
-                    <CardFooter>
-                        <Button
-                            color="primary"
-                            onClick={onSubmit}
+        return (
+                <Card>
+                    <form>
+                        <MakeRating
                             disabled={performingAction}
-                            variant="contained"
-                        >
-                            Добавить отзыв
-                        </Button>
-                    </CardFooter>
-                </form>
-            </Card>
-        </Grid>
-    )
-}
+                            error={!!(errors && errors.name)}
+                            value={this.rating}
+                            onChange={(event) => this.handleChange(event.target.value, "rating")}
+                        />
+                        <CardBody>
+                            <InputLabel>
+                                <Typography variant="subtitle1" color="textPrimary" component="p">
+                                    Отзыв
+                                </Typography>
+                            </InputLabel>
+
+                            <GridContainer>
+                                <GridItem xs={12} sm={12} md={12}>
+                                    <Input
+                                        autoComplete="Что нужно сделать?"
+                                        autoFocus
+                                        disabled={this.state.performingAction}
+                                        error={!!(this.state.errors && this.state.errors.name)}
+                                        fullWidth
+                                        placeholder="Что вы думаете об этом исполнителе?"
+                                        required
+                                        type="text"
+                                        defaultValue={this.state.description ? this.state.description : ""}
+                                        onChange={(event) => this.handleChange(event.target.value, "description")}
+                                    />
+                                </GridItem>
+                            </GridContainer>
+                        </CardBody>
+                        <CardFooter>
+                            <Button
+                                color="primary"
+                                onClick={this.onSubmit}
+                                disabled={performingAction}
+                                variant="contained"
+                            >
+                                Добавить отзыв
+                            </Button>
+                        </CardFooter>
+                    </form>
+                </Card>
+        )
+    };
+    componentWillUnmount() {
+        this.setState({history: null})
+    };
+};
 
 AddReviewForm.propTypes = {
     // Functions
     openSnackbar: PropTypes.func.isRequired,
 };
-
-export default AddReviewForm;
             

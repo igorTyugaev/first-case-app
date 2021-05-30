@@ -3,9 +3,9 @@ import classNames from "classnames";
 import {makeStyles} from "@material-ui/core/styles";
 import styles from "assets/jss/material-kit-react/views/landingPageSections/teamStyle.js";
 
-import team1 from "../../../assets/img/faces/avatar.jpg";
-import team2 from "../../../assets/img/faces/christian.jpg";
-import team3 from "../../../assets/img/faces/kendall.jpg";
+import team1 from "../../../assets/img/Игорь.jpg";
+import team2 from "../../../assets/img/Настя.jpg";
+import team3 from "../../../assets/img/Наташа.jpg";
 import GridContainer from "../Grid/GridContainer";
 import GridItem from "../Grid/GridItem";
 import CardBody from "../../../components/Card/CardBody";
@@ -22,7 +22,7 @@ export default function TeamSection() {
     );
     return (
         <div className={classes.section}>
-            <h2 className={classes.title}>Here is our team</h2>
+            <h2 className={classes.title}>Отзывы наших клиентов</h2>
             <div>
                 <GridContainer>
                     <GridItem xs={12} sm={12} md={4}>
@@ -31,16 +31,13 @@ export default function TeamSection() {
                                 <img src={team1} alt="..." className={imageClasses}/>
                             </GridItem>
                             <h4 className={classes.cardTitle}>
-                                Gigi Hadid
+                                Игорь 
                                 <br/>
-                                <small className={classes.smallTitle}>Model</small>
+                                <small className={classes.smallTitle}>Разработчик</small>
                             </h4>
                             <CardBody>
                                 <p className={classes.description}>
-                                    You can write here details about one of your team members. You
-                                    can give more details about what they do. Feel free to add
-                                    some <a href="#pablo">links</a> for people to be able to
-                                    follow them outside the site.
+                                First Case помог мне найти ментора, который научил меня общаться с клиентами и помог заработать первые деньги! Я очень благодарен! 
                                 </p>
                             </CardBody>
                         </Card>
@@ -51,16 +48,13 @@ export default function TeamSection() {
                                 <img src={team2} alt="..." className={imageClasses}/>
                             </GridItem>
                             <h4 className={classes.cardTitle}>
-                                Christian Louboutin
+                                Настя 
                                 <br/>
-                                <small className={classes.smallTitle}>Designer</small>
+                                <small className={classes.smallTitle}>Наставник</small>
                             </h4>
                             <CardBody>
                                 <p className={classes.description}>
-                                    You can write here details about one of your team members. You
-                                    can give more details about what they do. Feel free to add
-                                    some <a href="#pablo">links</a> for people to be able to
-                                    follow them outside the site.
+                                    Здесь всегда можно найти желающих учиться и попадаются очень интересные заказы.
                                 </p>
                             </CardBody>
                         </Card>
@@ -71,16 +65,13 @@ export default function TeamSection() {
                                 <img src={team3} alt="..." className={imageClasses}/>
                             </GridItem>
                             <h4 className={classes.cardTitle}>
-                                Kendall Jenner
+                                Наташа
                                 <br/>
-                                <small className={classes.smallTitle}>Model</small>
+                                <small className={classes.smallTitle}>Заказчик</small>
                             </h4>
                             <CardBody>
                                 <p className={classes.description}>
-                                    You can write here details about one of your team members. You
-                                    can give more details about what they do. Feel free to add
-                                    some <a href="#pablo">links</a> for people to be able to
-                                    follow them outside the site.
+                                    Неожидала, что мой заказ исполнят так качественно! Обязательно обращусь за  помощью ещё!
                                 </p>
                             </CardBody>
                         </Card>

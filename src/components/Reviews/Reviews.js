@@ -12,10 +12,10 @@ import {ReactComponent as ErrorIllustration} from "../../illustrations/error.svg
 import {Refresh as RefreshIcon} from "@material-ui/icons";
 import {ReactComponent as NoDataIllustration} from "../../illustrations/no-data.svg";
 import {firestore, auth} from "../../firebase";
-import Loader from "../../components/Loader";
-import EmptyState from "../../components/EmptyState";
-import Card from "../../components/Card/Card.js";
-import CardHeader from "../../components/Card/CardHeader";
+import Loader from "../Loader";
+import EmptyState from "../EmptyState";
+import Card from "../Card/Card.js";
+import CardHeader from "../Card/CardHeader";
 import ReviewItem from "./ReviewItem/ReviewItem";
 
 const useStyles = makeStyles((theme) => ({
@@ -29,7 +29,8 @@ export default function Reviews(props) {
     const classes = useStyles();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-
+    const {currentId} = props;
+  
     const useItems = () => {
         const [items, setItems] = useState([]);
         useEffect(() => {
@@ -54,9 +55,7 @@ export default function Reviews(props) {
     }
 
     const reviews = useItems();
-
-    console.log(reviews)
-
+    console.log(reviews, currentId)
     if (loading) {
         return <Loader/>;
     }
@@ -83,7 +82,7 @@ export default function Reviews(props) {
         );
     }
 
-    if (reviews.length >= 1) {
+    if (reviews.filter(review => review.targetPerson === currentId).length >= 1) {
         return (
             <Grid item xs={12} sm={12} md={8} className={classes.root}>
                 <Card>
@@ -93,7 +92,7 @@ export default function Reviews(props) {
 
                     <List>
                         {reviews.map((review, i) => (
-                            (review.targetPerson === auth.currentUser.uid) || true ?
+                            (review.targetPerson === currentId)?
                                 <ListItem
                                     divider={i < reviews.length - 1}
                                     key={review.id}>

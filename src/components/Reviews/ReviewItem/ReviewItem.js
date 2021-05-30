@@ -11,9 +11,6 @@ const useStyles = makeStyles({
         flexDirection: "row",
         justifyContent: "flex-start",
         margin: "0 auto",
-        borderBottom: "solid 2px #c4c4c4",
-        paddingBottom: "2vw",
-        marginBottom: "2vw"
     },
 
     card: {
@@ -39,7 +36,7 @@ export default function ReviewItem(props) {
     return (
         <div className={classes.body}>
             <div className={classNames(classes.card)}>
-                <UserReview photo={review.athorPhoto}/>
+                <UserReview review={review}/>
             </div>
             <div className={classNames(classes.summary)} style={{paddingLeft: "45px"}}>
                 <ReviewSummary review={review}/>
