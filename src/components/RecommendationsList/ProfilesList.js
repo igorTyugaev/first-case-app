@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import styles from "assets/jss/material-kit-react/views/executors.js";
 // core components
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
@@ -15,16 +14,15 @@ import {
 
 import Grid from "@material-ui/core/Grid";
 import {firestore} from "../../firebase";
-import EmptyState from "../../baseComponents/EmptyState";
+import EmptyState from "../EmptyState";
 import {ReactComponent as ErrorIllustration} from "../../illustrations/error.svg";
 import {Refresh as RefreshIcon} from "@material-ui/icons";
-import Loader from "../../baseComponents/Loader";
+import Loader from "../Loader";
 
 import {ReactComponent as NoDataIllustration} from "../../illustrations/no-data.svg";
 import ProfileItem from "../Items/Profile/ProfileItem";
 
 const useStyles = makeStyles((theme) => ({
-    styles,
     root: {
         margin: "0 auto",
         marginTop: theme.spacing(12),
@@ -35,7 +33,7 @@ function ProfilesList(props) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const classes = useStyles();
-    const {user, userData} = props;
+    const {user, userData, openSnackbar} = props;
 
     const getHeaderByType = (role) => {
         if (userData.role) {
@@ -67,6 +65,8 @@ function ProfilesList(props) {
                             </p>
                         </CardHeader>
                     );
+                default:
+                    return;
             }
         } else
             return null;
@@ -81,6 +81,8 @@ function ProfilesList(props) {
                     return "Mentor";
                 case "mentor":
                     return "Student";
+                default:
+                    return;
             }
         } else
             return null;
@@ -96,10 +98,11 @@ function ProfilesList(props) {
                 .get()
                 .then(snapshot => {
                     const listItems = snapshot.docs
-                        .filter((doc) => doc.id != user.uid)
+                        .filter((doc) => doc.id !== user.uid)
                         .map(doc => ({
                             id: doc.id,
                             ...doc.data(),
+                            disabled: (doc.data().responses && doc.data().responses.includes(user.uid)),
                         }))
                     setItems(listItems)
                     setLoading(false);
@@ -148,8 +151,10 @@ function ProfilesList(props) {
                         {profiles.map((profile, i) => (
                             <ListItem
                                 divider={i < profiles.length - 1}
-                                key={profile.id}>
-                                <ProfileItem profile={profile}/>
+                                key={profile.id}
+                                disabled={profile.disabled}>
+                                <ProfileItem profile={profile} userData={userData} openSnackbar={openSnackbar}
+                                             setLoading={setLoading}/>
                             </ListItem>
                         ))}
                     </List>
@@ -161,8 +166,8 @@ function ProfilesList(props) {
     return (
         <EmptyState
             image={<NoDataIllustration/>}
-            title="No orders"
-            description="Сорян, братан, но заказов пока нет("
+            title="Не найдено"
+            description="Извините, но подходящих кандидатов нет"
         />
     );
 }

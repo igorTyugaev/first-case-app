@@ -2,13 +2,12 @@ import React, {useState} from "react";
 // @material-ui/core components
 import {makeStyles} from "@material-ui/core/styles";
 import {Link as RouterLink, useHistory} from "react-router-dom";
-import styles from "assets/jss/material-kit-react/components/offerActions.js";
 import classNames from "classnames";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import {Grid, Link} from "@material-ui/core";
 import channels from "../../../services/channels";
-import DeleteModal from "../../../baseComponents/Chat/DeleteModal";
+import DeleteModal from "../../Chat/DeleteModal";
 
 const useStyles = makeStyles({
     main: {

@@ -1,34 +1,83 @@
 import React from "react";
 // @material-ui/core components
 import {makeStyles} from "@material-ui/core/styles";
-import styles from "assets/jss/material-kit-react/components/offerActions.js";
 import classNames from "classnames";
-import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import {useHistory} from "react-router-dom";
+import channels from "../../../services/channels";
+import authentication from "../../../services/authentication";
 
-const useStyles = makeStyles(styles);
+const useStyles = makeStyles({
+    main: {
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        alignItems: "flex-start",
+    },
+
+    btn: {
+        width: "100%",
+    },
+});
 
 
 export default function ProfileActions(props) {
     const classes = useStyles();
-    const {profile} = props;
+    const {setLoading, openSnackbar, profile, userData} = props;
+    const history = useHistory();
+
+    const goToChannel = (id) => {
+        history.push(`/dialog/${id}`);
+    };
+
+    const handleChannel = () => {
+        setLoading(true);
+        channels
+            .addChannelProfile(profile, userData)
+            .then((id) => {
+                goToChannel(id);
+            })
+            .catch((reason) => {
+                const code = reason.code;
+                const message = reason.message;
+
+                switch (code) {
+                    default:
+                        openSnackbar(message);
+                        return;
+                }
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }
+
+    const handleRespondBtn = () => {
+        authentication
+            .addMemberToResponses(profile.id)
+            .then(() => {
+                handleChannel();
+            })
+            .catch((reason) => {
+                const code = reason.code;
+                const message = reason.message;
+
+                switch (code) {
+                    default:
+                        openSnackbar(message);
+                        return;
+                }
+            })
+
+    }
 
     return (
         <div className={classNames(classes.main)}>
-            <Typography variant="subtitle1" color="textPrimary" component="p">
-                Сделаю за: <br/>
-                <span style={{fontWeight: "bold", color: "#000", textAlign: "center"}}>
-                    {profile.price ? profile.price : "Не указано"}
-                </span>
-            </Typography>
-            <Typography variant="subtitle1" color="textPrimary" component="p">
-                Срок исполнения: <br/> <span
-                style={{fontWeight: "bold", color: "#000", textAlign: "center"}}>
-                {profile.deadline ? new Date(profile.deadline).toDateString() : "Не указано"}
-            </span>
-            </Typography>
-
-            <Button color="primary" variant="contained" className={classNames(classes.btn)}>Откликнуться</Button>
+            <Button color="primary" variant="contained" className={classNames(classes.btn)}
+                    onClick={handleRespondBtn}>
+                {profile.disabled ? "Перейти к обсуждению" : "Оставить заявку"}
+            </Button>
         </div>
     );
 }

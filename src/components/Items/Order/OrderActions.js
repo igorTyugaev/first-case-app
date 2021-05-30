@@ -1,7 +1,6 @@
 import React from "react";
 // @material-ui/core components
 import {makeStyles} from "@material-ui/core/styles";
-import styles from "assets/jss/material-kit-react/components/offerActions.js";
 import classNames from "classnames";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -9,7 +8,19 @@ import {useHistory} from "react-router-dom";
 import channels from "../../../services/channels";
 import orders from "../../../services/orders";
 
-const useStyles = makeStyles(styles);
+const useStyles = makeStyles({
+    main: {
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        alignItems: "flex-start",
+    },
+
+    btn: {
+        width: "100%",
+    },
+});
 
 
 export default function OrderActions(props) {
@@ -24,7 +35,7 @@ export default function OrderActions(props) {
     const handleChannel = () => {
         setLoading(true);
         channels
-            .addChannel(order, userData)
+            .addChannelOrder(order, userData)
             .then((id) => {
                 console.log(id)
                 goToChannel(id);

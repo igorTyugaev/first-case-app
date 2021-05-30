@@ -4,9 +4,7 @@ import classNames from "classnames";
 import DialogItemDescription from "./DialogItemDescription";
 import DialogActions from "./DialogActions";
 import {title} from "../../../assets/jss/material-kit-react";
-import {Box, Grid, IconButton} from "@material-ui/core";
-import {NavLink} from "react-router-dom";
-import UserAvatar from "../../../baseComponents/UserAvatar/UserAvatar";
+import {Box} from "@material-ui/core";
 
 const useStyles = makeStyles({
     main: {

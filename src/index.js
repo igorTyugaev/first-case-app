@@ -4,7 +4,7 @@ import * as Sentry from "@sentry/browser";
 import * as serviceWorker from "./serviceWorker";
 import "typeface-roboto";
 import "./index.css";
-import App from "./baseComponents/App";
+import App from "./components/App";
 import "assets/scss/material-kit-react.scss?v=1.9.0";
 
 Sentry.init({
