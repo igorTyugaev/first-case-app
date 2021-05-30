@@ -39,6 +39,10 @@ function OrderList(props) {
                 .collection("orders")
                 .onSnapshot(snapshot => {
                     const listItems = snapshot.docs
+                        .filter((doc) => {
+                            const data = doc.data();
+                            return !(data.status && data.status === "busy" || data.status === "completed")
+                        })
                         .map(doc => ({
                             id: doc.id,
                             disabled: (doc.data().responses && doc.data().responses.includes(user.uid)),

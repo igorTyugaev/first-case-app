@@ -20,7 +20,7 @@ import {
 } from "@material-ui/icons";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import classNames from "classnames";
-import DeleteModal from "./DeleteModal";
+import orders from "../../services/orders";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -100,68 +100,129 @@ function Dialog(props) {
 
     const [allMessages, setAllMessages] = useState([]);
     const [channelName, setChannelName] = useState("");
-    const [channelHeadMsg, setChannelHeadMsg] = useState("");
+    const [actionStatus, setActionStatus] = useState("");
     const [userNewMsg, setUserNewMsg] = useState("");
     const [modalState, setModalState] = useState(false);
     const [file, setFileName] = useState(null);
+    const [orderId, setOrderId] = useState(null);
 
-    const {user, userData} = props;
+    const {user, userData, openSnackbar} = props;
     const history = useHistory();
 
-    const getSubheader = () => {
-        switch (channelHeadMsg) {
-            case "Выбрать этот заказ?":
-                break;
-            case "Выбрать этого кандидата?":
-                break;
-            case "Выбрать этого наставника?":
-                break;
-            case "Завершить обучение?":
-                break;
-            case "Подтвердить выполнение заказа?":
-                break;
-            default:
-                return;
-        }
+    const changeStatusOrder = (status) => {
+        if (!orderId)
+            return;
+
+        orders
+            .changeStatus(orderId, status)
+            .then(() => {
+                console.log("changeStatus")
+            })
+            .catch((reason) => {
+                const code = reason.code;
+                const message = reason.message;
+
+                openSnackbar(message);
+            })
     }
 
-    useEffect(() => {
+    const changeChannelStatus = (new_status) => {
         if (params.id) {
             firestore.collection("channels")
                 .doc(params.id)
-                .onSnapshot((snapshot) => {
-                    if (snapshot && snapshot.data()) {
-                        const data = snapshot.data();
-                        data.channelName && setChannelName(data.channelName);
-
-                        switch (userData.role.toLowerCase()) {
-                            case "mentor":
-                                data.mentorMsg && setChannelHeadMsg(data.mentorMsg);
-                                break;
-                            case "customer":
-                                data.customerMsg && setChannelHeadMsg(data.customerMsg);
-                                break;
-                            case "student":
-                                data.studentMsg && setChannelHeadMsg(data.studentMsg);
-                                break;
-                            default:
-                                return;
-                                break;
-                        }
-                    }
-                });
-
-            firestore.collection("channels")
-                .doc(params.id)
-                .collection("messages")
-                .orderBy("timestamp", "asc")
-                .onSnapshot((snapshot) => {
-                    setAllMessages(
-                        snapshot.docs.map((doc) => ({id: doc.id, data: doc.data()}))
-                    );
+                .update({
+                    status: new_status,
+                })
+                .then((res) => {
+                    console.log("changeChannelStatus");
+                })
+                .catch((err) => {
+                    console.log(err);
                 });
         }
-    }, [params]);
+    };
+
+    const handleActionAccept = () => {
+        if (actionStatus === "request_order") {
+            changeChannelStatus("response_order");
+            return;
+        }
+
+        if (actionStatus === "request_profile") {
+            changeChannelStatus("response_profile");
+            return;
+        }
+
+        if (actionStatus === "response_order") {
+            changeChannelStatus("busy_order");
+            changeStatusOrder("busy");
+            return;
+        }
+
+        if (actionStatus === "response_profile") {
+            changeChannelStatus("busy_profile");
+            return;
+        }
+
+        if (actionStatus === "busy_order") {
+            changeChannelStatus("completed");
+            changeStatusOrder("completed");
+            return;
+        }
+
+        if (actionStatus === "busy_profile") {
+            changeChannelStatus("completed");
+            return;
+        }
+    };
+
+    const handleActionReject = () => {
+
+    };
+
+    const getSubheaderTitle = () => {
+        if (!actionStatus)
+            return;
+
+        const userRole = (userData && userData.role) ? userData.role.toLowerCase() : null;
+
+        if (!userRole)
+            return;
+
+        if (actionStatus === "request_order") {
+            if (userRole === "customer")
+                return "Выбрать этого исполнителя?";
+        }
+
+        if (actionStatus === "request_profile") {
+            if (userRole === "mentor")
+                return "Выбрать этого студента?";
+        }
+
+        if (actionStatus === "response_order") {
+            if (userRole === "mentor")
+                return "Выбрать этого заказчика?";
+        }
+
+        if (actionStatus === "response_profile") {
+            if (userRole === "student")
+                return "Выбрать этого наставника?";
+        }
+
+        if (actionStatus === "busy_order") {
+            if (userRole === "customer")
+                return "Подтвердить выполнение заказа?";
+        }
+
+        if (actionStatus === "busy_profile") {
+            return;
+        }
+
+        if (actionStatus === "completed")
+            return;
+
+        return
+    }
 
     const sendMsg = (e) => {
         e.preventDefault();
@@ -230,7 +291,7 @@ function Dialog(props) {
         setModalState(!modalState);
     };
 
-    const handelFileUpload = (e) => {
+    const handleFileUpload = (e) => {
         e.preventDefault();
         if (e.target.files[0]) {
             setFileName(e.target.files[0]);
@@ -259,6 +320,31 @@ function Dialog(props) {
         }
     };
 
+    useEffect(() => {
+        if (params.id) {
+            firestore.collection("channels")
+                .doc(params.id)
+                .onSnapshot((snapshot) => {
+                    if (snapshot && snapshot.data()) {
+                        const data = snapshot.data();
+                        data.channelName && setChannelName(data.channelName);
+                        data.status && setActionStatus(data.status);
+                        data.orderId && setOrderId(data.orderId);
+                    }
+                });
+
+            firestore.collection("channels")
+                .doc(params.id)
+                .collection("messages")
+                .orderBy("timestamp", "asc")
+                .onSnapshot((snapshot) => {
+                    setAllMessages(
+                        snapshot.docs.map((doc) => ({id: doc.id, data: doc.data()}))
+                    );
+                });
+        }
+    }, [params]);
+
     return (
         <Paper className={classes.root}>
             {modalState ? <FileUpload setState={openModal} file={file}/> : null}
@@ -285,25 +371,29 @@ function Dialog(props) {
                     <MoreVertIcon/>
                 </IconButton>
             </Box>
-            <Grid container spacing={1} direction="row" className={classes.subheader}>
-                <Grid item>
-                    <Typography color="inherit" variant="h6" component="p">
-                        Вы готовы выполнить данный заказ?
-                    </Typography>
-                </Grid>
+            {getSubheaderTitle() && (
+                <Grid container spacing={1} direction="row" className={classes.subheader}>
+                    <Grid item>
+                        <Typography color="inherit" variant="h6" component="p">
+                            {getSubheaderTitle()}
+                        </Typography>
+                    </Grid>
 
-                <Grid item>
-                    <Button color="primary" variant="contained" className={classNames(classes.btn)}>
-                        Принять
-                    </Button>
-                </Grid>
+                    <Grid item>
+                        <Button color="primary" variant="contained" className={classNames(classes.btn)}
+                                onClick={handleActionAccept}>
+                            Принять
+                        </Button>
+                    </Grid>
 
-                <Grid item>
-                    <Button color="secondary" variant="contained" className={classNames(classes.btn)}>
-                        Отклонить
-                    </Button>
+                    <Grid item>
+                        <Button color="secondary" variant="contained" className={classNames(classes.btn)}
+                                onClick={handleActionReject}>
+                            Отклонить
+                        </Button>
+                    </Grid>
                 </Grid>
-            </Grid>
+            )}
 
             <Divider light/>
             <Box className={classes.body}>
@@ -325,7 +415,7 @@ function Dialog(props) {
                     className={classes.inputFile}
                     id="icon-button-file"
                     type="file"
-                    onChange={(e) => handelFileUpload(e)}
+                    onChange={(e) => handleFileUpload(e)}
                 />
                 <label htmlFor="icon-button-file">
                     <IconButton

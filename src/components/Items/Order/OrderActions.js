@@ -22,14 +22,10 @@ const useStyles = makeStyles({
     },
 });
 
-
- const OrderActions = (props) => {
+export default function OrderActions(props) {
     const classes = useStyles();
     const {setLoading, openSnackbar, order, userData} = props;
     const history = useHistory();
-    //const [disabledBtn, setDisabledBtn] = useState(false);
-
-    //if (userData.role !== 'Customer'){setDisabledBtn(true)}
 
     const goToChannel = (id) => {
         history.push(`/dialog/${id}`);
@@ -107,14 +103,12 @@ const useStyles = makeStyles({
                 {order.deadline ? new Date(order.deadline).toDateString() : "Не указано"}
             </span>
             </Typography>
-
-            <Button color="primary" variant="contained" 
-                className={classNames(classes.btn)}
-                onClick={handleRespondBtn}
-                disabled={disabledBtn(userData)} 
-                >
-                {order.disabled ? "Перейти к обсуждению" : "Оставить заявку"}
-            </Button>
+             {userData && userData.role && userData.role.toLowerCase() != 'customer' && (
+                <Button color="primary" variant="contained" className={classNames(classes.btn)}
+                        onClick={handleRespondBtn}>
+                    {order.disabled ? "Перейти к обсуждению" : "Оставить заявку"}
+                </Button>
+            )}
         </div>
     );
 };

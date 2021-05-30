@@ -141,6 +141,33 @@ orders.changeTitle = (title, uidOrder = null) => {
     });
 };
 
+orders.changeStatus = (orderId, status) => {
+    return new Promise((resolve, reject) => {
+        if (!status) {
+            reject(new Error("No status"));
+            return;
+        }
+
+        if (!orderId) {
+            reject(new Error("No id order"));
+            return;
+        }
+
+        firestore.collection("orders")
+            .doc(orderId)
+            .update({
+                status: status,
+            })
+            .then((value) => {
+                analytics.logEvent("change_order_status");
+                resolve(value);
+            })
+            .catch((reason) => {
+                reject(reason);
+            });
+    });
+};
+
 orders.getOrder = (orderId, setOrder) => {
     firestore
         .collection("orders")
