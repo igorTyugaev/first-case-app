@@ -1,15 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
-// core components
-import List from "@material-ui/core/List";
-
 import {
     Box,
     Fab,
+    Grid,
+    List,
     ListItem,
 } from '@material-ui/core';
 
-import Grid from "@material-ui/core/Grid";
 import {firestore} from "../../firebase";
 import EmptyState from "../EmptyState";
 import {ReactComponent as ErrorIllustration} from "../../illustrations/error.svg";
@@ -20,7 +18,6 @@ import {ReactComponent as NoDataIllustration} from "../../illustrations/no-data.
 import DialogItem from "../Items/Dialog/DialogItem";
 import CardHeader from "../Card/CardHeader";
 import Card from "../Card/Card";
-import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -39,7 +36,8 @@ function DialogsList(props) {
     useEffect(() => {
         const unsubscribe = firestore
             .collection("channels")
-            .orderBy("channelName", "asc")
+            .where("members", "array-contains", user.uid)
+            // .orderBy("channelName", "asc")
             .onSnapshot((snapshot) => {
                 const listItems = snapshot.docs
                     .map(doc => ({
@@ -49,6 +47,7 @@ function DialogsList(props) {
                 setDialogs(listItems)
                 setLoading(false);
             }, (error) => {
+                console.log(error)
                 setLoading(false);
                 setError(error);
             })
@@ -109,8 +108,8 @@ function DialogsList(props) {
     return (
         <EmptyState
             image={<NoDataIllustration/>}
-            title="No orders"
-            description="Сорян, братан, но заказов пока нет("
+            title="Список диалогов пуст"
+            description="Извините, но у вас пока нет активных обсуждений"
         />
     );
 }

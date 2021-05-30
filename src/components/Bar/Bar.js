@@ -114,33 +114,8 @@ class Bar extends Component {
             },
 
             {
-                name: "Заказы",
-                to: user ? `/orders/` : null,
-            },
-
-            {
-                name: "Исполнители",
-                to: user ? `/people/` : null,
-            },
-
-            {
                 name: "О нас",
                 onClick: onAboutClick,
-            },
-
-            {
-                name: "Форма",
-                to: user ? `/form/` : null,
-            },
-
-            {
-                name: "Добавить заказ",
-                to: user ? `/create_order/` : null,
-            },
-
-            {
-                name: "Мои отзывы",
-                to: user ? `/reviews/` : null,
             },
 
             {
@@ -171,7 +146,7 @@ class Bar extends Component {
                             <>
                                 {userData.role && (
                                     <>
-                                        <Box mr={1}>
+                                        < Box mr={1}>
                                             <Button
                                                 className={classes.header__link}
                                                 component={RouterLink}
@@ -193,17 +168,19 @@ class Bar extends Component {
                                             </Button>
                                         </Box>
 
-
-                                        <Box mr={1}>
-                                            <Button
-                                                className={classes.header__link}
-                                                component={RouterLink}
-                                                variant="text"
-                                                to="/people/"
-                                            >
-                                                Исполнители
-                                            </Button>
-                                        </Box>
+                                        {userData.role.toLowerCase() === "mentor" && (
+                                            // TODO: мой заказ
+                                            <Box mr={1}>
+                                                <Button
+                                                    className={classes.header__link}
+                                                    component={RouterLink}
+                                                    variant="text"
+                                                    to="/people/"
+                                                >
+                                                    Найти студента
+                                                </Button>
+                                            </Box>
+                                        )}
 
                                         {userData.role.toLowerCase() === "customer" && (
                                             <Box mr={1}>

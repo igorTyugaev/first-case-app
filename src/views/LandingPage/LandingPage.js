@@ -10,7 +10,7 @@ import styles from "assets/jss/material-kit-react/views/landingPage.js";
 // Sections for this page
 import ProductSection from "./Sections/ProductSection.js";
 import TeamSection from "./Sections/TeamSection.js";
-import {Button} from "@material-ui/core";
+import {Button, Grid} from "@material-ui/core";
 import Footer from "./Footer/Footer";
 import Parallax from "./Parallax/Parallax";
 import GridContainer from "./Grid/GridContainer";
@@ -37,6 +37,7 @@ export default function LandingPage(props) {
                             <br/>
                             <Button
                                 color="secondary"
+                                variant="contained"
                             >
                                 Смотреть промо
                             </Button>
