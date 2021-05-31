@@ -51,7 +51,8 @@ export default function ProfileItemDescription(props) {
             </h3>
 
             <p className={classNames(classes.description)}>
-                {!profile.aboutUser || profile.aboutUser.length < 1 ? "Описание отсутствует" : profile.aboutUser}
+                {/*{!profile.aboutUser || profile.aboutUser.length < 1 ? "Описание отсутствует" : profile.aboutUser}*/}
+                {!profile.experience || profile.experience.length < 1 ? "Описание отсутствует" : profile.experience}
             </p>
         </div>
     );

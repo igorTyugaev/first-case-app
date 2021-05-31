@@ -222,13 +222,18 @@ function Dialog(props) {
         }
 
         if (actionStatus === "completed")
-            return;
+            return "Сделка закрыта";
 
         return
     }
 
     const sendMsg = (e) => {
         e.preventDefault();
+        if (actionStatus === "completed"){
+            openSnackbar("Сделка уже закрыта!");
+            return;
+        }
+
         if (userNewMsg && params.id) {
             if (userData) {
                 const displayName = userData.fullName;
@@ -410,19 +415,23 @@ function Dialog(props) {
                         </Typography>
                     </Grid>
 
-                    <Grid item>
-                        <Button color="primary" variant="contained" className={classNames(classes.btn)}
-                                onClick={handleActionAccept}>
-                            Принять
-                        </Button>
-                    </Grid>
+                    {(actionStatus !== "completed") && (
+                        <Grid item>
+                            <Button color="primary" variant="contained" className={classNames(classes.btn)}
+                                    onClick={handleActionAccept}>
+                                Принять
+                            </Button>
+                        </Grid>
+                    )}
 
-                    <Grid item>
-                        <Button color="secondary" variant="contained" className={classNames(classes.btn)}
-                                onClick={handleActionReject}>
-                            Отклонить
-                        </Button>
-                    </Grid>
+                    {(actionStatus !== "completed") && (
+                        <Grid item>
+                            <Button color="secondary" variant="contained" className={classNames(classes.btn)}
+                                    onClick={handleActionReject}>
+                                Отклонить
+                            </Button>
+                        </Grid>
+                    )}
                 </Grid>
             )}
 
