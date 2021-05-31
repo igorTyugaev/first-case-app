@@ -1,22 +1,15 @@
 const constraintsReview = {
-    getValidator: (fieldId) => {
-        if (fieldId === "description") {
-            return {
-                presence: {
-                    allowEmpty: false,
-                },
+    description: {
+        length: {
+            minimum: 2,
+            maximum: 185,
+        },
 
-                type: "string",
-            };
-        } else if (fieldId === "rating") {
-            return {
-                presence: {
-                    allowEmpty: false,
-                },
+        presence: {
+            allowEmpty: false,
+        },
 
-                type: "string",
-            };
-        }
+        type: "string",
     },
 };
 

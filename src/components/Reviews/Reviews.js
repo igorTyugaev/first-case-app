@@ -3,25 +3,35 @@ import {makeStyles} from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 
 import {
-    Box,
+    Box, Button, Card,
     Fab, Grid,
-    ListItem,
+    ListItem, Typography,
 } from '@material-ui/core';
 
 import {ReactComponent as ErrorIllustration} from "../../illustrations/error.svg";
-import {Refresh as RefreshIcon} from "@material-ui/icons";
+import {ArrowBackIos as BackIcon, Refresh as RefreshIcon} from "@material-ui/icons";
 import {ReactComponent as NoDataIllustration} from "../../illustrations/no-data.svg";
 import {firestore, auth} from "../../firebase";
 import Loader from "../Loader";
 import EmptyState from "../EmptyState";
-import Card from "../Card/Card.js";
-import CardHeader from "../Card/CardHeader";
 import ReviewItem from "./ReviewItem/ReviewItem";
+import {useHistory, useParams} from "react-router-dom";
+import IconButton from "@material-ui/core/IconButton";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 
 const useStyles = makeStyles((theme) => ({
     root: {
         margin: "0 auto",
-        marginTop: theme.spacing(12),
+        marginTop: theme.spacing(8),
+    },
+    header: {
+        height: "10%",
+        padding: "15px",
+
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
     },
 }));
 
@@ -29,13 +39,17 @@ export default function Reviews(props) {
     const classes = useStyles();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const {currentId} = props;
-  
+
+    // Custom Properties
+    const history = useHistory();
+    const {currentId} = useParams();
+
     const useItems = () => {
         const [items, setItems] = useState([]);
         useEffect(() => {
             const unsubscribe = firestore
                 .collection("reviews")
+                .where('targetPerson', '==', currentId)
                 .onSnapshot(snapshot => {
                     const listItems = snapshot.docs
                         .map(doc => ({
@@ -55,7 +69,7 @@ export default function Reviews(props) {
     }
 
     const reviews = useItems();
-    console.log(reviews, currentId)
+
     if (loading) {
         return <Loader/>;
     }
@@ -86,18 +100,30 @@ export default function Reviews(props) {
         return (
             <Grid item xs={12} sm={12} md={8} className={classes.root}>
                 <Card>
-                    <CardHeader color="success">
-                        <h4 className={classes.cardTitleWhite}>Просмотр отзывов</h4>
-                    </CardHeader>
+                    <Box className={classes.header}>
+                        <Button
+                            startIcon={<BackIcon/>}
+                            onClick={() => history.goBack()}
+                        >
+                            Назад
+                        </Button>
+
+                        <Typography color="primary" variant="h5">
+                            Просмотр отзывов
+                        </Typography>
+
+                        <IconButton>
+                            <MoreVertIcon/>
+                        </IconButton>
+                    </Box>
 
                     <List>
                         {reviews.map((review, i) => (
-                            (review.targetPerson === currentId)?
-                                <ListItem
-                                    divider={i < reviews.length - 1}
-                                    key={review.id}>
-                                    <ReviewItem review={review}/>
-                                </ListItem> : null
+                            <ListItem
+                                divider={i < reviews.length - 1}
+                                key={review.id}>
+                                <ReviewItem review={review}/>
+                            </ListItem>
                         ))}
                     </List>
                 </Card>

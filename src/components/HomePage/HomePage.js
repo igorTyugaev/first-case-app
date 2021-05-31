@@ -79,6 +79,10 @@ class HomePage extends Component {
             return (
                 <OrderList theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}/>
             );
+        } else if (userData && userData.isProfileComplete && userData.role && userData.role.toLowerCase() === "customer") {
+            return (
+                <OrderList theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}/>
+            );
         } else if (userData && userData.isProfileComplete && userData.role) {
             return (
                 <ProfilesList theme={theme} userData={userData} user={user}

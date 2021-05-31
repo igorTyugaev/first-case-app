@@ -7,7 +7,7 @@ import AccountView from "../AccountView";
 import Card from "../../components/Card/Card";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import {Link} from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 import {firestore} from "../../firebase";
 import {useHistory, useParams} from "react-router-dom";
 import EmptyState from "../EmptyState";
@@ -60,11 +60,7 @@ function ProfilePage(props) {
     const {userId} = useParams();
 
     // Custom Functions
-    const {openSnackbar, onClick} = props;
-
-    const onBtnClick = () => {
-        onClick(userId);
-    };
+    const {openSnackbar} = props;
 
     useEffect(() => {
         const unsubscribe = firestore
@@ -88,7 +84,6 @@ function ProfilePage(props) {
             );
         return () => unsubscribe()
     }, []);
-
 
     if (error) {
         return (
@@ -131,30 +126,21 @@ function ProfilePage(props) {
                         <Typography color="initial" variant="h6" component="p" align="center">
                             {(profile.fullName) ? (profile.fullName) : ("информация отсутствует (")}
                         </Typography>
-                        
+
                         <IconButton>
                             <MoreVertIcon/>
                         </IconButton>
                     </Box>
 
                     <Box className={classes.reviewsRow}>
-                        <Button onClick={onBtnClick}>
-                            <Link
-                            className={classes.link} 
-                            to="/reviews/"
-                            underline="none"
-                            >
-                                Читать все отзывы
-                            </Link>
+                        <Button component={NavLink}
+                                to={`/reviews/${userId}`}>
+                            Читать все отзывы
                         </Button>
-                        <Button onClick={onBtnClick}>
-                            <Link
-                            className={classes.link} 
-                            to="/create_review/"
-                            underline="none"
-                            >
-                                Добавить отзыв
-                            </Link>
+
+                        <Button component={NavLink}
+                                to={`/create_review/${userId}`}>
+                            Добавить отзыв
                         </Button>
                     </Box>
 

@@ -2,7 +2,7 @@ import firebase, {analytics, auth, firestore} from "../firebase";
 
 const reviews = {};
 
-reviews.updateReview = (values, reviewId) => {
+reviews.updateReview = (values, reviewId= null) => {
     return new Promise((resolve, reject) => {
         if (!values) {
             reject(new Error("No values"));
