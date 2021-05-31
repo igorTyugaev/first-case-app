@@ -13,7 +13,6 @@ import {NavLink, useParams} from "react-router-dom";
 import DeleteModal from "./DeleteModal";
 import {Anchorme} from "react-anchorme";
 import {Link} from "@material-ui/core";
-import UserAvatar from "../UserAvatar/UserAvatar";
 
 const useStyles = makeStyles((theme) => ({
     root: {

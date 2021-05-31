@@ -22,7 +22,7 @@ const useStyles = makeStyles({
     },
 });
 
-export default function OrderActions(props) {
+function OrderActions(props) {
     const classes = useStyles();
     const {setLoading, openSnackbar, order, userData} = props;
     const history = useHistory();
