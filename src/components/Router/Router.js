@@ -18,6 +18,7 @@ import NotFoundPage from "../NotFoundPage";
 import DialogPage from "../DialogPage/DialogPage";
 import HomePage from "../HomePage";
 import AddReview from "../Reviews/AddReview";
+import MyOrderList from "../RecommendationsList/MyOrderList";
 
 class Router extends Component {
     render() {
@@ -56,6 +57,12 @@ class Router extends Component {
                     <Route path="/orders/">
                         {isProfileComplete ?
                             <OrderList theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}/> :
+                            <Redirect to="/"/>}
+                    </Route>
+
+                    <Route path="/my_orders/">
+                        {isProfileComplete ?
+                            <MyOrderList theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}/> :
                             <Redirect to="/"/>}
                     </Route>
 

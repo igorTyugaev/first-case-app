@@ -85,7 +85,7 @@ function DialogsList(props) {
             <Grid item container xs={12} sm={12} md={10} lg={8} className={classes.root}>
                 <Card>
                     <CardHeader color="success">
-                        <h4 className={classes.cardTitleWhite}>Выбор заказа</h4>
+                        <h4 className={classes.cardTitleWhite}>Сообщения</h4>
                         <p className={classes.cardCategoryWhite}>
                             Выберите подходящий для вас диалог и нажмите "Перейти к обсуждению"
                         </p>

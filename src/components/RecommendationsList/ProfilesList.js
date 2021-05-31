@@ -93,7 +93,7 @@ function ProfilesList(props) {
         useEffect(() => {
             const unsubscribe = firestore
                 .collection("users")
-                // .where("role", "==", getFindTypeUser(userData.role))
+                .where("role", "==", getFindTypeUser(userData.role))
                 // .orderBy("createdAt");
                 .get()
                 .then(snapshot => {

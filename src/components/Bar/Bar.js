@@ -90,7 +90,7 @@ class Bar extends Component {
     getTitleForRole = (userData) => {
         if (!userData && !userData.role)
             return null
-        
+
         switch (userData.role) {
             case "Mentor":
                 return "Наставник";
@@ -100,7 +100,7 @@ class Bar extends Component {
                 return "Студент";
             default:
                 return null;
-        } 
+        }
     }
 
     render() {
@@ -172,16 +172,29 @@ class Bar extends Component {
                             <>
                                 {userData.role && (
                                     <>
-                                        < Box mr={1}>
-                                            <Button
-                                                className={classes.header__link}
-                                                component={RouterLink}
-                                                variant="text"
-                                                to="/orders/"
-                                            >
-                                                {this.getTitleForOrder(userData)}
-                                            </Button>
-                                        </Box>
+                                        {userData.role.toLowerCase() !== "student" ? (
+                                            <Box mr={1}>
+                                                <Button
+                                                    className={classes.header__link}
+                                                    component={RouterLink}
+                                                    variant="text"
+                                                    to="/orders/"
+                                                >
+                                                    {this.getTitleForOrder(userData)}
+                                                </Button>
+                                            </Box>
+                                        ) : (
+                                            <Box mr={1}>
+                                                <Button
+                                                    className={classes.header__link}
+                                                    component={RouterLink}
+                                                    variant="text"
+                                                    to="/people/"
+                                                >
+                                                    Найти наставника
+                                                </Button>
+                                            </Box>
+                                        )}
 
                                         <Box mr={1}>
                                             <Button
@@ -195,7 +208,6 @@ class Bar extends Component {
                                         </Box>
 
                                         {userData.role.toLowerCase() === "mentor" && (
-                                            // TODO: мой заказ
                                             <Box mr={1}>
                                                 <Button
                                                     className={classes.header__link}
@@ -217,6 +229,20 @@ class Bar extends Component {
                                                     to="/create_order/"
                                                 >
                                                     Новый заказ
+                                                </Button>
+                                            </Box>
+                                        )}
+
+
+                                        {userData.role.toLowerCase() === "customer" && (
+                                            <Box mr={1}>
+                                                <Button
+                                                    className={classes.header__link}
+                                                    component={RouterLink}
+                                                    variant="text"
+                                                    to="/my_orders/"
+                                                >
+                                                    Мои заказы
                                                 </Button>
                                             </Box>
                                         )}

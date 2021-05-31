@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function OrderList(props) {
+function MyOrderList(props) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const classes = useStyles();
@@ -37,6 +37,7 @@ function OrderList(props) {
         useEffect(() => {
             const unsubscribe = firestore
                 .collection("orders")
+                .where('author', '==', user.uid)
                 .onSnapshot(snapshot => {
                     const listItems = snapshot.docs
                         .filter((doc) => {
@@ -91,25 +92,9 @@ function OrderList(props) {
             <Grid item container xs={12} sm={12} md={10} lg={8} className={classes.root}>
                 <Card>
                     <CardHeader color="success">
-                        {userData && userData.role && userData.role.toLowerCase() == "mentor" ? (
-                            <>
-                                <h4 className={classes.cardTitleWhite}>
-                                    Выбор заказа
-                                </h4>
-                                <p className={classes.cardCategoryWhite}>
-                                    Выберите подходящий для вас заказ и нажмите "Оставить заявку"
-                                </p>
-                            </>
-                        ) : (
-                            <>
-                                <h4 className={classes.cardTitleWhite}>
-                                    Все заказы
-                                </h4>
-                                <p className={classes.cardCategoryWhite}>
-                                    Вы можете посмотреть заказы других пользователей
-                                </p>
-                            </>
-                        )}
+                        <h4 className={classes.cardTitleWhite}>Ваши заказы</h4>
+                        <p className={classes.cardCategoryWhite}>
+                        </p>
                     </CardHeader>
                     <List>
                         {orders.map((order, i) => (
@@ -136,4 +121,4 @@ function OrderList(props) {
     );
 }
 
-export default OrderList;
+export default MyOrderList;

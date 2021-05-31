@@ -119,7 +119,7 @@ class OrderEdit extends Component {
             orders
                 .updateOrder(values, orderId)
                 .then(() => {
-                    history.push('/');
+                    history.push('/my_orders');
                 })
                 .catch((reason) => {
                     const code = reason.code;
