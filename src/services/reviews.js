@@ -10,23 +10,17 @@ reviews.updateReview = (values, reviewId) => {
         }
 
         const currentUser = auth.currentUser;
-
+        
         if (!currentUser) {
             reject(new Error("No current user"));
             return;
         }
 
-        const uid = currentUser.uid;
-        const fullname = currentUser.fullName;
+        const idAuthor = currentUser.uid;
         const photo = currentUser.photoURL;
 
-        if (!uid) {
+        if (!currentUser.uid) {
             reject(new Error("No UID"));
-            return;
-        }
-
-        if (!fullname) {
-            reject(new Error("No fullname"));
             return;
         }
 
@@ -38,9 +32,10 @@ reviews.updateReview = (values, reviewId) => {
                 .update({
                     rating: values.rating,
                     description: values.description,
-                    targetPerson: uid,
-                    author: fullname,
-                    athorPhoto: photo,
+                    targetPerson: values.targetPerson,
+                    author: values.fullName,
+                    idAuthor: idAuthor,
+                    photoURL: photo ? photo : '',
                 })
                 .then((value) => {
                     analytics.logEvent("change_review");
@@ -54,9 +49,10 @@ reviews.updateReview = (values, reviewId) => {
                 .set({
                     rating: values.rating,
                     description: values.description,
-                    targetPerson: uid,
-                    author: fullname,
-                    athorPhoto: photo,
+                    targetPerson: values.targetPerson,
+                    author: values.fullName,
+                    idAuthor: idAuthor,
+                    photoURL: photo ? photo : '',
                 })
                 .then((value) => {
                     analytics.logEvent("change_review");

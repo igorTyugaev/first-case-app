@@ -12,7 +12,7 @@ import OrderPage from "../OrderPage/OrderPage";
 import OrderList from "../../components/RecommendationsList/OrderList";
 import DialogsList from "../../components/RecommendationsList/DialogsList";
 import SettingsPage from "../SettingsPage";
-import AddReview from "../Reviews/AddReview";
+import AddReview from "../Reviews/AddReviewConstainer";
 import Reviews from "../Reviews/Reviews";
 import UserForm from "../UserForm/UserForm";
 import NotFoundPage from "../NotFoundPage";
@@ -20,10 +20,18 @@ import DialogPage from "../DialogPage/DialogPage";
 import HomePage from "../HomePage";
 
 class Router extends Component {
+    state = {
+        currentId: null,
+    };
+
+    onBtnClick = (idUser) => {
+        this.setState({currentId: idUser});
+    };
+
     render() {
         // Properties
         const {theme, userData, user, bar, roles} = this.props;
-
+    
         // Functions
         const {openSnackbar} = this.props;
         const {onDeleteAccountClick} = this.props;
@@ -38,12 +46,12 @@ class Router extends Component {
                             <HomePage theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}
                                       onDeleteAccountClick={onDeleteAccountClick}/>
                         ) : (
-                            <LandingPage/>
+                            <LandingPage theme={theme}/>
                         )}
                     </Route>
 
                     <Route path="/user/:userId">
-                        {isProfileComplete ? <ProfilePage theme={theme} openSnackbar={openSnackbar}/> :
+                        {isProfileComplete ? <ProfilePage theme={theme} openSnackbar={openSnackbar} onClick={this.onBtnClick} currentId={this.state.currentId}/> :
                             <Redirect to="/"/>}
                     </Route>
 
@@ -72,12 +80,12 @@ class Router extends Component {
                     </Route>
 
                     <Route path="/create_review/">
-                        {user ? <AddReview theme={theme} userID={user.uid} openSnackbar={openSnackbar}/> :
+                        {user ? <AddReview theme={theme} userID={user} userData={userData} openSnackbar={openSnackbar}  currentId={this.state.currentId}/> :
                             <Redirect to="/"/>}
                     </Route>
 
                     <Route path="/reviews/">
-                        {user ? <Reviews theme={theme} userData={userData} user={user} openSnackbar={openSnackbar}/> :
+                        {user ? <Reviews theme={theme} userData={userData} user={user} openSnackbar={openSnackbar} currentId={this.state.currentId}/> :
                             <Redirect to="/"/>}
                     </Route>
 

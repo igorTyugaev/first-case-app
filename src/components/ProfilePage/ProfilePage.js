@@ -1,22 +1,20 @@
-import React, {Component, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 
-import {makeStyles, withStyles} from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 
 import AccountView from "../AccountView";
 import Card from "../../components/Card/Card";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import CardHeader from "../../components/Card/CardHeader";
-import OrderPage from "../OrderPage/OrderPage";
+import {Link} from 'react-router-dom';
 import {firestore} from "../../firebase";
-import {Link, useHistory, useParams} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 import EmptyState from "../EmptyState";
 import {ReactComponent as ErrorIllustration} from "../../illustrations/error.svg";
-import {Box, Breadcrumbs, Container, Divider, Fab} from "@material-ui/core";
+import {Box, Fab} from "@material-ui/core";
 import {ArrowBackIos as BackIcon, Refresh as RefreshIcon} from "@material-ui/icons";
 import Loader from "../Loader";
-import OrderView from "../OrderView/OrderView";
 import {ReactComponent as NoDataIllustration} from "../../illustrations/no-data.svg";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
@@ -36,6 +34,17 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "space-between",
         alignItems: "center",
     },
+    reviewsRow: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-around",
+        alignItems: "center",
+    },
+    link: {
+        color: 'black',
+        textDecoration: 'none',
+
+    },
 }));
 
 function ProfilePage(props) {
@@ -51,7 +60,11 @@ function ProfilePage(props) {
     const {userId} = useParams();
 
     // Custom Functions
-    const {openSnackbar} = props;
+    const {openSnackbar, onClick} = props;
+
+    const onBtnClick = () => {
+        onClick(userId);
+    };
 
     useEffect(() => {
         const unsubscribe = firestore
@@ -118,10 +131,31 @@ function ProfilePage(props) {
                         <Typography color="initial" variant="h6" component="p" align="center">
                             {(profile.fullName) ? (profile.fullName) : ("информация отсутствует (")}
                         </Typography>
-
+                        
                         <IconButton>
                             <MoreVertIcon/>
                         </IconButton>
+                    </Box>
+
+                    <Box className={classes.reviewsRow}>
+                        <Button onClick={onBtnClick}>
+                            <Link
+                            className={classes.link} 
+                            to="/reviews/"
+                            underline="none"
+                            >
+                                Читать все отзывы
+                            </Link>
+                        </Button>
+                        <Button onClick={onBtnClick}>
+                            <Link
+                            className={classes.link} 
+                            to="/create_review/"
+                            underline="none"
+                            >
+                                Добавить отзыв
+                            </Link>
+                        </Button>
                     </Box>
 
                     <AccountView
@@ -136,8 +170,8 @@ function ProfilePage(props) {
     return (
         <EmptyState
             image={<NoDataIllustration/>}
-            title="No orders"
-            description="Сорян, братан, но заказов пока нет("
+            title="No profiles"
+            description="Сорян, братан, но их пока нет("
         />
     );
 }

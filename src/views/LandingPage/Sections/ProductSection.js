@@ -3,63 +3,40 @@ import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 
 // @material-ui/icons
-
-import VerifiedUser from "@material-ui/icons/VerifiedUser";
-import Fingerprint from "@material-ui/icons/Fingerprint";
+import learning from "../../../illustrations/learning1.svg";
+import reading from "../../../illustrations/reading1.svg";
+import teacher from "../../../illustrations/teacher1.svg";
 // core components
 
 import styles from "assets/jss/material-kit-react/views/landingPageSections/productStyle.js";
-import Chat from "@material-ui/icons/Chat";
 import GridContainer from "../Grid/GridContainer";
 import GridItem from "../Grid/GridItem";
-import InfoArea from "../InfoArea/InfoArea";
 
 const useStyles = makeStyles(styles);
 
-export default function ProductSection() {
+export default function ProductSection(props) {
     const classes = useStyles();
+    const {theme} = props;
     return (
         <div className={classes.section}>
             <GridContainer justify="center">
                 <GridItem xs={12} sm={12} md={8}>
-                    <h2 className={classes.title}>Let{"'"}s talk product</h2>
-                    <h5 className={classes.description}>
-                        This is the paragraph where you can write more details about your
-                        product. Keep you user engaged by providing meaningful information.
-                        Remember that by this time, the user is curious, otherwise he wouldn
-                        {"'"}t scroll to get here. Add a button if you want the user to see
-                        more.
-                    </h5>
+                    <h2 style={{paddingBottom: '27px'}} className={classes.title}>Здесь вы найдёте</h2>
                 </GridItem>
             </GridContainer>
             <div>
                 <GridContainer>
                     <GridItem xs={12} sm={12} md={4}>
-                        <InfoArea
-                            title="Free Dialog"
-                            description="Помогай тем, кто слабее и гарантированно получай помощь от тех, кто сильнее"
-                            icon={Chat}
-                            iconColor="info"
-                            vertical
-                        />
+                        <img src={learning} alt="" style={{marginBottom: '17px'}}/>
+                        <h4 className={classes.title}>Исполните свой первый проект, под наставничеством опытных экспертов</h4>
                     </GridItem>
                     <GridItem xs={12} sm={12} md={4}>
-                        <InfoArea
-                            title="Verified Users"
-                            description="Поможем быстрее усвоить полученные знания и применить их на практике"
-                            icon={VerifiedUser}
-                            iconColor="success"
-                            vertical
-                        />
+                        <img src={reading} alt=""/>
+                        <h4 className={classes.title}>Исполнителя для вашего проеката под руководством настоящих профессионалов</h4>
                     </GridItem>
                     <GridItem xs={12} sm={12} md={4}>
-                        <InfoArea
-                            title="Fingerprint"
-                            description="Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough."
-                            icon={Fingerprint}
-                            iconColor="danger"
-                            vertical
-                        />
+                        <img src={teacher} alt="" style={{marginBottom: '9px'}}/>
+                        <h4 className={classes.title}>Найдете заинтерисованых студентов и пополните своё портфолио новыми проектами</h4>
                     </GridItem>
                 </GridContainer>
             </div>

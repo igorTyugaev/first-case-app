@@ -28,11 +28,10 @@ export default function LandingPage(props) {
                     <GridContainer>
                         <GridItem xs={12} sm={12} md={7}>
                             <h1 className={classes.title}>
-                                Найдем исполнителя для решения Вашей задачи!
+                                Добро пожаловать на First Case!
                             </h1>
                             <h4>
-                                Под руководством опытных наставников сфере IT, молодые специалисты работают над Вашим
-                                проектом
+                                Обучай, учись и зрабатывай!
                             </h4>
                             <br/>
                             <Button

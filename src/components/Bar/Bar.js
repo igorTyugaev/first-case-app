@@ -27,7 +27,7 @@ const styles = (theme) => ({
         color: "#FFFFFF",
         "&:hover,&:focus": {
             color: "#FFFFFF",
-            textDecoration: "underline",
+            textDecoration: "none",
             cursor: "pointer"
         }
     },
@@ -85,6 +85,22 @@ class Bar extends Component {
             default:
                 return null;
         }
+    }
+
+    getTitleForRole = (userData) => {
+        if (!userData && !userData.role)
+            return null
+        
+        switch (userData.role) {
+            case "Mentor":
+                return "Наставник";
+            case "Customer":
+                return "Заказчик";
+            case "Student":
+                return "Студент";
+            default:
+                return null;
+        } 
     }
 
     render() {

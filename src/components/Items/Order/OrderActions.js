@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 // @material-ui/core components
 import {makeStyles} from "@material-ui/core/styles";
 import classNames from "classnames";
@@ -64,15 +64,31 @@ export default function OrderActions(props) {
                 const code = reason.code;
                 const message = reason.message;
 
+                console.log(reason);
                 switch (code) {
                     default:
                         openSnackbar(message);
                         return;
                 }
             })
-
     }
 
+    const disabledBtn = (userData) => {
+        if (!userData && !userData.role)
+            return null;
+        
+        switch (userData.role) {
+            case "Mentor":
+                return false;
+            case "Customer":
+                return true;
+            case "Student":
+                return false;
+            default:
+                return null;
+        }
+    };
+    
     return (
         <div className={classNames(classes.main)}>
             <Typography variant="subtitle1" color="textPrimary" component="p">
@@ -87,8 +103,7 @@ export default function OrderActions(props) {
                 {order.deadline ? new Date(order.deadline).toDateString() : "Не указано"}
             </span>
             </Typography>
-
-            {userData && userData.role && userData.role.toLowerCase() != 'customer' && (
+             {userData && userData.role && userData.role.toLowerCase() != 'customer' && (
                 <Button color="primary" variant="contained" className={classNames(classes.btn)}
                         onClick={handleRespondBtn}>
                     {order.disabled ? "Перейти к обсуждению" : "Оставить заявку"}
@@ -96,5 +111,7 @@ export default function OrderActions(props) {
             )}
         </div>
     );
-}
+};
+
+export default OrderActions;
 
